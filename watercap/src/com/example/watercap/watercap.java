@@ -163,8 +163,8 @@ public class watercap {
         nameValuePair.add(new BasicNameValuePair("remark",remark));
         nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
         nameValuePair.add(new BasicNameValuePair("modelnums",modelnums));
-        nameValuePair.add(new BasicNameValuePair("modedata",modedata));
-        nameValuePair.add(new BasicNameValuePair("imgdata",imgdata));
+        nameValuePair.add(new BasicNameValuePair("modedatas",modedata));
+        nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
         //JSONObject jsonObject = new JSONObject();
         //JSONObject jsonObject2 = new JSONObject();
         //jsonObject.put("uemail", userbean.getEmail());
