@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -199,7 +200,7 @@ public class MainActivity extends Activity {
 			while (!isInterrupted()) {
 				int size;
 				try {
-					byte[] buffer = new byte[64];
+					byte[] buffer = new byte[128];
 					if (mInputStream == null)
 						return;
 
@@ -215,13 +216,25 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
+	public static String byte2HexStr(byte[] b)    
+	{    
+	    String stmp="";    
+	    StringBuilder sb = new StringBuilder("");    
+	    for (int n=0;n<b.length;n++)    
+	    {    
+	        stmp = Integer.toHexString(b[n] & 0xFF);    
+	        sb.append((stmp.length()==1)? "0"+stmp : stmp);    
+	        sb.append(" ");    
+	    }    
+	    return sb.toString().toUpperCase().trim();    
+	}    
 	protected void onDataReceived(final byte[] buffer, final int size) {
             runOnUiThread(new Runnable() {
                     public void run() {
                             //if (EditTextReception != null) {
                             //	EditTextReception.append(new String(buffer, 0, size));
                             //}
-                    	Log.i("485",buffer.toString());
+							Log.i("485",byte2HexStr(buffer));
                     }
             });
     }

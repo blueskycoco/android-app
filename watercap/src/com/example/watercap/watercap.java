@@ -32,14 +32,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceActivity.Header;
 import android.util.Log;
+import realarm.hardware.HardwareControl;
 
 public class watercap {
-	static 
-	{
-		System.loadLibrary("RealarmHardwareJni");
-	}
-	public native static FileDescriptor OpenSerialPort(String path, int baudrate,int flags);
-	public native static void CloseSerialPort();
+	//static 
+	//{
+	//	System.loadLibrary("RealarmHardwareJni");
+	//}
+	//public native static FileDescriptor OpenSerialPort(String path, int baudrate,int flags);
+	//public native static void CloseSerialPort();
 	private static final String TAG = "SerialPort";
 	private static FileDescriptor mFd;
 	private static FileInputStream mFileInputStream;
@@ -257,7 +258,7 @@ public class watercap {
 			}
 		}
 
-		mFd = OpenSerialPort(device.getAbsolutePath(), baudrate, 0);
+		mFd = HardwareControl.OpenSerialPort(device.getAbsolutePath(), baudrate, 0);
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
 			return false;
@@ -269,7 +270,7 @@ public class watercap {
 	}
 	public static void deinit()
 	{
-		CloseSerialPort();
+		HardwareControl.CloseSerialPort();
 	}
 	public static InputStream getInputStream() {
 		return mFileInputStream;
