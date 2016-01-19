@@ -36,7 +36,7 @@ import android.util.Log;
 public class watercap {
 	static 
 	{
-		//System.loadLibrary("RealarmHardwareJni");
+		System.loadLibrary("RealarmHardwareJni");
 	}
 	public native static FileDescriptor OpenSerialPort(String path, int baudrate,int flags);
 	public native static void CloseSerialPort();
@@ -230,7 +230,7 @@ public class watercap {
 		/** Read serial port parameters */
         SharedPreferences sp = ctx.getSharedPreferences("android_serialport_api.sample_preferences", Context.MODE_PRIVATE);
         String path = sp.getString("DEVICE", "/dev/ttyAMA4");
-        int baudrate = Integer.decode(sp.getString("BAUDRATE", "115200"));
+        int baudrate = Integer.decode(sp.getString("BAUDRATE", "9600"));
 
         /* Check parameters */
         if ( (path.length() == 0) || (baudrate == -1)) {
@@ -271,8 +271,12 @@ public class watercap {
 	{
 		CloseSerialPort();
 	}
-	public InputStream getInputStream() {
+	public static InputStream getInputStream() {
 		return mFileInputStream;
+	}
+
+	public static OutputStream getOutputStream() {
+		return mFileOutputStream;
 	}
 /*
 	private class ReadThread extends Thread {

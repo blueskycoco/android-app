@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,11 +20,28 @@ import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 public class MainActivity extends Activity {
-	@Override
+	//@Override
+	protected OutputStream mOutputStream;
+	private InputStream mInputStream;
+	private ReadThread mReadThread;
+	byte[] cmd={0x24,0x32,(byte) 0xff,0x23,0x0a};
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Log.i("HERE", "we are here");		
+		Log.i("HERE", "we are here");
+		try {
+			watercap.init(this);
+			mInputStream = watercap.getInputStream();
+			mOutputStream = watercap.getOutputStream();
+			/* Create a receiving thread */
+			mReadThread = new ReadThread();
+			mReadThread.start();
+			mOutputStream.write(cmd);
+			System.out.println("串口数据发送成功");
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		AssetManager mAssetManager = this.getAssets();
 		InputStream is_jpg1=null;
 		InputStream is_jpg2=null;
@@ -173,4 +191,38 @@ public class MainActivity extends Activity {
 	        watercap.sendNet();
 	    }
 	};
+	private class ReadThread extends Thread {
+
+		@Override
+		public void run() {
+			super.run();
+			while (!isInterrupted()) {
+				int size;
+				try {
+					byte[] buffer = new byte[64];
+					if (mInputStream == null)
+						return;
+
+					
+					size = mInputStream.read(buffer);
+					if (size > 0) {
+						onDataReceived(buffer, size);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+		}
+	}
+	protected void onDataReceived(final byte[] buffer, final int size) {
+            runOnUiThread(new Runnable() {
+                    public void run() {
+                            //if (EditTextReception != null) {
+                            //	EditTextReception.append(new String(buffer, 0, size));
+                            //}
+                    	Log.i("485",buffer.toString());
+                    }
+            });
+    }
 }
