@@ -25,7 +25,10 @@ public class MainActivity extends Activity {
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
-	byte[] cmd={0x24,0x32,(byte) 0xff,0x23,0x0a};
+	byte[] response = new byte[28];
+	static boolean header_got=false;
+	static int read_len=0,to_read=0;
+	byte[] cmd={0x24,0x32,(byte)0x90,0x23,0x0a};
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -216,25 +219,73 @@ public class MainActivity extends Activity {
 			}
 		}
 	}
-	public static String byte2HexStr(byte[] b)    
+	public static String byte2HexStr(byte[] b,int len)    
 	{    
 	    String stmp="";    
 	    StringBuilder sb = new StringBuilder("");    
-	    for (int n=0;n<b.length;n++)    
+	    for (int n=0;n<len;n++)    
 	    {    
 	        stmp = Integer.toHexString(b[n] & 0xFF);    
 	        sb.append((stmp.length()==1)? "0"+stmp : stmp);    
 	        sb.append(" ");    
 	    }    
 	    return sb.toString().toUpperCase().trim();    
-	}    
+	}
 	protected void onDataReceived(final byte[] buffer, final int size) {
             runOnUiThread(new Runnable() {
                     public void run() {
                             //if (EditTextReception != null) {
                             //	EditTextReception.append(new String(buffer, 0, size));
                             //}
-							Log.i("485",byte2HexStr(buffer));
+                    		String ret=byte2HexStr(buffer,size);
+							Log.i("485",size + "==>"+ret);
+							if(header_got && to_read>0)
+							{	
+								int cur=read_len-to_read;
+								//Log.i("Response", String.valueOf(response.length));
+								for(int j=0;j<to_read;j++)
+								response[j+cur]=(byte) (buffer[j] & 0xFF);
+								read_len=0;
+								to_read=0;
+								header_got=false;
+								Log.i("Response1", byte2HexStr(response,28));
+							}
+							else
+							{
+								int index=0,i=0;
+								for(i=0;i<size;i++)
+								{
+									//Log.i("Response==>",Integer.toHexString(buffer[i]));
+									if((buffer[i]&0xff)==0xF5 && (buffer[i+1]&0xff)==0x31)
+									{								
+										header_got=true;
+										read_len=Integer.valueOf(Integer.toHexString(buffer[i+2]&0xff)).intValue();									
+										index=i+3;
+										break;
+									}
+								}
+								Log.i("Response", "Size "+String.valueOf(size)+" i "+String.valueOf(i));
+								if(i!=size)
+								{
+									if(read_len>size-3)
+									{
+										for(i=0;i<size;i++)
+											response[i]=(byte) (buffer[i+index]&0xff);
+										to_read=read_len-(size-index);
+										Log.i("to_read", String.valueOf(to_read));
+										Log.i("read_len", String.valueOf(read_len));
+									}
+									else
+									{
+										for(i=0;i<read_len;i++)
+											response[i]=(byte) (buffer[i+index]&0xff);
+										read_len=0;
+										to_read=0;
+										header_got=false;
+										Log.i("Response2", byte2HexStr(response,28));
+									}
+								}
+							}
                     }
             });
     }
