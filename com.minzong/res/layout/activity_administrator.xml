@@ -1,0 +1,341 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.project.water.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativelayout1"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textmaintitle"
+            style="@style/TextView"
+            android:textSize="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/relativelayout1"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textmaintitle1"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title1" />
+
+        <TextView
+            android:id="@+id/textversion"
+            style="@style/TextView"
+            android:textSize="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/version" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutbuttonbaocun"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp" >
+
+            <Button
+                android:id="@+id/buttonbaocun"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:text="@string/baocun"
+                style="@style/Button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dip" >
+
+            <Button
+                android:id="@+id/buttonfanhui"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:text="@string/fanhui"
+                style="@style/Button" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutcontainimei"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout2" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutimei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp" >
+
+            <TextView
+                android:id="@+id/textimei"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="right"
+                android:text="@string/imei" />
+
+            <EditText
+                android:id="@+id/editimei"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/textimei"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutimeiright"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/relativelayoutdeviceID"
+            android:layout_toRightOf="@+id/relativelayoutimei" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutdeviceID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dp" >
+
+            <TextView
+                android:id="@+id/textdeviceID"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:gravity="right"
+                android:text="@string/deviceID" />
+
+            <EditText
+                android:id="@+id/editdeviceID"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:maxLength="6"
+                android:numeric="decimal"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textdeviceID"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutcontainceliangjiange"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayoutcontainimei"
+        android:layout_marginTop="10dp" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutceliangjiange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp" >
+
+            <TextView
+                android:id="@+id/textceliangjiange"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/celiangjiange" />
+
+            <Spinner
+                android:id="@+id/spinnerceliangjiange"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textceliangjiange" />
+
+            <EditText
+                android:id="@+id/editceliangjiange"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinnerceliangjiange"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+
+            <Spinner
+                android:id="@+id/spinnerceliangjiangeunit"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinnerceliangjiange"
+                android:layout_toRightOf="@+id/editceliangjiange" />
+
+            <RelativeLayout
+                android:id="@+id/relativelayouttianjiajiange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/spinnerceliangjiange" >
+
+                <Button
+                    android:id="@+id/buttonshanchujiange"
+                    android:layout_width="80dip"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shanchu" />
+
+                <Button
+                    android:id="@+id/buttontianjiajiange"
+                    android:layout_width="80dip"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/buttonshanchujiange"
+                    android:text="@string/tianjia" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutceliangjiangeright"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/relativelayoutmode"
+            android:layout_toRightOf="@+id/relativelayoutceliangjiange" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutmode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="55dp" >
+
+            <TextView
+                android:id="@+id/textmode"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/spinnermode"
+                android:text="@string/mode" />
+
+            <Spinner
+                android:id="@+id/spinnermode"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/relativelayouttianjiamode" />
+
+            <RelativeLayout
+                android:id="@+id/relativelayouttianjiamode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" >
+
+                <Button
+                    android:id="@+id/buttonshanchumode"
+                    android:layout_width="80dip"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shanchu" />
+
+                <Button
+                    android:id="@+id/buttontianjiamode"
+                    android:layout_width="80dip"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/buttonshanchumode"
+                    android:text="@string/tianjia" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/editcanshuname"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/relativelayouttianjiamode"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+
+            <TextView
+                android:id="@+id/textcanshuname"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativelayouttianjiamode"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/editcanshuname"
+                android:gravity="right"
+                android:text="@string/name" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutcanshu"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativelayoutmode"
+            android:layout_marginRight="55dp" >
+
+            <TextView
+                android:id="@+id/textcanshu"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/editcanshu1"
+                android:gravity="right"
+                android:text="@string/canshu" />
+
+            <EditText
+                android:id="@+id/editcanshu1"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+
+            <EditText
+                android:id="@+id/editcanshu2"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/editcanshu1"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

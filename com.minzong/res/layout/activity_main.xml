@@ -1,0 +1,229 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.project.water.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativelayout1"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textmaintitle"
+            style="@style/TextView"
+            android:textSize="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/relativelayout1"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textmaintitle1"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title1" />
+
+        <TextView
+            android:id="@+id/textversion"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/version" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutbuttonlogin"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp" >
+
+            <Button
+                android:id="@+id/buttonlogin"
+                style="@style/Button"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:text="@string/login" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dip" >
+
+            <Button
+                android:id="@+id/buttonguanji"
+                style="@style/Button"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                android:text="@string/guanji" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutcontainuser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout2"
+        android:layout_marginTop="30dp" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp" >
+
+            <TextView
+                android:id="@+id/text3"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:gravity="right"
+                android:text="@string/user" />
+
+            <EditText
+                android:id="@+id/edituser"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/text3"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/edituserright"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/relativelayoutmima"
+            android:layout_toRightOf="@+id/relativelayoutuser" >
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutmima"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp" >
+
+            <TextView
+                android:id="@+id/text4"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:gravity="right"
+                android:text="@string/mima" />
+
+            <EditText
+                android:id="@+id/editmima"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/text4"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+
+            <CheckBox
+                android:id="@+id/checkboxjizhumima"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editmima"
+                android:layout_toLeftOf="@+id/textjizhumima" />
+
+            <TextView
+                android:id="@+id/textjizhumima"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/editmima"
+                android:layout_marginRight="40dp"
+                android:text="@string/jizhumima" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutcontainmodexuanze"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayoutcontainuser"
+        android:layout_marginTop="60dp" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutmodexuanze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp" >
+
+            <TextView
+                android:id="@+id/textmodexuanze"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modexuanze" />
+
+            <Spinner
+                android:id="@+id/spinnermodexuanze"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textmodexuanze" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutceliangfangshi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="95dp" >
+
+            <TextView
+                android:id="@+id/textceliangfangshi"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/celiangfangshi" />
+
+            <Spinner
+                android:id="@+id/spinnerceliangfangshi"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textceliangfangshi" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

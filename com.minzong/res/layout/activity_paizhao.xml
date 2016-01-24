@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="5dp" >
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutlocationinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textGPS"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/GPS" />
+
+            <TextView
+                android:id="@+id/textGPSLocate"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textGPS"
+                android:text="@string/GPS" />
+
+            <Button
+                android:id="@+id/buttonshuaxin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textGPSLocate"
+                android:text="@string/shuaxin"
+                android:textSize="8dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayoutdeviceinfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativelayoutlocationinfo"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:id="@+id/textGSM"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/GSM" />
+
+            <TextView
+                android:id="@+id/textGSMdetails"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textGSM"
+                android:text="@string/GSM" />
+
+            <TextView
+                android:id="@+id/textdianchi"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/textGSMdetails"
+                android:text="@string/dianchi" />
+
+            <ImageView
+                android:id="@+id/imageviewdianchi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/textdianchi" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:padding="5dp"
+        android:id="@+id/relativelayout1"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/text1"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="5dp"
+        android:id="@+id/relativelayout2"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@+id/relativelayout1"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/text2"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/title1" />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/relativelayouttime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/texttime"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time" />
+
+        <TextView
+            android:id="@+id/texttimedetail"
+            style="@style/TextView"
+            android:layout_marginRight="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/texttime"
+            android:layout_marginTop="10dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/textID"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/texttime"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/texttimedetail" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="5dp"
+        android:id="@+id/relativelayoutpaizhaomain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout2" >
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:id="@+id/relativelayoutleftpaizhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_alignParentLeft="true">
+
+            <!-- <Button
+                android:id="@+id/buttonceliang"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/buttonstyle"
+                android:text="@string/celiang" /> -->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:id="@+id/relativelayoutpaizhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/relativelayoutleftpaizhao" 
+            android:layout_toLeftOf="@+id/relativelayoutrighttpaizhao">
+
+            <ImageView
+                android:id="@+id/paizhao"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:background="@android:color/background_light"/>
+            <Spinner
+                android:id="@+id/spinnertupian"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/paizhao" />
+            <Button
+                    android:id="@+id/buttonshanchutupian"
+                    android:layout_width="80dip"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shanchu"
+                    android:layout_toRightOf="@+id/spinnertupian" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:id="@+id/relativelayoutrighttpaizhao"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+             >
+
+            <Button
+                android:id="@+id/buttonpaishe"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                
+                android:text="@string/paishe" />
+            <Button
+                android:id="@+id/buttonfanhui"
+                android:layout_marginTop="150dp"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                
+                android:text="@string/fanhui"
+                android:layout_below="@+id/buttonpaishe" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutbuttonlogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+         >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp" >
+
+            <Button
+                android:id="@+id/buttontuichu"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                
+                android:text="@string/tuichu" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dip" >
+
+            <Button
+                android:id="@+id/buttonguanji"
+                android:layout_width="200dip"
+                android:layout_height="wrap_content"
+                
+                android:text="@string/guanji" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
