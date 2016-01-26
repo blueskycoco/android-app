@@ -30,20 +30,23 @@
 
             <TextView
                 android:id="@+id/textGPSLocate"
-                android:textSize="6dp"
                 style="@style/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textGPS"
-                android:text="@string/GPS" />
+                
+                android:layout_below="@+id/textGPS"
+                android:text="@string/GPS"
+                android:textSize="20dp"
+                android:layout_marginTop="20dp" />
 
             <Button
                 android:id="@+id/buttonshuaxin"
+                style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textGPSLocate"
+                android:layout_toRightOf="@+id/textGPS"
                 android:text="@string/shuaxin"
-                android:textSize="8dp" />
+                android:textSize="20dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -81,7 +84,8 @@
                 android:id="@+id/imageviewdianchi"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_toRightOf="@+id/textdianchi" />
+                android:layout_toRightOf="@+id/textdianchi"
+                android:layout_marginTop="5dp" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -89,18 +93,18 @@
         android:id="@+id/relativelayout1"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:padding="5dp" >
 
         <TextView
             android:id="@+id/text1"
             style="@style/TextView"
-            android:textSize="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/title" />
+            android:text="@string/title"
+            android:textSize="40dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -108,8 +112,8 @@
         android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:layout_below="@+id/relativelayout1"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:padding="5dp" >
 
         <TextView
@@ -132,31 +136,32 @@
         <TextView
             android:id="@+id/texttime"
             style="@style/TextView"
-            android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time" />
+            android:paddingLeft="50dp"
+            android:text="@string/time"
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/texttimedetail"
             style="@style/TextView"
-            android:textSize="25dp"
-            android:layout_marginRight="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/texttime"
+            android:layout_marginRight="2dp"
             android:layout_marginTop="20dp"
-            android:text="" />
+            android:text=""
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/textID"
             style="@style/TextView"
-            android:textSize="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/texttime"
             android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/texttimedetail" />
+            android:layout_toRightOf="@+id/texttimedetail"
+            android:textSize="25dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -178,88 +183,96 @@
 
             <Button
                 android:id="@+id/buttonpaizhao"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:text="@string/paizhao" />
 
+            <TextView
+                android:id="@+id/textmoxing"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                android:layout_below="@+id/buttonpaizhao"
+                android:gravity="center"
+                android:text="@string/moxing"
+                android:layout_alignParentLeft="true" />
+            
             <Spinner
                 android:id="@+id/spinnermoxing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/buttonpaizhao"
-                android:layout_alignParentLeft="true" />
-            
+                android:layout_toRightOf="@+id/textmoxing"
+                android:layout_alignTop="@+id/textmoxing" />
+
             <TextView
-                    android:id="@+id/textshangdi"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/spinnermoxing"
-					android:layout_alignBottom="@+id/editshangdi"
-                    android:gravity="center"
-                    android:text="@string/shangdi" />
-            
+                android:id="@+id/textshangdi"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/editshangdi"
+                android:layout_below="@+id/textmoxing"
+                android:gravity="center"
+                android:text="@string/shangdi" />
+
             <EditText
-                    android:id="@+id/editshangdi"
-                    style="@style/EditText"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/spinnermoxing"
-                    android:layout_toRightOf="@+id/textshangdi"
-                    android:background="@android:drawable/edit_text"
-                    android:editable="false"
-                    android:paddingBottom="1dip"
-                    android:singleLine="true" />
-            
+                android:id="@+id/editshangdi"
+                style="@style/EditText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinnermoxing"
+                android:layout_toRightOf="@+id/textshangdi"
+                android:background="@android:drawable/edit_text"
+                android:editable="false"
+                android:paddingBottom="1dip"
+                android:singleLine="true" />
+
             <TextView
-                    android:id="@+id/textxiadi"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textshangdi"
-					android:layout_alignBottom="@+id/editxiadi"
-                    android:gravity="center"
-                    android:text="@string/xiadi" />
-            
+                android:id="@+id/textxiadi"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/editxiadi"
+                android:layout_below="@+id/textshangdi"
+                android:gravity="center"
+                android:text="@string/xiadi" />
+
             <EditText
-                    android:id="@+id/editxiadi"
-                    style="@style/EditText"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/editshangdi"
-                    android:layout_toRightOf="@+id/textxiadi"
-                    android:background="@android:drawable/edit_text"
-                    android:editable="false"
-                    android:paddingBottom="1dip"
-                    android:singleLine="true" />
-            
+                android:id="@+id/editxiadi"
+                style="@style/EditText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editshangdi"
+                android:layout_toRightOf="@+id/textxiadi"
+                android:background="@android:drawable/edit_text"
+                android:editable="false"
+                android:paddingBottom="1dip"
+                android:singleLine="true" />
+
             <TextView
-                    android:id="@+id/textshui"
-                    style="@style/TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textxiadi"
-					android:layout_alignBottom="@+id/editshui"
-                    android:gravity="center"
-                    android:text="@string/shuiwen" />
-            
+                android:id="@+id/textshui"
+                style="@style/TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/editshui"
+                android:layout_below="@+id/textxiadi"
+                android:gravity="center"
+                android:text="@string/shuiwen" />
+
             <EditText
-                    android:id="@+id/editshui"
-                    style="@style/EditText"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/editxiadi"
-                    android:layout_toRightOf="@+id/textshui"
-                    android:background="@android:drawable/edit_text"
-                    android:editable="false"
-                    android:paddingBottom="1dip"
-                    android:singleLine="true" />
-            
-            
-            
-            
+                android:id="@+id/editshui"
+                style="@style/EditText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editxiadi"
+                android:layout_toRightOf="@+id/textshui"
+                android:background="@android:drawable/edit_text"
+                android:editable="false"
+                android:paddingBottom="1dip"
+                android:singleLine="true" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -314,16 +327,17 @@
 
                 <Button
                     android:id="@+id/buttonCODLingdian"
+                    style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textCODMgl"
                     android:text="@string/lingdian"
-                    android:textSize="10dp" />
+                     />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relativelayoutliusu"
-                android:layout_width="220dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true" >
 
@@ -407,16 +421,17 @@
 
                 <Button
                     android:id="@+id/buttonxiaodanLingdian"
+                    style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textxiaodanMgl"
                     android:text="@string/lingdian"
-                    android:textSize="10dp" />
+                    android:textSize="20dp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relativelayoutshendu"
-                android:layout_width="220dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/relativelayoutliusu" >
@@ -502,7 +517,7 @@
 
             <RelativeLayout
                 android:id="@+id/relativelayoutkuandu"
-                android:layout_width="220dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/relativelayoutshendu" >
@@ -587,7 +602,7 @@
 
             <RelativeLayout
                 android:id="@+id/relativelayoutdizhi"
-                android:layout_width="220dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/relativelayoutkuandu" >
@@ -600,7 +615,7 @@
                     android:layout_alignBottom="@+id/editdizhi"
                     android:layout_alignParentLeft="true"
                     android:layout_alignTop="@+id/editdizhi"
-                    android:layout_marginRight="10dp"
+                    
                     android:gravity="center"
                     android:text="@string/dizhi" />
 
@@ -614,9 +629,10 @@
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/relativelayoutcishu"
-                android:layout_width="800dp"
+                android:layout_width="880dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/relativelayoutdizhi" >
@@ -626,94 +642,84 @@
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_alignParentLeft="true"
-
-                    android:layout_marginRight="10dp"
+                    
                     android:gravity="center"
                     android:text="@string/quyangcishu" />
-                
+
                 <EditText
                     android:id="@+id/editcishu"
                     style="@style/EditText"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textcishu"
                     android:layout_alignLeft="@+id/textcishu"
+                    android:layout_below="@+id/textcishu"
                     android:background="@android:drawable/edit_text"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
-                
+
                 <TextView
                     android:id="@+id/textcodtongliang"
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textcishu"
-
-                    android:layout_marginLeft="30dp"
                     android:gravity="center"
                     android:text="@string/codtongliang" />
-                
+
                 <EditText
                     android:id="@+id/editcodtongliang"
                     style="@style/EditText"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textcodtongliang"
                     android:layout_alignLeft="@+id/textcodtongliang"
+                    android:layout_below="@+id/textcodtongliang"
                     android:background="@android:drawable/edit_text"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
-                
+
                 <TextView
                     android:id="@+id/textxiaodantongliang"
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textcodtongliang"
-
-                    android:layout_marginLeft="30dp"
                     android:gravity="center"
                     android:text="@string/xiaodantongliang" />
-                
+
                 <EditText
                     android:id="@+id/editxiaodantongliang"
                     style="@style/EditText"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textxiaodantongliang"
                     android:layout_alignLeft="@+id/textxiaodantongliang"
+                    android:layout_below="@+id/textxiaodantongliang"
                     android:background="@android:drawable/edit_text"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
-                
+
                 <TextView
                     android:id="@+id/textandantongliang"
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/textxiaodantongliang"
-
-                    android:layout_marginLeft="30dp"
                     android:gravity="center"
                     android:text="@string/andantongliang" />
-                
+
                 <EditText
                     android:id="@+id/editandantongliang"
                     style="@style/EditText"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textandantongliang"
                     android:layout_alignLeft="@+id/textandantongliang"
+                    android:layout_below="@+id/textandantongliang"
                     android:background="@android:drawable/edit_text"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
-
-
             </RelativeLayout>
         </RelativeLayout>
 
@@ -728,6 +734,7 @@
 
             <Button
                 android:id="@+id/buttonshujuceliang"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -736,6 +743,7 @@
 
             <Button
                 android:id="@+id/buttonshujucunchu"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -744,6 +752,7 @@
 
             <Button
                 android:id="@+id/buttontongliangjisuan"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -752,6 +761,7 @@
 
             <Button
                 android:id="@+id/buttonshujushangchuan"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -774,10 +784,10 @@
 
             <Button
                 android:id="@+id/buttontuichu"
+                style="@style/Button"
                 android:layout_width="200dip"
                 android:layout_height="wrap_content"
-                android:text="@string/tuichu"
-                style="@style/Button" />
+                android:text="@string/tuichu" />
         </LinearLayout>
 
         <LinearLayout
@@ -788,10 +798,10 @@
 
             <Button
                 android:id="@+id/buttonguanji"
+                style="@style/Button"
                 android:layout_width="200dip"
                 android:layout_height="wrap_content"
-                android:text="@string/guanji"
-                style="@style/Button" />
+                android:text="@string/guanji" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -33,16 +33,20 @@
                 style="@style/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textGPS"
-                android:text="@string/GPS" />
+                
+                android:layout_below="@+id/textGPS"
+                android:text="@string/GPS"
+                android:textSize="20dp"
+                android:layout_marginTop="20dp" />
 
             <Button
                 android:id="@+id/buttonshuaxin"
+                style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textGPSLocate"
+                android:layout_toRightOf="@+id/textGPS"
                 android:text="@string/shuaxin"
-                android:textSize="8dp" />
+                android:textSize="20dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -78,16 +82,18 @@
 
             <ImageView
                 android:id="@+id/imageviewdianchi"
+                android:layout_marginTop="5dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_toRightOf="@+id/textdianchi" />
+            
         </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout
         android:padding="5dp"
         android:id="@+id/relativelayout1"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp" >
 
         <TextView
@@ -103,7 +109,7 @@
         android:padding="5dp"
         android:id="@+id/relativelayout2"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="55dp"
         android:layout_below="@+id/relativelayout1"
         android:layout_marginTop="10dp" >
 
@@ -125,6 +131,7 @@
         android:padding="5dp" >
 
         <TextView
+            android:paddingLeft="50dp"
             android:id="@+id/texttime"
             style="@style/TextView"
             android:layout_width="wrap_content"
@@ -156,7 +163,8 @@
         android:id="@+id/relativelayoutpaizhaomain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relativelayout2" >
+        android:layout_below="@+id/relativelayout2"
+        android:layout_marginTop="20dp" >
 
         <RelativeLayout
             android:padding="5dp"
@@ -196,6 +204,7 @@
                 android:layout_toRightOf="@+id/paizhao" />
             <Button
                     android:id="@+id/buttonshanchutupian"
+                    style="@style/Button"
                     android:layout_width="80dip"
                     android:layout_height="wrap_content"
                     android:text="@string/shanchu"
@@ -212,6 +221,7 @@
 
             <Button
                 android:id="@+id/buttonpaishe"
+                style="@style/Button"
                 android:layout_width="120dip"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -225,7 +235,8 @@
                 android:layout_alignParentLeft="true"
                 
                 android:text="@string/fanhui"
-                android:layout_below="@+id/buttonpaishe" />
+                android:layout_below="@+id/buttonpaishe"
+                style="@style/Button" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -240,9 +251,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="60dp" >
+            android:layout_marginLeft="50dp" >
 
             <Button
+                style="@style/Button"
                 android:id="@+id/buttontuichu"
                 android:layout_width="200dip"
                 android:layout_height="wrap_content"
@@ -254,9 +266,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="60dip" >
+            android:layout_marginRight="50dip" >
 
             <Button
+                style="@style/Button"
                 android:id="@+id/buttonguanji"
                 android:layout_width="200dip"
                 android:layout_height="wrap_content"

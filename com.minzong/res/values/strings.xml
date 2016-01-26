@@ -32,8 +32,8 @@
     <string name="deviceID">设备ID</string>
     
     <string name="COD">COD</string>
-    <string name="Mgl">Mg/L</string>
-    <string name="temperature">C</string>
+    <string name="Mgl">mg/L</string>
+    <string name="temperature">℃</string>
     <string name="ppm">Ppm</string>
     <string name="m">M</string>
     <string name="ms">M/s</string>
@@ -89,6 +89,7 @@
     <string  name="codtongliang">COD通量</string>
     <string  name="xiaodantongliang">硝氮通量</string>
     <string  name="andantongliang">氨氮通量</string>
+    
     
     <string  name="tixing">梯形</string>
     <string  name="juxing">矩形</string>

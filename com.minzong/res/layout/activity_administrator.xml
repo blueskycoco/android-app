@@ -109,6 +109,7 @@
 
             <EditText
                 android:id="@+id/editimei"
+                android:editable="false"
                 style="@style/EditText"
                 android:singleLine="true"
                 android:layout_width="300dp"
@@ -212,12 +213,14 @@
 
                 <Button
                     android:id="@+id/buttonshanchujiange"
+                    style="@style/Button"
                     android:layout_width="80dip"
                     android:layout_height="wrap_content"
                     android:text="@string/shanchu" />
 
                 <Button
                     android:id="@+id/buttontianjiajiange"
+                    style="@style/Button"
                     android:layout_width="80dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/buttonshanchujiange"
@@ -263,12 +266,14 @@
 
                 <Button
                     android:id="@+id/buttonshanchumode"
+                    style="@style/Button"
                     android:layout_width="80dip"
                     android:layout_height="wrap_content"
                     android:text="@string/shanchu" />
 
                 <Button
                     android:id="@+id/buttontianjiamode"
+                    style="@style/Button"
                     android:layout_width="80dip"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/buttonshanchumode"
