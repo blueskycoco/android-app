@@ -624,6 +624,7 @@
                     style="@style/EditText"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/textdizhi"
                     android:background="@android:drawable/edit_text"
                     android:paddingBottom="1dip"
