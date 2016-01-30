@@ -25,10 +25,11 @@ public class MainActivity extends Activity {
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
+	float cod,no3n,nh4n,deep,speed,distance,power;
 	byte[] response = new byte[28];
 	static boolean header_got=false;
 	static int read_len=0,to_read=0;
-	byte[] cmd={0x24,0x32,(byte)0x90,0x23,0x0a};
+	byte[] cmd={0x24,0x32,(byte)0xff,0x23,0x0a};
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -46,6 +47,7 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		/*
 		AssetManager mAssetManager = this.getAssets();
 		InputStream is_jpg1=null;
 		InputStream is_jpg2=null;
@@ -155,6 +157,7 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
 		watercap.set_img("3", img_json.toString());
+		*/
         /*
 		String img=new String("{\"img1\":{\"imgcon\":\"");
 		String img1=img+jpg1_str;
@@ -231,6 +234,17 @@ public class MainActivity extends Activity {
 	    }    
 	    return sb.toString().toUpperCase().trim();    
 	}
+	public static float byte2float(byte[] b, int index) {    
+	    int l;                                             
+	    l = b[index + 3];                                  
+	    l &= 0xff;                                         
+	    l |= ((long) b[index + 2] << 8);                   
+	    l &= 0xffff;                                       
+	    l |= ((long) b[index + 1] << 16);                  
+	    l &= 0xffffff;                                     
+	    l |= ((long) b[index + 0] << 24);                  
+	    return Float.intBitsToFloat(l);                    
+	}
 	protected void onDataReceived(final byte[] buffer, final int size) {
             runOnUiThread(new Runnable() {
                     public void run() {
@@ -249,6 +263,29 @@ public class MainActivity extends Activity {
 								to_read=0;
 								header_got=false;
 								Log.i("Response1", byte2HexStr(response,28));
+								Log.i("COD",String.format("%6.3f",byte2float(response,0)));
+								Log.i("NO3-N",String.format("%6.3f",byte2float(response,4)));
+								Log.i("NH4-N",String.format("%6.3f",byte2float(response,8)));
+								Log.i("Deep",String.format("%6.3f",byte2float(response,12)));
+								Log.i("Speed",String.format("%6.3f",byte2float(response,16)));
+								Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
+								Log.i("Power",String.format("%6.3f",byte2float(response,24)));
+								cod=byte2float(response,0);
+								no3n=byte2float(response,4);
+								nh4n=byte2float(response,8);
+								deep=byte2float(response,12);
+								speed=byte2float(response,16);
+								distance=byte2float(response,20);
+								power=byte2float(response,24);
+								//JuXing
+								float r=1;
+								float avg_cod=cod*speed*deep*distance;
+								Log.i("avg_cod",String.format("%6.3f",avg_cod));
+								float avg_no3n=no3n*speed*deep*distance;
+								Log.i("avg_no3n",String.format("%6.3f",avg_no3n));
+								float avg_nh4n=nh4n*speed*deep*distance;
+								Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n));
+								double avg2_cod = Math.asin(distance/(2*r))*r*r-0.5f*distance*(r-deep);
 							}
 							else
 							{
