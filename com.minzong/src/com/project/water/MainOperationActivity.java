@@ -32,6 +32,9 @@ import android.net.NetworkInfo.State;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
@@ -75,6 +78,11 @@ public class MainOperationActivity extends Activity {
 	int zidongjiange;
 	Bundle bundle;
 	
+	TelephonyManager        Tel;
+	MyPhoneStateListener    MyListener;
+	
+	ImageView signalstrength;
+	
 	String stringmodexuanze;
 	String modexuanzecanshu0;
 	String modexuanzecanshu1;
@@ -99,6 +107,13 @@ public class MainOperationActivity extends Activity {
 	TextView texttimedetail;
 	TextView textID;
 	
+	TextView textmoxing1;
+	TextView textmoxing2;
+	TextView textmoxing3;
+	EditText editmoxing1;
+	EditText editmoxing2;
+	EditText editmoxing3;
+	
 	EditText editCOD;
 	EditText editliusu;
 	EditText editxiaodan;
@@ -107,6 +122,8 @@ public class MainOperationActivity extends Activity {
 	EditText editkuandu;
 	EditText editshuiwen;
 	EditText editdizhi;
+	
+	TextView textcishutime;
 	
 	Button buttonshujushangchuan;
 	Button buttonceliang;
@@ -129,11 +146,21 @@ public class MainOperationActivity extends Activity {
 		buttontuichu = (Button) findViewById(R.id.buttontuichu);
 
 		imageviewdianchi = (ImageView) findViewById(R.id.imageviewdianchi);
-		textdianchi = (TextView) findViewById(R.id.textdianchi);
+		//textdianchi = (TextView) findViewById(R.id.textdianchi);
 		textGPSLocate = (TextView) findViewById(R.id.textGPSLocate);
 		textGSMdetails = (TextView) findViewById(R.id.textGSMdetails);
+		signalstrength = (ImageView) findViewById(R.id.imageviewsignalstrength);
 		texttimedetail = (TextView) findViewById(R.id.texttimedetail);
 		textID = (TextView) findViewById(R.id.textID);
+
+		textmoxing1 = (TextView) findViewById(R.id.textshangdi);
+		textmoxing2 = (TextView) findViewById(R.id.textxiadi);
+		textmoxing3 = (TextView) findViewById(R.id.textshui);
+		editmoxing1 = (EditText) findViewById(R.id.editshangdi);
+		editmoxing2 = (EditText) findViewById(R.id.editxiadi);
+		editmoxing3 = (EditText) findViewById(R.id.editshui);
+		
+		textcishutime = (TextView) findViewById(R.id.textcishutime);
 		
 		editCOD = (EditText) findViewById(R.id.editCOD);
 		editliusu = (EditText) findViewById(R.id.editliusu);
@@ -179,6 +206,7 @@ public class MainOperationActivity extends Activity {
 		getdeviceinfo();
 		setID();
 		activateLocation();
+		initsignalstrength();
 	}
 
 	public void setButtonPaizhao() {
@@ -313,14 +341,14 @@ public class MainOperationActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			if (auto) { // change to refresh if it is auto mod
-				boolean connect = getconnect();
+				/*boolean connect = getconnect();
 				if (connect == false) {
 					textGSMdetails.setText(getResources().getString(
 							R.string.connecting));
 				} else {
 					textGSMdetails.setText(getResources().getString(
 							R.string.connected));
-				}
+				}*/
 
 				String strLocation = gpsprovider.getLocation();
 				textGPSLocate.setText(strLocation);
@@ -354,6 +382,53 @@ public class MainOperationActivity extends Activity {
 		return false;
 
 	}
+	
+	private void initsignalstrength()
+	{
+		MyListener   = new MyPhoneStateListener();
+        Tel       = ( TelephonyManager )getSystemService(Context.TELEPHONY_SERVICE);
+      Tel.listen(MyListener ,PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+	}
+	
+	private class MyPhoneStateListener extends PhoneStateListener
+    {
+     
+      @Override
+      public void onSignalStrengthsChanged(SignalStrength signalStrength)
+      {
+         super.onSignalStrengthsChanged(signalStrength);
+         /*Toast.makeText(getApplicationContext(), "Go to Firstdroid!!! GSM Cinr = "
+            + String.valueOf(signalStrength.getGsmSignalStrength()), Toast.LENGTH_SHORT).show();*/
+         
+         int signel = signalStrength.getGsmSignalStrength();
+         int level; 
+         /*if (signel <= 2 || signel == 99) level = SIGNAL_STRENGTH_NONE_OR_UNKNOWN; 
+         else if (signel >= 12) level = SIGNAL_STRENGTH_GREAT;
+         else if (signel >= 8)  level = SIGNAL_STRENGTH_GOOD; 
+         else if (signel >= 5)  level = SIGNAL_STRENGTH_MODERATE;  
+                 else level = SIGNAL_STRENGTH_POOR;*/
+         
+         if (signel <= 2 || signel == 99) {
+        	 signalstrength.setBackground(getResources().getDrawable(
+						R.drawable.batt0));
+			} else if (5 > signel) {
+				signalstrength.setBackground(getResources().getDrawable(
+						R.drawable.batt1));
+			} else if (8 > signel) {
+				signalstrength.setBackground(getResources().getDrawable(
+						R.drawable.batt2));
+			} else if (12 > signel) {
+				signalstrength.setBackground(getResources().getDrawable(
+						R.drawable.batt3));
+			} else  {
+				signalstrength.setBackground(getResources().getDrawable(
+						R.drawable.batt4));
+			}
+
+			
+      }
+
+    };
 
 	private void getbundledetail()
 	{
@@ -468,11 +543,40 @@ public class MainOperationActivity extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// °ó¶¨ Adapterµ½¿Ø¼þ
 		spinnermoxing.setAdapter(adapter);
+		
+		final String shangdi = this.getString(R.string.shangdi);
+		final String xiadi = this.getString(R.string.xiadi);
+		final String shendu = this.getString(R.string.shendu);
+		final String changdu = this.getString(R.string.changdu);
+		final String zhijing = this.getString(R.string.zhijing);
+		final String kuandu = this.getString(R.string.kuandu);
 		spinnermoxing
 				.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
 					@Override
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
+						if(pos==0)
+						{
+							textmoxing1.setText(shangdi);
+							textmoxing2.setText(xiadi);
+							textmoxing3.setText(shendu);
+							textmoxing3.setVisibility(View.VISIBLE);
+							editmoxing3.setVisibility(View.VISIBLE);
+						}
+						else if(pos==1)
+						{
+							textmoxing1.setText(changdu);
+							textmoxing2.setText(kuandu);
+							textmoxing3.setVisibility(View.INVISIBLE);
+							editmoxing3.setVisibility(View.INVISIBLE);
+						}
+						else if(pos==2)
+						{
+							textmoxing1.setText(zhijing);
+							textmoxing2.setText(shendu);
+							textmoxing3.setVisibility(View.INVISIBLE);
+							editmoxing3.setVisibility(View.INVISIBLE);
+						}
 
 					}
 

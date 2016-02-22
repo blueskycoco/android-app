@@ -61,7 +61,7 @@
                 style="@style/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/GSM" />
+                android:text="@string/lte" />
 
             <TextView
                 android:id="@+id/textGSMdetails"
@@ -69,9 +69,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/textGSM"
-                android:text="@string/GSM" />
+                 />
+            
+            <ImageView
+                android:id="@+id/imageviewsignalstrength"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/textGSM"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/textdianchi"
                 style="@style/TextView"
                 android:layout_width="wrap_content"
@@ -82,10 +90,10 @@
 
             <ImageView
                 android:id="@+id/imageviewdianchi"
-                android:layout_marginTop="5dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_toRightOf="@+id/textdianchi" />
+                android:layout_toRightOf="@+id/textdianchi"
+                android:layout_marginTop="5dp" /> -->
             
         </RelativeLayout>
     </RelativeLayout>
@@ -127,35 +135,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:padding="5dp" >
-
-        <TextView
-            android:paddingLeft="50dp"
-            android:id="@+id/texttime"
-            style="@style/TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/time" />
-
-        <TextView
-            android:id="@+id/texttimedetail"
-            style="@style/TextView"
-            android:layout_marginRight="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/texttime"
-            android:layout_marginTop="10dp"
-            android:text="" />
 
         <TextView
             android:id="@+id/textID"
             style="@style/TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/texttime"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/texttimedetail" />
+
+            android:textSize="25dp" />
+        
+        <ImageView
+                android:id="@+id/imageviewdianchi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/textID"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
+        
+<!--         <TextView
+            android:id="@+id/texttime"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="50dp"
+            android:text="@string/time"
+            android:textSize="25dp" /> -->
+
+        <TextView
+            android:id="@+id/texttimedetail"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textID"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textSize="25dp" />
+
+        
     </RelativeLayout>
 
     <RelativeLayout

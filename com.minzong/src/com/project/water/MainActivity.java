@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 	Spinner spinnerceliangfangshi;
 	CheckBox remembermima;
 	Button buttonlogin;
+	Button buttonguanji;
 	EditText editUser;
 	EditText editMima;
 
@@ -49,6 +50,7 @@ public class MainActivity extends Activity {
 		spinnermodexuanze = (Spinner) findViewById(R.id.spinnermodexuanze);
 		spinnerceliangfangshi = (Spinner) findViewById(R.id.spinnerceliangfangshi);
 		buttonlogin = (Button) findViewById(R.id.buttonlogin);
+		buttonguanji = (Button) findViewById(R.id.buttonguanji);
 		editUser = (EditText) findViewById(R.id.edituser);
 		editMima = (EditText) findViewById(R.id.editmima);
 		remembermima = (CheckBox) findViewById(R.id.checkboxjizhumima);
@@ -153,6 +155,19 @@ public class MainActivity extends Activity {
 			}
 
 		});
+	}
+	
+	public void setButtonguanji() {
+		buttonguanji.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		}
+		);
 	}
 
 	public void setspinnermodexuanze() {

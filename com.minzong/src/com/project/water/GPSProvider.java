@@ -44,7 +44,7 @@ public class GPSProvider {
 		// manager.getAllProviders(); // gps //wifi //
 		// 选择一种目前状态下最好的定位方式
 		provider = getProvider(manager);
-		provider = manager.GPS_PROVIDER;
+		//provider = manager.GPS_PROVIDER;
 		// 注册位置的监听器
 		/**
 		 * provider 定位方式 用什么设备定位 基站 网络 GPS AGPS 时间 gps 多长时间重新获取一下位置 最小为1分钟 位置
@@ -66,7 +66,7 @@ public class GPSProvider {
 			location = latitude + "-" + longtitude;
 		}
 		
-		 //manager.requestLocationUpdates(provider,60000, 50, getListener());
+		 manager.requestLocationUpdates(provider,60000, 50, getListener());
 		 
 		 /*SharedPreferences sp = context.getSharedPreferences("config",
 		 Context.MODE_PRIVATE); 

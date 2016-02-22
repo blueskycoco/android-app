@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
 import android.content.BroadcastReceiver;
@@ -26,6 +27,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -62,6 +66,11 @@ public class CameraActivity extends Activity {
 	String user;
 	Bundle bundle;
 	
+	TelephonyManager        Tel;
+	MyPhoneStateListener    MyListener;
+	
+	ImageView signalstrength;
+	
 	List listtupian;
 	private ImageView showImage;
 	private Uri imageUri; // Í¼Æ¬Â·¾¶
@@ -81,9 +90,10 @@ public class CameraActivity extends Activity {
 		spinnertupian = (Spinner) findViewById(R.id.spinnertupian);
 		
 		imageviewdianchi = (ImageView) findViewById(R.id.imageviewdianchi);
-		textdianchi = (TextView) findViewById(R.id.textdianchi);
+		//textdianchi = (TextView) findViewById(R.id.textdianchi);
 		textGPSLocate = (TextView) findViewById(R.id.textGPSLocate);
 		textGSMdetails = (TextView) findViewById(R.id.textGSMdetails);
+		signalstrength = (ImageView) findViewById(R.id.imageviewsignalstrength);
 		texttimedetail = (TextView) findViewById(R.id.texttimedetail);
 		textID = (TextView) findViewById(R.id.textID);
 		
@@ -102,6 +112,7 @@ public class CameraActivity extends Activity {
 		gpsprovider = GPSProvider.getInstance(CameraActivity.this);
 		getdeviceinfo();
 		setID();
+		getsignalstrength();
 	}
 
 	@Override
@@ -251,7 +262,13 @@ public class CameraActivity extends Activity {
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					int i = spinnertupian.getSelectedItemPosition();
+					if(i<0)
+						return;
+					
 					String tmp = (String)listtupian.get(i);
+					if(tmp==null)
+						return;
+					
 					deletefile(tmp);
 					listtupian.remove(i);
 					setspinnershanchu();
@@ -379,14 +396,14 @@ public class CameraActivity extends Activity {
 			public void run() {
 				// TODO Auto-generated method stub
 				if (auto) { // change to refresh if it is auto mod
-					boolean connect = getconnect();
+					/*boolean connect = getconnect();
 					if (connect == false) {
 						textGSMdetails.setText(getResources().getString(
 								R.string.connecting));
 					} else {
 						textGSMdetails.setText(getResources().getString(
 								R.string.connected));
-					}
+					}*/
 
 					String strLocation = gpsprovider.getLocation();
 					textGPSLocate.setText(strLocation);
@@ -420,5 +437,52 @@ public class CameraActivity extends Activity {
 			return false;
 
 		}
+		
+		private void getsignalstrength()
+		{
+			MyListener   = new MyPhoneStateListener();
+	        Tel       = ( TelephonyManager )getSystemService(Context.TELEPHONY_SERVICE);
+	      Tel.listen(MyListener ,PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+		}
+		
+		private class MyPhoneStateListener extends PhoneStateListener
+	    {
+	     
+	      @Override
+	      public void onSignalStrengthsChanged(SignalStrength signalStrength)
+	      {
+	         super.onSignalStrengthsChanged(signalStrength);
+	         /*Toast.makeText(getApplicationContext(), "Go to Firstdroid!!! GSM Cinr = "
+	            + String.valueOf(signalStrength.getGsmSignalStrength()), Toast.LENGTH_SHORT).show();*/
+	         
+	         int signel = signalStrength.getGsmSignalStrength();
+	         int level; 
+	         /*if (signel <= 2 || signel == 99) level = SIGNAL_STRENGTH_NONE_OR_UNKNOWN; 
+	         else if (signel >= 12) level = SIGNAL_STRENGTH_GREAT;
+	         else if (signel >= 8)  level = SIGNAL_STRENGTH_GOOD; 
+	         else if (signel >= 5)  level = SIGNAL_STRENGTH_MODERATE;  
+	                 else level = SIGNAL_STRENGTH_POOR;*/
+	         
+	         if (signel <= 2 || signel == 99) {
+	        	 signalstrength.setBackground(getResources().getDrawable(
+							R.drawable.batt0));
+				} else if (5 > signel) {
+					signalstrength.setBackground(getResources().getDrawable(
+							R.drawable.batt1));
+				} else if (8 > signel) {
+					signalstrength.setBackground(getResources().getDrawable(
+							R.drawable.batt2));
+				} else if (12 > signel) {
+					signalstrength.setBackground(getResources().getDrawable(
+							R.drawable.batt3));
+				} else  {
+					signalstrength.setBackground(getResources().getDrawable(
+							R.drawable.batt4));
+				}
+
+				
+	      }
+
+	    };
 
 }

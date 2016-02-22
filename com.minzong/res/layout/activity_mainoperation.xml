@@ -61,7 +61,7 @@
                 style="@style/TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/GSM" />
+                android:text="@string/lte" />
 
             <TextView
                 android:id="@+id/textGSMdetails"
@@ -69,9 +69,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/textGSM"
-                android:text="@string/GSM" />
+                 />
+            
+            <ImageView
+                android:id="@+id/imageviewsignalstrength"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/textGSM"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/textdianchi"
                 style="@style/TextView"
                 android:layout_width="wrap_content"
@@ -85,7 +93,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_toRightOf="@+id/textdianchi"
-                android:layout_marginTop="5dp" />
+                android:layout_marginTop="5dp" /> -->
         </RelativeLayout>
     </RelativeLayout>
 
@@ -134,34 +142,42 @@
         android:padding="5dp" >
 
         <TextView
+            android:id="@+id/textID"
+            style="@style/TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textSize="25dp" />
+        
+        <ImageView
+                android:id="@+id/imageviewdianchi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@+id/textID"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp" />
+        
+<!--         <TextView
             android:id="@+id/texttime"
             style="@style/TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="50dp"
             android:text="@string/time"
-            android:textSize="25dp" />
+            android:textSize="25dp" /> -->
 
         <TextView
             android:id="@+id/texttimedetail"
             style="@style/TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/texttime"
+            android:layout_below="@+id/textID"
             android:layout_marginRight="2dp"
             android:layout_marginTop="20dp"
             android:text=""
             android:textSize="25dp" />
 
-        <TextView
-            android:id="@+id/textID"
-            style="@style/TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/texttime"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/texttimedetail"
-            android:textSize="25dp" />
+        
     </RelativeLayout>
 
     <RelativeLayout
@@ -226,7 +242,7 @@
                 android:layout_below="@+id/spinnermoxing"
                 android:layout_toRightOf="@+id/textshangdi"
                 android:background="@android:drawable/edit_text"
-                android:editable="false"
+                
                 android:paddingBottom="1dip"
                 android:singleLine="true" />
 
@@ -248,7 +264,7 @@
                 android:layout_below="@+id/editshangdi"
                 android:layout_toRightOf="@+id/textxiadi"
                 android:background="@android:drawable/edit_text"
-                android:editable="false"
+                
                 android:paddingBottom="1dip"
                 android:singleLine="true" />
 
@@ -270,7 +286,7 @@
                 android:layout_below="@+id/editxiadi"
                 android:layout_toRightOf="@+id/textshui"
                 android:background="@android:drawable/edit_text"
-                android:editable="false"
+                
                 android:paddingBottom="1dip"
                 android:singleLine="true" />
         </RelativeLayout>
@@ -504,7 +520,7 @@
                     android:singleLine="true" />
 
                 <TextView
-                    android:id="@+id/textandanppm"
+                    android:id="@+id/textandanMgl"
                     style="@style/TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -512,7 +528,7 @@
                     android:layout_alignTop="@+id/editandan"
                     android:layout_toRightOf="@+id/editandan"
                     android:gravity="center"
-                    android:text="@string/ppm" />
+                    android:text="@string/Mgl" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -648,16 +664,16 @@
                     android:gravity="center"
                     android:text="@string/quyangcishu" />
 
-                <EditText
-                    android:id="@+id/editcishu"
-                    style="@style/EditText"
-                    android:layout_width="120dp"
+                <TextView
+                    android:id="@+id/textcishutime"
+                    style="@style/TextView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignLeft="@+id/textcishu"
                     android:layout_below="@+id/textcishu"
-                    android:background="@android:drawable/edit_text"
-                    android:paddingBottom="1dip"
-                    android:singleLine="true" />
+                    android:gravity="center"
+                    android:text="@string/zero" />
 
                 <TextView
                     android:id="@+id/textcodtongliang"

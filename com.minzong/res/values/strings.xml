@@ -35,8 +35,8 @@
     <string name="Mgl">mg/L</string>
     <string name="temperature">℃</string>
     <string name="ppm">Ppm</string>
-    <string name="m">M</string>
-    <string name="ms">M/s</string>
+    <string name="m">m</string>
+    <string name="ms">m/s</string>
     <string name="liusu">流速</string>
     <string name="lingdian">零点</string>
     
@@ -65,6 +65,9 @@
     <string name="shuiwen">水温</string>
     <string name="dizhi">地址</string>
     
+    <string name="zhijing">直径</string>
+    <string name="changdu">长度</string>
+    
     
     <string name="shoudongceliang">手动测量</string>
     <string name="minute">分钟</string>
@@ -77,7 +80,7 @@
     <string  name="connected">连接成功</string>
     <string  name="shuaxin">刷新</string>
     <string  name="GPS">GPS</string>
-    <string  name="GSM">GSM</string>
+    <string  name="lte">4G LTE</string>
     <string  name="dianchi">电量</string>
     <string  name="latitude">纬度</string>
     <string  name="longtitude">经度</string>
@@ -95,8 +98,12 @@
     <string  name="juxing">矩形</string>
     <string  name="yuanxing">圆形</string>
     
+    <string  name="zero">0</string>
+    
     <string  name="shangdi">上底</string>
     <string  name="xiadi">下底</string>
+    
+    
     
 
 </resources>
