@@ -58,6 +58,17 @@ public class MainActivity extends Activity {
 		editMima.setText("000001");
 		sharedPreferenceDatabase = new SharedPreferencesDatabase();
 		context = this;
+		
+		getlatestsettings();
+		setspinnermodexuanze();
+		setButtonLogin();
+		setspinnerceliangfangshi();
+		setcheckboxmima();
+		SysApplication.getInstance().addActivity(this); 
+	}
+	
+	void getlatestsettings()
+	{
 		try {
 			sharedPreferenceDatabase.DefaultSharedPreferences((Context) this);
 			listuser = sharedPreferenceDatabase.GetuserArray((Context) this);
@@ -71,11 +82,6 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		setspinnermodexuanze();
-		setButtonLogin();
-		setspinnerceliangfangshi();
-		setcheckboxmima();
-		SysApplication.getInstance().addActivity(this); 
 	}
 
 	public void setButtonLogin() {
@@ -197,6 +203,15 @@ public class MainActivity extends Activity {
 						// Another interface callback
 					}
 				});
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		getlatestsettings();
+		setspinnermodexuanze();
+		setspinnerceliangfangshi();
+		super.onResume();
 	}
 
 	public void setspinnerceliangfangshi() {
