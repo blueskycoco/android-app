@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	float[] avg_nh4n=new float[20];
 	double[] avg2_cod=new double[20];
 	byte[] response = new byte[28];
+	float[] wight=new float[10];
 	static boolean header_got=false;
 	String jpg2_str=null;
 	String jpg1_str=null;
@@ -299,24 +300,23 @@ public class MainActivity extends Activity {
 		//watercap.sendNet();
 		//new Thread(runnable).start();  
 	}
-	void set_param_upload(String cod,String nho3,String nhn4,String avg_cod1,String avg_nho3,String avg_nhn4,String speed,String deep)
+	String set_model_param(String cod,String nho3,String nhn4,String avg_cod1,String avg_nho3,String avg_nhn4,String speed,String deep
+						,String modeltype,String waterwidth,String downarea,String cnt,String mode_string)
 	{
 		
 		
 		JSONObject mode_json1 = new JSONObject();
 		JSONObject mode_json = new JSONObject();
-		//JSONObject mode_json3 = new JSONObject();
-		//JSONObject mode_json = new JSONObject();
 		try {
-			mode_json1.put("modeltype", "1");
-			mode_json1.put("waterwidth", "1");
-			mode_json1.put("downarea", "5");
+			mode_json1.put("modeltype", modeltype);
+			mode_json1.put("waterwidth", waterwidth);
+			mode_json1.put("downarea", downarea);
 			mode_json1.put("waterdeep", deep);
 			mode_json1.put("flowspeed", speed);
 			mode_json1.put("fluxcod", avg_cod1);
 			mode_json1.put("fluxnirate", avg_nho3);
 			mode_json1.put("fluxammonia", avg_nhn4);
-			mode_json.put("model"+String.valueOf(cnt+1),mode_json1);
+			mode_json.put("model"+cnt,mode_json1);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -326,29 +326,71 @@ public class MainActivity extends Activity {
 		else
 			mode_string+=","+mode_json.toString();
 		Log.i("mode_string",mode_string);
-		//watercap.set_model("3", "{\"model1\":{\"modeltype\":1,\"waterwidth\":5,\"downarea\":5,\"waterdeep\":3,\"flowspeed\":3,\"fluxcod\":5,\"fluxnirate\":6,\"fluxammonia\":8},\"model2\":{\"modeltype\":2,\"waterwidth\":3,\"downarea\":4,\"waterdeep\":5,\"flowspeed\":8,\"fluxcod\":12,\"fluxnirate\":16,\"fluxammonia\":18},\"model3\":{\"modeltype\":3,\"waterwidth\":5,\"downarea\":6,\"waterdeep\":8,\"flowspeed\":9,\"fluxcod\":22,\"fluxnirate\":26,\"fluxammonia\":28}}");
-		
-	}	
-	void send_net_work(String power,String distance,String speed,String deep,String cod,String nho3,String nhn4)
+		return mode_string;
+	}
+	String set_img_param(String img,String cnt,String img_string)
 	{
-		JSONObject img_json1 = new JSONObject();
-		JSONObject img_json2 = new JSONObject();
-		JSONObject img_json3 = new JSONObject();
 		JSONObject img_json = new JSONObject();
+		JSONObject img_json1 = new JSONObject();
 		try {
 			img_json1.put("imgext", ".jpg");
-			img_json1.put("imgcon", jpg1_str);
-			img_json.put("img1", img_json1);
-			img_json2.put("imgcon", jpg2_str);
-			img_json2.put("imgext", ".jpg");
-			img_json.put("img2", img_json2);
-			img_json3.put("imgcon", jpg3_str);
-			img_json3.put("imgext", ".jpg");
-			img_json.put("img3", img_json3);
+			img_json1.put("imgcon", img);
+			img_json.put("img"+cnt, img_json1);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(img_string==null)
+			img_string=img_json.toString();
+		else
+			img_string+=","+img_json.toString();
+		//Log.i("img_string",img_string);
+		return img_string;
+	}
+	void set_wight(int times)
+	{
+		switch (times)
+		{
+			case 1:
+				wight[0]=(float) 1.0;
+				break;
+			case 2:
+				wight[0]=(float) 0.5;wight[1]=(float) 0.5;
+				break;
+			case 3:
+				wight[0]=(float) 0.28;wight[1]=(float) 0.44;wight[2]=(float) 0.28;
+				break;	
+			case 4:
+				wight[0]=(float) 0.19;wight[1]=(float) 0.31;wight[2]=(float) 0.31;wight[3]=(float) 0.19;
+				break;
+			case 5:
+				wight[0]=(float) 0.14;wight[1]=(float) 0.24;wight[2]=(float) 0.24;wight[3]=(float) 0.24;wight[4]=(float)0.14;
+				break;
+			case 6:
+				wight[0]=(float) 0.14;wight[1]=(float) 0.18;wight[2]=(float) 0.18;wight[3]=(float) 0.18;wight[4]=(float)0.18;wight[5]=(float)0.14;
+				break;
+			case 7:
+				wight[0]=(float) 0.125;wight[1]=(float) 0.15;wight[2]=(float) 0.15;wight[3]=(float) 0.15;wight[4]=(float)0.15;wight[5]=(float)0.15;wight[6]=(float)0.125;
+				break;
+			case 8:
+				wight[0]=(float) 0.055;wight[1]=(float) 0.145;wight[2]=(float) 0.15;wight[3]=(float) 0.15;wight[4]=(float)0.15;wight[5]=(float)0.15;wight[6]=(float)0.145;
+				wight[7]=(float)0x055;
+				break;
+			case 9:
+				wight[0]=(float) 0.09;wight[1]=(float) 0.11;wight[2]=(float) 0.12;wight[3]=(float) 0.12;wight[4]=(float)0.12;wight[5]=(float)0.12;wight[6]=(float)0.12;				
+				wight[7]=(float)0.11;wight[8]=(float)0.09;
+				break;
+			case 10:
+				wight[0]=(float) 0.07;wight[1]=(float) 0.10;wight[2]=(float) 0.11;wight[3]=(float) 0.11;wight[4]=(float)0.11;wight[5]=(float)0.11;wight[6]=(float)0.11;				
+				wight[7]=(float)0.11;wight[8]=(float)0.01;wight[9]=(float)0.07;
+				break;
+		}
+	}
+	void send_net_work(String power,String distance,String speed,String deep,String cod,String nho3,String nhn4)
+	{
+		String img=set_img_param(jpg1_str,"1",null);
+		img=set_img_param(jpg2_str,"2",img);
+		//img=set_img_param(jpg3_str,"3",img);
 		watercap.set_did("1000");		
 		watercap.set_address("天津海河口");
 		watercap.set_jingdu("120.325259");
@@ -363,9 +405,95 @@ public class MainActivity extends Activity {
 		watercap.set_ammoniavalue(nhn4);
 		watercap.set_flowspeed(speed);
 		watercap.set_waterdeep(deep);
-		watercap.set_img("3", img_json.toString());
+		watercap.set_img("2", img);
 		watercap.set_model(String.valueOf(cnt), mode_string);
 		new Thread(runnable).start();  		
+	}
+	void count_juxing_tl(int times,int type)
+	{
+		float re=0;
+		if(type==0)
+		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times];
+		else if(type==1)
+		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times];
+		else
+		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times];
+		for(int i=0;i<times+1;i++)
+		{
+			if(type==0)
+				re+=avg_cod[i];
+			else if(type==1)
+				re+=avg_no3n[i];
+			else
+				re+=avg_nh4n[i];
+		}
+		if(type==0)
+			avg_cod[cnt]=re/(times+1);
+		else if(type==1)
+			avg_no3n[cnt]=re/(times+1);
+		else
+			avg_nh4n[cnt]=re/(times+1);
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[cnt]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[cnt]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
+	}
+	void count_tixing_tl(float up,float down,int times,int type)
+	{
+		float re=0;
+		int i=0;
+		set_wight(times+1);
+		for(i=0;i<times;i++)
+		{
+			if(type==0)
+			re+=cod[times]*wight[i];
+			else if(type==1)
+			re+=no3n[times]*wight[i];
+			else
+			re+=nh4n[times]*wight[i];
+		}
+		if(type==0)
+			avg_cod[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+		else if(type==1)
+			avg_no3n[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+		else
+			avg_nh4n[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[cnt]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[cnt]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
+	}
+	void count_yuanxing_tl(float r,int times,int type)
+	{
+		avg2_cod[cnt] = Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]);
+		float re=0;
+		int i=0;
+		set_wight(times+1);
+		for(i=0;i<times;i++)
+		{
+			if(type==0)
+			re+=cod[times]*wight[i];
+			else if(type==1)
+			re+=no3n[times]*wight[i];
+			else
+			re+=nh4n[times]*wight[i];
+		}
+		if(type==0)
+			avg_cod[cnt]=(float) (re*Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]));
+		else if(type==1)
+			avg_no3n[cnt]=(float) (re*Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]));
+		else
+			avg_nh4n[cnt]=(float) (re*Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]));
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[cnt]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[cnt]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
 	}
 	Handler handler = new Handler(){  
 	    @Override  
@@ -460,7 +588,7 @@ public class MainActivity extends Activity {
 								Log.i("Speed",String.format("%6.3f",byte2float(response,16)));
 								Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
 								Log.i("Power",String.format("%6.3f",byte2float(response,24)));
-								if(cnt<10)
+								if(cnt<5)
 								{
 									cod[cnt]=byte2float(response,0);
 									no3n[cnt]=byte2float(response,4);
@@ -470,6 +598,7 @@ public class MainActivity extends Activity {
 									distance[cnt]=byte2float(response,20);
 									power[cnt]=byte2float(response,24);
 									//JuXing
+									/*
 									float r=1;
 									float tmp_cod=0,tmp_no3n=0,tmp_nh4n=0;
 									avg_cod[cnt]=cod[cnt]*speed[cnt]*deep[cnt]*distance[cnt];								
@@ -488,7 +617,18 @@ public class MainActivity extends Activity {
 									Log.i("avg_no3n",String.format("%6.3f",avg_no3n[cnt]));
 									Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
 									avg2_cod[cnt] = Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]);
-									set_param_upload(String.format("%6.3f",cod[cnt]),String.format("%6.3f",no3n[cnt]),String.format("%6.3f",nh4n[cnt]),String.format("%6.3f",avg_cod[cnt]),String.format("%6.3f",avg_no3n[cnt]),String.format("%6.3f",avg_nh4n[cnt]),String.format("%6.3f",speed[cnt]),String.format("%6.3f",deep[cnt]));
+									*/
+									//count_juxing_tl(cnt,0);
+									//count_juxing_tl(cnt,1);
+									//count_juxing_tl(cnt,2);
+									//count_tixing_tl(3,2,cnt,0);
+									//count_tixing_tl(3,2,cnt,1);
+									//count_tixing_tl(3,2,cnt,2);
+									count_yuanxing_tl(3,cnt,0);
+									count_yuanxing_tl(3,cnt,1);
+									count_yuanxing_tl(3,cnt,2);
+									mode_string = set_model_param(String.format("%6.3f",cod[cnt]),String.format("%6.3f",no3n[cnt]),String.format("%6.3f",nh4n[cnt]),String.format("%6.3f",avg_cod[cnt]),String.format("%6.3f",avg_no3n[cnt]),String.format("%6.3f",avg_nh4n[cnt]),String.format("%6.3f",speed[cnt]),String.format("%6.3f",deep[cnt]),
+																	"1",String.format("%6.3f",distance[cnt]),"0",String.valueOf(cnt+1),mode_string);
 									Log.i("CNT",String.valueOf(cnt));
 									cnt++;
 									try {
