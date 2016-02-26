@@ -413,11 +413,11 @@ public class MainActivity extends Activity {
 	{
 		float re=0;
 		if(type==0)
-		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times];
+		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times]*1000;
 		else if(type==1)
-		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times];
+		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times]*1000;
 		else
-		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times];
+		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times]*1000;
 		for(int i=0;i<times+1;i++)
 		{
 			if(type==0)
@@ -445,21 +445,21 @@ public class MainActivity extends Activity {
 		float re=0;
 		int i=0;
 		set_wight(times+1);
-		for(i=0;i<times;i++)
+		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i];
+			re+=cod[times]*wight[i]*1000;
 			else if(type==1)
-			re+=no3n[times]*wight[i];
+			re+=no3n[times]*wight[i]*1000;
 			else
-			re+=nh4n[times]*wight[i];
+			re+=nh4n[times]*wight[i]*1000;
 		}
 		if(type==0)
-			avg_cod[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+			avg_cod[cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		else if(type==1)
-			avg_no3n[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+			avg_no3n[cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		else
-			avg_nh4n[cnt]=(re*speed[times]*distance[times]*(up+down))/2;
+			avg_nh4n[cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		if(type==0)
 		Log.i("avg_cod",String.format("%6.3f",avg_cod[cnt]));
 		else if(type==1)
@@ -467,21 +467,23 @@ public class MainActivity extends Activity {
 		else
 		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
 	}
-	void count_yuanxing_tl(float r,int times,int type)
+	float count_yuanxing_tl(int times,int type)
 	{
-		avg2_cod[cnt] = Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]);
+		//avg2_cod[cnt] = Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]);
 		float re=0;
+		float r=0;
 		int i=0;
 		set_wight(times+1);
-		for(i=0;i<times;i++)
+		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i];
+			re+=cod[times]*wight[i]*1000;
 			else if(type==1)
-			re+=no3n[times]*wight[i];
+			re+=no3n[times]*wight[i]*1000;
 			else
-			re+=nh4n[times]*wight[i];
+			re+=nh4n[times]*wight[i]*1000;
 		}
+		r = (distance[cnt]*distance[cnt])/(8*deep[cnt])+deep[cnt]/2;
 		if(type==0)
 			avg_cod[cnt]=(float) (re*Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]));
 		else if(type==1)
@@ -494,6 +496,7 @@ public class MainActivity extends Activity {
 		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[cnt]));
 		else
 		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[cnt]));
+		return r;
 	}
 	Handler handler = new Handler(){  
 	    @Override  
@@ -621,14 +624,16 @@ public class MainActivity extends Activity {
 									//count_juxing_tl(cnt,0);
 									//count_juxing_tl(cnt,1);
 									//count_juxing_tl(cnt,2);
-									//count_tixing_tl(3,2,cnt,0);
-									//count_tixing_tl(3,2,cnt,1);
-									//count_tixing_tl(3,2,cnt,2);
-									count_yuanxing_tl(3,cnt,0);
-									count_yuanxing_tl(3,cnt,1);
-									count_yuanxing_tl(3,cnt,2);
+									count_tixing_tl(distance[cnt],2,cnt,0);
+									count_tixing_tl(distance[cnt],2,cnt,1);
+									count_tixing_tl(distance[cnt],2,cnt,2);
+									//float r = count_yuanxing_tl(cnt,0);
+									//count_yuanxing_tl(cnt,1);
+									//count_yuanxing_tl(cnt,2);
+									//mode_string = set_model_param(String.format("%6.3f",cod[cnt]),String.format("%6.3f",no3n[cnt]),String.format("%6.3f",nh4n[cnt]),String.format("%6.3f",avg_cod[cnt]),String.format("%6.3f",avg_no3n[cnt]),String.format("%6.3f",avg_nh4n[cnt]),String.format("%6.3f",speed[cnt]),String.format("%6.3f",deep[cnt]),
+									//								"3",String.format("%6.3f",distance[cnt]),String.format("%6.3f",r),String.valueOf(cnt+1),mode_string);
 									mode_string = set_model_param(String.format("%6.3f",cod[cnt]),String.format("%6.3f",no3n[cnt]),String.format("%6.3f",nh4n[cnt]),String.format("%6.3f",avg_cod[cnt]),String.format("%6.3f",avg_no3n[cnt]),String.format("%6.3f",avg_nh4n[cnt]),String.format("%6.3f",speed[cnt]),String.format("%6.3f",deep[cnt]),
-																	"1",String.format("%6.3f",distance[cnt]),"0",String.valueOf(cnt+1),mode_string);
+																			"2",String.format("%6.3f",distance[cnt]),"2",String.valueOf(cnt+1),mode_string);
 									Log.i("CNT",String.valueOf(cnt));
 									cnt++;
 									try {
