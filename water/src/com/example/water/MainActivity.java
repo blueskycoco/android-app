@@ -413,11 +413,11 @@ public class MainActivity extends Activity {
 	{
 		float re=0;
 		if(type==0)
-		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times]*1000;
+		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times];
 		else if(type==1)
-		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times]*1000;
+		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times];
 		else
-		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times]*1000;
+		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times];
 		for(int i=0;i<times+1;i++)
 		{
 			if(type==0)
@@ -448,11 +448,11 @@ public class MainActivity extends Activity {
 		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i]*1000;
+			re+=cod[times]*wight[i];
 			else if(type==1)
-			re+=no3n[times]*wight[i]*1000;
+			re+=no3n[times]*wight[i];
 			else
-			re+=nh4n[times]*wight[i]*1000;
+			re+=nh4n[times]*wight[i];
 		}
 		if(type==0)
 			avg_cod[cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
@@ -477,11 +477,11 @@ public class MainActivity extends Activity {
 		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i]*1000;
+			re+=cod[times]*wight[i];
 			else if(type==1)
-			re+=no3n[times]*wight[i]*1000;
+			re+=no3n[times]*wight[i];
 			else
-			re+=nh4n[times]*wight[i]*1000;
+			re+=nh4n[times]*wight[i];
 		}
 		r = (distance[cnt]*distance[cnt])/(8*deep[cnt])+deep[cnt]/2;
 		if(type==0)
