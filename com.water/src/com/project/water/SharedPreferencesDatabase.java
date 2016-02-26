@@ -303,6 +303,88 @@ class SharedPreferencesDatabase {
 
 		return rtn;
 	}
+	
+	public Boolean Setshuju(Context context,
+			String tmp) throws JSONException {
+		Boolean rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONArray jsonmodexuanzeArray = new JSONArray();
+		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+
+		
+			jsonmodexuanzeArray.put(tmp);
+		
+
+		jsonMainValue.put("shujushuzu", jsonmodexuanzeArray);
+
+		editor.putString(JsonMain, jsonMainValue.toString());
+
+		rtn = editor.commit();
+
+		return rtn;
+	}
+	
+	public int GetshujuCount(Context context) throws JSONException {
+		Boolean rtnvalue;
+		int rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONArray jsonmodexuanzeArray = new JSONArray();
+		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+
+		rtn = jsonmodexuanzeArray.length();
+
+		rtnvalue = editor.commit();
+
+		return rtn;
+	}
+	
+	public String Getshuju(Context context, int id) throws JSONException {
+		Boolean rtnvalue;
+		String rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONArray jsonmodexuanzeArray = new JSONArray();
+		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+
+		rtn = jsonmodexuanzeArray.getString(id);
+
+		jsonMainValue.put("shujushuzu", jsonmodexuanzeArray);
+
+		editor.putString(JsonMain, jsonMainValue.toString());
+
+		rtnvalue = editor.commit();
+
+		return rtn;
+	}
+	
+	public Boolean Deleteshuju(Context context, int id) throws JSONException {
+		Boolean rtnvalue;
+
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONArray jsonmodexuanzeArray = new JSONArray();
+		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+
+		jsonmodexuanzeArray.remove(id);
+
+		rtnvalue = editor.commit();
+
+		return rtnvalue;
+	}
 
 	public Boolean SetjiangeArray(Context context,
 			List<Map<String, String>> listceliangfangshi) throws JSONException {
@@ -352,4 +434,6 @@ class SharedPreferencesDatabase {
 
 		return rtn;
 	}
+	
+	
 }

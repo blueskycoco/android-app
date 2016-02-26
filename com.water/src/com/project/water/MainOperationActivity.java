@@ -123,10 +123,18 @@ public class MainOperationActivity extends Activity {
 	EditText editshuiwen;
 	EditText editdizhi;
 	
+	EditText editCODtongliang;
+	EditText editxiaodantongliang;
+	EditText editandantongliang;
+	
 	TextView textcishutime;
 	
-	Button buttonshujushangchuan;
+	
 	Button buttonceliang;
+	Button buttonshujucunchu;
+	Button buttontongliangjisuan;
+	Button buttonshujushangchuan;
+	
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
@@ -170,9 +178,15 @@ public class MainOperationActivity extends Activity {
 		editkuandu = (EditText) findViewById(R.id.editkuandu);
 		editshuiwen = (EditText) findViewById(R.id.editshuiwen);
 		editdizhi = (EditText) findViewById(R.id.editdizhi);
+		editCODtongliang = (EditText) findViewById(R.id.editcodtongliang);
+		editxiaodantongliang = (EditText) findViewById(R.id.editxiaodantongliang);
+		editandantongliang = (EditText) findViewById(R.id.editandantongliang);
 		
-		buttonshujushangchuan = (Button) findViewById(R.id.buttonshujushangchuan);
+		
 		buttonceliang = (Button) findViewById(R.id.buttonshujuceliang);
+		buttonshujucunchu = (Button) findViewById(R.id.buttonshujucunchu);
+		buttontongliangjisuan = (Button) findViewById(R.id.buttontongliangjisuan);
+		buttonshujushangchuan = (Button) findViewById(R.id.buttonshujushangchuan);
 		
 		SharedPreferencesDatabase sharedPreferenceDatabase = new SharedPreferencesDatabase();
 		try {
@@ -208,6 +222,179 @@ public class MainOperationActivity extends Activity {
 		activateLocation();
 		initsignalstrength();
 	}
+	
+	private String getCOD(String input)
+	{
+		if(input!=null)
+		{
+			editCOD.setText(input);
+			return null;
+		}
+		else
+		return editCOD.getText().toString();
+	}
+	
+	private String getliusu(String input)
+	{
+		if(input!=null)
+		{
+			editliusu.setText(input);
+			return null;
+		}
+		else
+		return editliusu.getText().toString();
+	}
+	
+	private String getxiaodan(String input)
+	{
+		if(input!=null)
+		{
+			editxiaodan.setText(input);
+			return null;
+		}
+		else
+		return editxiaodan.getText().toString();
+	}
+	
+	private String getshendu(String input)
+	{
+		if(input!=null)
+		{
+			editshendu.setText(input);
+			return null;
+		}
+		else
+		return editshendu.getText().toString();
+	}
+	
+	private String getandan(String input)
+	{
+		if(input!=null)
+		{
+			editandan.setText(input);
+			return null;
+		}
+		else
+		return editandan.getText().toString();
+	}
+	
+	private String getkuandu(String input)
+	{
+		if(input!=null)
+		{
+			editkuandu.setText(input);
+			return null;
+		}
+		else
+		return editkuandu.getText().toString();
+	}
+	
+	private String getshuiwen(String input)
+	{
+		if(input!=null)
+		{
+			editshuiwen.setText(input);
+			return null;
+		}
+		else
+		return editshuiwen.getText().toString();
+	}
+	
+	private String getdizhi(String input)
+	{
+		if(input!=null)
+		{
+			editdizhi.setText(input);
+			return null;
+		}
+		else
+		return editdizhi.getText().toString();
+	}
+	
+	private String getcishutime(String input)
+	{
+		if(input!=null)
+		{
+			textcishutime.setText(input);
+			return null;
+		}
+		else
+		return textcishutime.getText().toString();
+	}
+	
+	private String getCODtongliang(String input)
+	{
+		if(input!=null)
+		{
+			editCODtongliang.setText(input);
+			return null;
+		}
+		else
+		return editCODtongliang.getText().toString();
+	}
+	
+	private String getxiaodantongliang(String input)
+	{
+		if(input!=null)
+		{
+			editxiaodantongliang.setText(input);
+			return null;
+		}
+		else
+		return editxiaodantongliang.getText().toString();
+	}
+	
+	private String getandantongliang(String input)
+	{
+		if(input!=null)
+		{
+			editandantongliang.setText(input);
+			return null;
+		}
+		else
+		return editandantongliang.getText().toString();
+	}
+	
+	private String getmoxing1(String input)
+	{
+		if(input!=null)
+		{
+			editmoxing1.setText(input);
+			return null;
+		}
+		else
+		return editmoxing1.getText().toString();
+	}
+	
+	private String getmoxing2(String input)
+	{
+		if(input!=null)
+		{
+			editmoxing2.setText(input);
+			return null;
+		}
+		else
+		return editmoxing2.getText().toString();
+	}
+	
+	private String getmoxing3(String input)
+	{
+		if(input!=null)
+		{
+			editmoxing3.setText(input);
+			return null;
+		}
+		else
+		return editmoxing3.getText().toString();
+	}
+	
+	private int getmoxing()
+	{
+		int tmp = 0;
+		tmp = spinnermoxing.getSelectedItemPosition();
+			return tmp;
+		
+	}
 
 	public void setButtonPaizhao() {
 		buttonpaizhao.setOnClickListener(new OnClickListener() {
@@ -240,16 +427,7 @@ public class MainOperationActivity extends Activity {
 		});
 	}
 	
-	public void setButtonshujushangchuan() {
-		buttonshujushangchuan.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				//encodetupian();
-				upload();
-			}
-		});
-	}
+	
 	
 	public void setButtonceliang() {
 		buttonceliang.setOnClickListener(new OnClickListener() {
@@ -258,6 +436,38 @@ public class MainOperationActivity extends Activity {
 			public void onClick(View arg0) {
 				//encodetupian();
 				send_485();
+			}
+		});
+	}
+	
+	public void setbuttonshujucunchu() {
+		buttonshujucunchu.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				//encodetupian();
+			}
+		});
+	}
+	
+	public void setbuttontongliangjisuan() {
+		buttontongliangjisuan.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				//encodetupian();
+			}
+		});
+	}
+	
+	public void setButtonshujushangchuan() {
+		buttonshujushangchuan.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				//encodetupian();
+				upload();
+				SysApplication.getInstance().cameraactivity.deletetupian();
 			}
 		});
 	}
@@ -804,5 +1014,7 @@ public class MainOperationActivity extends Activity {
 
 		}
 	};
+	
+	
 
 }

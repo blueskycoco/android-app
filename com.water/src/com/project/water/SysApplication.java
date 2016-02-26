@@ -17,6 +17,8 @@ public class SysApplication extends Application {
     private static SysApplication instance;   
     //构造方法  
     private SysApplication(){}  
+    
+    public CameraActivity cameraactivity;
     //实例化一次  
     public synchronized static SysApplication getInstance(){   
         if (null == instance) {   

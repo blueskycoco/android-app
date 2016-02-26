@@ -113,6 +113,8 @@ public class CameraActivity extends Activity {
 		getdeviceinfo();
 		setID();
 		getsignalstrength();
+		
+		SysApplication.getInstance().cameraactivity = this;
 	}
 
 	@Override
@@ -276,6 +278,20 @@ public class CameraActivity extends Activity {
 
 			});
 		}
+	    
+	    public void deletetupian()
+	    {
+	    	for(int i = spinnertupian.getCount()-1;i>=0;i--)
+	    	{
+		
+			String tmp = (String)listtupian.get(i);
+			if(tmp==null)
+				return;
+			
+			deletefile(tmp);
+			listtupian.remove(i);
+	    	}
+	    }
 	    public void setButtonfanhui() {
 	    	buttonfanhui.setOnClickListener(new OnClickListener() {
 
