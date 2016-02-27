@@ -142,7 +142,222 @@ public class MainOperationActivity extends Activity {
 	static boolean header_got=false;
 	static int read_len=0,to_read=0;
 	byte[] cmd={0x24,0x32,(byte)0xff,0x23,0x0a};
-
+	int cnt=0,bak_cnt=0;
+	String mode_string=null;
+	String img_string=null;
+	String temparture=null;
+	float[] wight=new float[10];
+	float[] avg_cod=new float[1024];
+	float[] avg_no3n=new float[1024];
+	float[] avg_nh4n=new float[1024];
+	float cod_zero = 0;
+	float no3n_zero =0 ;
+	float cod_a=0,cod_b=0;
+	float no3n_c=0,no3n_d=0;
+	float cur_cod=0,cur_no3n=0,cur_nh4n=0,cur_deep=0,cur_speed=0,cur_distance=0,cur_power=0;
+	float[] xiadi=new float[1024],cod=new float[1024],no3n=new float[1024],nh4n=new float[1024],deep=new float[1024],speed=new float[1024],distance=new float[1024],power=new float[1024];
+	String set_model_param(
+			String cod,String nho3,String nhn4,
+			String avg_cod1,String avg_nho3,String avg_nhn4,
+			String speed,String deep,String modeltype,
+			String waterwidth,String downarea,String cnt,String mode_string
+			)
+	{
+		JSONObject mode_json1 = new JSONObject();
+		JSONObject mode_json = new JSONObject();
+		try {
+			mode_json1.put("modeltype", modeltype);
+			mode_json1.put("waterwidth", waterwidth);
+			mode_json1.put("downarea", downarea);
+			mode_json1.put("waterdeep", deep);
+			mode_json1.put("flowspeed", speed);
+			mode_json1.put("fluxcod", avg_cod1);
+			mode_json1.put("fluxnirate", avg_nho3);
+			mode_json1.put("fluxammonia", avg_nhn4);
+			mode_json.put("model"+cnt,mode_json1);
+		} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		//e.printStackTrace();
+			Log.i("ERROR", "insert model_param failed");
+		}
+		if(mode_string==null)
+			mode_string=mode_json.toString();
+		else
+			mode_string+=","+mode_json.toString();
+		Log.i("mode_string",mode_string);
+		return mode_string;
+	}
+	String set_img_param(String img,String cnt,String img_string)
+	{
+		JSONObject img_json = new JSONObject();
+		JSONObject img_json1 = new JSONObject();
+		try {
+			img_json1.put("imgext", ".jpg");
+			img_json1.put("imgcon", img);
+			img_json.put("img"+cnt, img_json1);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			Log.i("ERROR", "insert img_param failed");
+		}
+		if(img_string==null)
+			img_string=img_json.toString();
+		else
+			img_string+=","+img_json.toString();
+		//Log.i("img_string",img_string);
+		return img_string;
+	}
+	void set_wight(int times)
+	{
+		switch (times)
+		{
+			case 1:
+				wight[0]=(float) 1.0;
+				break;
+			case 2:
+				wight[0]=(float) 0.5;wight[1]=(float) 0.5;
+				break;
+			case 3:
+				wight[0]=(float) 0.28;wight[1]=(float) 0.44;wight[2]=(float) 0.28;
+				break;	
+			case 4:
+				wight[0]=(float) 0.19;wight[1]=(float) 0.31;wight[2]=(float) 0.31;wight[3]=(float) 0.19;
+				break;
+			case 5:
+				wight[0]=(float) 0.14;wight[1]=(float) 0.24;wight[2]=(float) 0.24;wight[3]=(float) 0.24;wight[4]=(float)0.14;
+				break;
+			case 6:
+				wight[0]=(float) 0.14;wight[1]=(float) 0.18;wight[2]=(float) 0.18;wight[3]=(float) 0.18;wight[4]=(float)0.18;wight[5]=(float)0.14;
+				break;
+			case 7:
+				wight[0]=(float) 0.125;wight[1]=(float) 0.15;wight[2]=(float) 0.15;wight[3]=(float) 0.15;wight[4]=(float)0.15;wight[5]=(float)0.15;wight[6]=(float)0.125;
+				break;
+			case 8:
+				wight[0]=(float) 0.055;wight[1]=(float) 0.145;wight[2]=(float) 0.15;wight[3]=(float) 0.15;wight[4]=(float)0.15;wight[5]=(float)0.15;wight[6]=(float)0.145;
+				wight[7]=(float)0x055;
+				break;
+			case 9:
+				wight[0]=(float) 0.09;wight[1]=(float) 0.11;wight[2]=(float) 0.12;wight[3]=(float) 0.12;wight[4]=(float)0.12;wight[5]=(float)0.12;wight[6]=(float)0.12;				
+				wight[7]=(float)0.11;wight[8]=(float)0.09;
+				break;
+			case 10:
+				wight[0]=(float) 0.07;wight[1]=(float) 0.10;wight[2]=(float) 0.11;wight[3]=(float) 0.11;wight[4]=(float)0.11;wight[5]=(float)0.11;wight[6]=(float)0.11;				
+				wight[7]=(float)0.11;wight[8]=(float)0.01;wight[9]=(float)0.07;
+				break;
+		}
+	}
+	void send_net_work(String power,String distance,String speed,String deep,String cod,String nho3,String nhn4)
+	{
+		//String img=set_img_param(jpg1_str,"1",null);
+		//img=set_img_param(jpg2_str,"2",img);
+		//img=set_img_param(jpg3_str,"3",img);
+		watercap.set_did("1000");		
+		watercap.set_address("天津海河口");
+		watercap.set_jingdu("120.325259");
+		watercap.set_weidu("37.330890");
+		watercap.set_batterypower(power);
+		watercap.set_watertemper("23");
+		watercap.set_widther(distance);
+		watercap.set_uptime("1451976178");
+		watercap.set_remark("备注");
+		watercap.set_cod(cod);
+		watercap.set_nitratevalue(nho3);
+		watercap.set_ammoniavalue(nhn4);
+		watercap.set_flowspeed(speed);
+		watercap.set_waterdeep(deep);
+		//watercap.set_img("2", img);
+		//watercap.set_model(String.valueOf(cnt), mode_string);
+		new Thread(runnable).start();  		
+	}
+	void count_juxing_tl(int times,int type)
+	{
+		float re=0;
+		if(type==0)
+		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times];
+		else if(type==1)
+		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times];
+		else
+		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times];
+		for(int i=0;i<times+1;i++)
+		{
+			if(type==0)
+				re+=avg_cod[i];
+			else if(type==1)
+				re+=avg_no3n[i];
+			else
+				re+=avg_nh4n[i];
+		}
+		if(type==0)
+			avg_cod[times]=re/(times+1);
+		else if(type==1)
+			avg_no3n[times]=re/(times+1);
+		else
+			avg_nh4n[times]=re/(times+1);
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+	}
+	void count_tixing_tl(float up,float down,int times,int type)
+	{
+		float re=0;
+		int i=0;
+		set_wight(times+1);
+		for(i=0;i<times+1;i++)
+		{
+			if(type==0)
+			re+=cod[times]*wight[i];
+			else if(type==1)
+			re+=no3n[times]*wight[i];
+			else
+			re+=nh4n[times]*wight[i];
+		}
+		if(type==0)
+			avg_cod[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+		else if(type==1)
+			avg_no3n[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+		else
+			avg_nh4n[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+	}
+	float count_yuanxing_tl(int times,int type)
+	{
+		//avg2_cod[cnt] = Math.asin(distance[cnt]/(2*r))*r*r-0.5f*distance[cnt]*(r-deep[cnt]);
+		float re=0;
+		float r=0;
+		int i=0;
+		set_wight(times+1);
+		for(i=0;i<times+1;i++)
+		{
+			if(type==0)
+			re+=cod[times]*wight[i];
+			else if(type==1)
+			re+=no3n[times]*wight[i];
+			else
+			re+=nh4n[times]*wight[i];
+		}
+		r = (distance[times]*distance[times])/(8*deep[times])+deep[times]/2;
+		if(type==0)
+			avg_cod[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+		else if(type==1)
+			avg_no3n[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+		else
+			avg_nh4n[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+		if(type==0)
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		else if(type==1)
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		else
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+		return r;
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -187,7 +402,11 @@ public class MainOperationActivity extends Activity {
 		buttonshujucunchu = (Button) findViewById(R.id.buttonshujucunchu);
 		buttontongliangjisuan = (Button) findViewById(R.id.buttontongliangjisuan);
 		buttonshujushangchuan = (Button) findViewById(R.id.buttonshujushangchuan);
-		
+		for(int i=0;i<1024;i++)
+		{
+			cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
+			avg_cod[i]=0;avg_no3n[i]=0;avg_nh4n[i]=0;
+		}
 		SharedPreferencesDatabase sharedPreferenceDatabase = new SharedPreferencesDatabase();
 		try {
 			sharedPreferenceDatabase.DefaultSharedPreferences((Context) this);
@@ -223,7 +442,7 @@ public class MainOperationActivity extends Activity {
 		initsignalstrength();
 	}
 	
-	private String getCOD(String input)
+	private String opCOD(String input)
 	{
 		if(input!=null)
 		{
@@ -234,7 +453,7 @@ public class MainOperationActivity extends Activity {
 		return editCOD.getText().toString();
 	}
 	
-	private String getliusu(String input)
+	private String opliusu(String input)
 	{
 		if(input!=null)
 		{
@@ -245,7 +464,7 @@ public class MainOperationActivity extends Activity {
 		return editliusu.getText().toString();
 	}
 	
-	private String getxiaodan(String input)
+	private String opxiaodan(String input)
 	{
 		if(input!=null)
 		{
@@ -256,7 +475,7 @@ public class MainOperationActivity extends Activity {
 		return editxiaodan.getText().toString();
 	}
 	
-	private String getshendu(String input)
+	private String opshendu(String input)
 	{
 		if(input!=null)
 		{
@@ -267,7 +486,7 @@ public class MainOperationActivity extends Activity {
 		return editshendu.getText().toString();
 	}
 	
-	private String getandan(String input)
+	private String opandan(String input)
 	{
 		if(input!=null)
 		{
@@ -278,7 +497,7 @@ public class MainOperationActivity extends Activity {
 		return editandan.getText().toString();
 	}
 	
-	private String getkuandu(String input)
+	private String opkuandu(String input)
 	{
 		if(input!=null)
 		{
@@ -289,7 +508,7 @@ public class MainOperationActivity extends Activity {
 		return editkuandu.getText().toString();
 	}
 	
-	private String getshuiwen(String input)
+	private String opshuiwen(String input)
 	{
 		if(input!=null)
 		{
@@ -300,7 +519,7 @@ public class MainOperationActivity extends Activity {
 		return editshuiwen.getText().toString();
 	}
 	
-	private String getdizhi(String input)
+	private String opdizhi(String input)
 	{
 		if(input!=null)
 		{
@@ -311,7 +530,7 @@ public class MainOperationActivity extends Activity {
 		return editdizhi.getText().toString();
 	}
 	
-	private String getcishutime(String input)
+	private String opcishutime(String input)
 	{
 		if(input!=null)
 		{
@@ -322,7 +541,7 @@ public class MainOperationActivity extends Activity {
 		return textcishutime.getText().toString();
 	}
 	
-	private String getCODtongliang(String input)
+	private String opCODtongliang(String input)
 	{
 		if(input!=null)
 		{
@@ -333,7 +552,7 @@ public class MainOperationActivity extends Activity {
 		return editCODtongliang.getText().toString();
 	}
 	
-	private String getxiaodantongliang(String input)
+	private String opxiaodantongliang(String input)
 	{
 		if(input!=null)
 		{
@@ -344,7 +563,7 @@ public class MainOperationActivity extends Activity {
 		return editxiaodantongliang.getText().toString();
 	}
 	
-	private String getandantongliang(String input)
+	private String opandantongliang(String input)
 	{
 		if(input!=null)
 		{
@@ -355,7 +574,7 @@ public class MainOperationActivity extends Activity {
 		return editandantongliang.getText().toString();
 	}
 	
-	private String getmoxing1(String input)
+	private String opmoxing1(String input)
 	{
 		if(input!=null)
 		{
@@ -366,7 +585,7 @@ public class MainOperationActivity extends Activity {
 		return editmoxing1.getText().toString();
 	}
 	
-	private String getmoxing2(String input)
+	private String opmoxing2(String input)
 	{
 		if(input!=null)
 		{
@@ -377,7 +596,7 @@ public class MainOperationActivity extends Activity {
 		return editmoxing2.getText().toString();
 	}
 	
-	private String getmoxing3(String input)
+	private String opmoxing3(String input)
 	{
 		if(input!=null)
 		{
@@ -436,6 +655,8 @@ public class MainOperationActivity extends Activity {
 			public void onClick(View arg0) {
 				//encodetupian();
 				send_485();
+				
+				//add dialog display "cap starting"
 			}
 		});
 	}
@@ -446,6 +667,23 @@ public class MainOperationActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//encodetupian();
+				if(cod[0]!=0||no3n[0]!=0||nh4n[0]!=0||speed[0]!=0||deep[0]!=0||distance[0]!=0)
+				{
+					cod[cnt]=cur_cod;
+					no3n[cnt]=cur_no3n;
+					nh4n[cnt]=cur_nh4n;
+					speed[cnt]=cur_speed;
+					deep[cnt]=cur_deep;
+					distance[cnt]=cur_distance;
+					if(getmoxing()==0)
+					{
+						xiadi[cnt]=Float.parseFloat(opmoxing2(null));
+					}
+					cnt++;
+					opcishutime(String.valueOf(cnt));
+				}
+				else
+					Log.i("ERROR","in store,need click cap first");
 			}
 		});
 	}
@@ -456,6 +694,62 @@ public class MainOperationActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//encodetupian();
+				if(Integer.valueOf(opcishutime(null))>0)
+				{
+					distance[cnt-1]=Float.parseFloat(opkuandu(null));
+					xiadi[cnt-1]=Float.parseFloat(opmoxing2(null));
+					cod[cnt-1]=Float.parseFloat(opCOD(null));
+					nh4n[cnt-1]=Float.parseFloat(opandan(null));
+					no3n[cnt-1]=Float.parseFloat(opxiaodan(null));
+					speed[cnt-1]=Float.parseFloat(opliusu(null));
+					deep[cnt-1]=Float.parseFloat(opshendu(null));
+					Log.i("tl-COD",String.format("%6.3f",cod[cnt-1]));
+					Log.i("tl-NO3-N",String.format("%6.3f",no3n[cnt-1]));
+					Log.i("tl-NH4-N",String.format("%6.3f",nh4n[cnt-1]));
+					Log.i("tl-Deep",String.format("%6.3f",deep[cnt-1]));
+					Log.i("tl-Speed",String.format("%6.3f",speed[cnt-1]));
+					Log.i("tl-Distance",String.format("%6.3f",distance[cnt-1]));
+					Log.i("tl-Power",String.format("%6.3f",power[cnt-1]));
+					for(int i=0;i<cnt;i++)
+					{
+						if(getmoxing()==0)
+						{					
+							count_tixing_tl(distance[i],xiadi[i],i,0);
+							count_tixing_tl(distance[i],xiadi[i],i,1);
+							count_tixing_tl(distance[i],xiadi[i],i,2);
+						}
+						else if(getmoxing()==1)
+						{
+							count_juxing_tl(i,0);
+							count_juxing_tl(i,1);
+							count_juxing_tl(i,2);
+						}
+						else
+						{
+							count_yuanxing_tl(i,0);
+							count_yuanxing_tl(i,1);
+							count_yuanxing_tl(i,2);
+						}
+						mode_string = set_model_param(
+							String.format("%6.6f",cod[i]),String.format("%6.6f",no3n[i]),String.format("%6.6f",nh4n[i]),
+							String.format("%6.6f",avg_cod[i]),String.format("%6.6f",avg_no3n[i]),String.format("%6.6f",avg_nh4n[i]),
+							String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),String.valueOf(getmoxing()+1),
+							String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(i+1),mode_string);
+					}
+					for(int i=0;i<1024;i++)
+					{
+						cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
+					}
+					handler.post(updatetl);
+					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt]));
+					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt]));
+					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt]));
+					bak_cnt=cnt;
+					cnt=0;
+					opcishutime("0");
+				}
+				else
+					Log.i("ERROR","need store data first");
 			}
 		});
 	}
@@ -466,8 +760,13 @@ public class MainOperationActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//encodetupian();
-				upload();
-				SysApplication.getInstance().cameraactivity.deletetupian();
+				if(avg_no3n[0]!=0 || avg_cod[0]!=0 || avg_nh4n[0]!=0)
+				{
+					upload();
+					SysApplication.getInstance().cameraactivity.deletetupian();
+				}
+				else
+					Log.i("ERROR", "in upload ,need call cap,store,calc first");
 			}
 		});
 	}
@@ -799,18 +1098,26 @@ public class MainOperationActivity extends Activity {
 	
 	public void upload()
 	{
+		distance[bak_cnt-1]=Float.parseFloat(opkuandu(null));
+		xiadi[bak_cnt-1]=Float.parseFloat(opmoxing2(null));
+		cod[bak_cnt-1]=Float.parseFloat(opCOD(null));
+		nh4n[bak_cnt-1]=Float.parseFloat(opandan(null));
+		no3n[bak_cnt-1]=Float.parseFloat(opxiaodan(null));
+		speed[bak_cnt-1]=Float.parseFloat(opliusu(null));
+		deep[bak_cnt-1]=Float.parseFloat(opshendu(null));
+		temparture=opshuiwen(null);
 		watercap.set_did("1304");		
-		watercap.set_address("天津海河口");
+		watercap.set_address(opdizhi(null));
 		watercap.set_jingdu("120.325259");
 		watercap.set_weidu("37.330890");
-		watercap.set_batterypower("89");
-		watercap.set_watertemper("50");
-		watercap.set_cod("34");
-		watercap.set_nitratevalue("45");
-		watercap.set_ammoniavalue("60");
-		watercap.set_flowspeed("60");
-		watercap.set_waterdeep("10");
-		watercap.set_widther("8");
+		watercap.set_batterypower(String.format("%6.6f", power[bak_cnt-1]));
+		watercap.set_watertemper(temparture);
+		watercap.set_cod(String.format("%6.6f", cod[bak_cnt-1]));
+		watercap.set_nitratevalue(String.format("%6.6f", no3n[bak_cnt-1]));
+		watercap.set_ammoniavalue(String.format("%6.6f", nh4n[bak_cnt-1]));
+		watercap.set_flowspeed(String.format("%6.6f", speed[bak_cnt-1]));
+		watercap.set_waterdeep(String.format("%6.6f", deep[bak_cnt-1]));
+		watercap.set_widther(String.format("%6.6f", distance[bak_cnt-1]));
 		watercap.set_uptime("1451976178");
 		watercap.set_remark("备注");
 		
@@ -818,66 +1125,31 @@ public class MainOperationActivity extends Activity {
 		listtupian = SysApplication.getInstance().listtupian;
 		if(null!=listtupian)
 		{
-		for(int i=0;i<listtupian.size();i++)
-		{
-			String tupianPath = (String) listtupian.get(i);
-			byte[] buffer = {0};
-			try {
-				buffer = readFile(tupianPath);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			byte[] bufferencodebase = Base64.encode(buffer, Base64.DEFAULT);
-			//listtupianContent.add(bufferencodebase);
-			//writeFile(tupianPath+".base", bufferencodebase);
-			
-			JSONObject img_jsontmp = new JSONObject();
-			try {
-				img_jsontmp.put("imgext", ".jpg");
-			
-			String jpg_str=null;
-			jpg_str=new String(bufferencodebase);
-			img_jsontmp.put("imgcon", jpg_str);
-			img_json.put("img"+String.valueOf(i+1), img_jsontmp);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			for(int i=0;i<listtupian.size();i++)
+			{
+				String tupianPath = (String) listtupian.get(i);
+				byte[] buffer = {0};
+				try {
+					buffer = readFile(tupianPath);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				byte[] bufferencodebase = Base64.encode(buffer, Base64.DEFAULT);				
+				String jpg_str=null;
+				jpg_str=new String(bufferencodebase);
+				img_string = set_img_param(jpg_str,String.valueOf(i+1),img_string);
 		}
 		
-		watercap.set_img(String.valueOf(listtupian.size() ), img_json.toString());
+			watercap.set_img(String.valueOf(listtupian.size() ), img_string);
 		}
-
-		
-        /*
-		String img=new String("{\"img1\":{\"imgcon\":\"");
-		String img1=img+jpg1_str;
-		img=new String("{\",\"imgext\":\".jpg\"},\"img2\":{\"imgcon\":\"");
-		String img2=img1+img+jpg2_str;
-		img=new String("{\",\"imgext\":\".jpg\"},\"img3\":{\"imgcon\":\"");
-		String img3=img2+img+jpg3_str;
-		img=new String("{\",\"imgext\":\".jpg\"}}");
-		String img4=img3+img;
-		Log.i("img4", img4);
-		watercap.set_img("3", img4);
-		*/
-		//watercap.set_img("3", "{\"img1\":{\"imgcon\":\"base164_encode(\"imgurl\")\",\"imgext\":\".jpg\"},\"img2\":{\"imgcon\":\"base164_encode(\"imgurl\")\",\"imgext\":\".jpg\"},\"img3\":{\"imgcon\":\"base164_encode(\"imgurl\")\",\"imgext\":\".jpg\"}}");
-		//watercap.set_img("3","{\"img1\":{\"imgcon\":\"123\",\"imgext\":\".jpg\"},\"img2\":{\"imgcon\":\"456\",\"imgext\":\".jpg\"},\"img3\":{\"imgcon\":\"789\",\"imgext\":\".jpg\"}}");
-
-		watercap.set_model("3", "{\"model1\":{\"modeltype\":1,\"waterwidth\":5,\"downarea\":5,\"waterdeep\":3,\"flowspeed\":3,\"fluxcod\":5,\"fluxnirate\":6,\"fluxammonia\":8},\"model2\":{\"modeltype\":2,\"waterwidth\":3,\"downarea\":4,\"waterdeep\":5,\"flowspeed\":8,\"fluxcod\":12,\"fluxnirate\":16,\"fluxammonia\":18},\"model3\":{\"modeltype\":3,\"waterwidth\":5,\"downarea\":6,\"waterdeep\":8,\"flowspeed\":9,\"fluxcod\":22,\"fluxnirate\":26,\"fluxammonia\":28}}");
-		//watercap.sendNet();
+		watercap.set_model(String.valueOf(bak_cnt+1), mode_string);
 		new Thread(runnable).start();  
 	}
 	
 	Runnable runnable = new Runnable(){  
 	    @Override  
 	    public void run() {  
-	        //Message msg = new Message();  
-	        //Bundle data = new Bundle();  
-	        //data.putString("value","请求结果");  
-	        //msg.setData(data);  
-	        //handler1.sendMessage(msg);
 	        watercap.sendNet();
 	    }
 	};
@@ -917,69 +1189,90 @@ public class MainOperationActivity extends Activity {
 	    }    
 	    return sb.toString().toUpperCase().trim();    
 	}
+	public static float byte2float(byte[] b, int index) {    
+	    int l;                                             
+	    l = b[index + 3];                                  
+	    l &= 0xff;                                         
+	    l |= ((long) b[index + 2] << 8);                   
+	    l &= 0xffff;                                       
+	    l |= ((long) b[index + 1] << 16);                  
+	    l &= 0xffffff;                                     
+	    l |= ((long) b[index + 0] << 24);                  
+	    return Float.intBitsToFloat(l);                    
+	}
 	protected void onDataReceived(final byte[] buffer, final int size) {
-            runOnUiThread(new Runnable() {
-                    public void run() {
-                            //if (EditTextReception != null) {
-                            //	EditTextReception.append(new String(buffer, 0, size));
-                            //}
-                    		String ret=byte2HexStr(buffer,size);
-							//Log.i("485",size + "==>"+ret);
-							if(header_got && to_read>0)
-							{	
-								int cur=read_len-to_read;
-								//Log.i("Response", String.valueOf(response.length));
-								for(int j=0;j<to_read;j++)
-								response[j+cur]=(byte) (buffer[j] & 0xFF);
-								read_len=0;
-								to_read=0;
-								header_got=false;
-								byte[] by={0,0,0,0};
-								for(int i=0;i<4;i++)
-									by[i]=response[12+i];
-								Log.i("Response", byte2HexStr(response,28));
-								codvalue=byte2HexStr(by,4);
-								handler.post(updatevalue);
-							}
-							else
+        runOnUiThread(new Runnable() {
+                public void run() {
+                		String ret=byte2HexStr(buffer,size);
+						Log.i("485",size + "==>"+ret);
+						if(header_got && to_read>0)
+						{	
+							int cur=read_len-to_read;
+							//Log.i("Response", String.valueOf(response.length));
+							for(int j=0;j<to_read;j++)
+							response[j+cur]=(byte) (buffer[j] & 0xFF);
+							read_len=0;
+							to_read=0;
+							header_got=false;
+							Log.i("Response1", byte2HexStr(response,28));
+							Log.i("COD",String.format("%6.3f",byte2float(response,0)));
+							Log.i("NO3-N",String.format("%6.3f",byte2float(response,4)));
+							Log.i("NH4-N",String.format("%6.3f",byte2float(response,8)));
+							Log.i("Deep",String.format("%6.3f",byte2float(response,12)));
+							Log.i("Speed",String.format("%6.3f",byte2float(response,16)));
+							Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
+							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
+							cur_cod=(byte2float(response,0)-cod_zero)*cod_a+cod_b;
+							cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							cur_nh4n=byte2float(response,8);
+							cur_deep=byte2float(response,12);
+							cur_speed=byte2float(response,16);
+							cur_distance=byte2float(response,20);
+							cur_power=byte2float(response,24);
+							Log.i("COD-J",String.format("%6.3f",cur_cod));
+							Log.i("NO3-N-J",String.format("%6.3f",cur_no3n));
+							handler.post(updatevalue);
+							
+						}
+						else
+						{
+							int index=0,i=0;
+							for(i=0;i<size;i++)
 							{
-								int index=0,i=0;
-								for(i=0;i<size;i++)
-								{
-									//Log.i("Response==>",Integer.toHexString(buffer[i]));
-									if((buffer[i]&0xff)==0xF5 && (buffer[i+1]&0xff)==0x31)
-									{								
-										header_got=true;
-										read_len=Integer.valueOf(Integer.toHexString(buffer[i+2]&0xff)).intValue();									
-										index=i+3;
-										break;
-									}
-								}
-								//Log.i("Response", "Size "+String.valueOf(size)+" i "+String.valueOf(i));
-								if(i!=size)
-								{
-									if(read_len>size-3)
-									{
-										for(i=0;i<size;i++)
-											response[i]=(byte) (buffer[i+index]&0xff);
-										to_read=read_len-(size-index);
-										//Log.i("to_read", String.valueOf(to_read));
-										//Log.i("read_len", String.valueOf(read_len));
-									}
-									else
-									{
-										for(i=0;i<read_len;i++)
-											response[i]=(byte) (buffer[i+index]&0xff);
-										read_len=0;
-										to_read=0;
-										header_got=false;
-										//Log.i("Response2", byte2HexStr(response,28));
-									}
+								//Log.i("Response==>",Integer.toHexString(buffer[i]));
+								if((buffer[i]&0xff)==0xF5 && (buffer[i+1]&0xff)==0x31)
+								{								
+									header_got=true;
+									read_len=Integer.valueOf(Integer.toHexString(buffer[i+2]&0xff)).intValue();									
+									index=i+3;
+									break;
 								}
 							}
-                    }
-            });
-    }
+							Log.i("Response", "Size "+String.valueOf(size)+" i "+String.valueOf(i));
+							if(i!=size)
+							{
+								if(read_len>size-3)
+								{
+									for(i=0;i<size;i++)
+										response[i]=(byte) (buffer[i+index]&0xff);
+									to_read=read_len-(size-index);
+									Log.i("to_read", String.valueOf(to_read));
+									Log.i("read_len", String.valueOf(read_len));
+								}
+								else
+								{
+									for(i=0;i<read_len;i++)
+										response[i]=(byte) (buffer[i+index]&0xff);
+									read_len=0;
+									to_read=0;
+									header_got=false;
+									Log.i("Response2", byte2HexStr(response,28));
+								}
+							}
+						}
+                }
+        });
+}
 	public void send_485()
 	{
 		try {
@@ -1010,11 +1303,34 @@ public class MainOperationActivity extends Activity {
 
 		public void run() {
 			// TODO Auto-generated method stub
-			editCOD.setText(codvalue);
-
+			//add dialog display "cap done"
+			opCOD(String.format("%6.6f",cur_cod));
+			opxiaodan(String.format("%6.6f",cur_no3n));
+			opandan(String.format("%6.6f",cur_nh4n));
+			opliusu(String.format("%6.6f",cur_speed));
+			opshendu(String.format("%6.6f",cur_deep));
+			opkuandu(String.format("%6.6f",cur_distance));
+			Log.i("Cap-cod", String.format("%6.6f",cur_cod));
+			Log.i("Cap-no3n", String.format("%6.6f",cur_no3n));
+			Log.i("Cap-nh4n", String.format("%6.6f",cur_nh4n));
+			Log.i("Cap-speed", String.format("%6.6f",cur_speed));
+			Log.i("Cap-deep", String.format("%6.6f",cur_deep));
+			Log.i("Cap-distance", String.format("%6.6f",cur_distance));
 		}
 	};
-	
+	private final Runnable updatetl = new Runnable() {
+
+		public void run() {
+			// TODO Auto-generated method stub
+			//add dialog display "cap done"
+			opCODtongliang(String.format("%6.6f",avg_cod[cnt-1]));
+			opxiaodantongliang(String.format("%6.6f",avg_no3n[cnt-1]));
+			opandantongliang(String.format("%6.6f",avg_nh4n[cnt-1]));
+			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[cnt-1]));
+			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[cnt-1]));
+			Log.i("TL-cod", String.format("%6.6f",avg_cod[cnt-1]));
+		}
+	};
 	
 
 }
