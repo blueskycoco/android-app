@@ -139,6 +139,79 @@ public class watercap {
 		modelnums=num;
 		modedata=json;
 	}
+	public static String getPacket()
+	{
+		if(did==null||address==null||jingdu==null||weidu==null||batterypower==null||watertemper==null||cod==null||nitratevalue==null||ammoniavalue==null||flowspeed==null||
+				waterdeep==null||widther==null||uptime==null||remark==null||imgnums==null||modelnums==null||modedata==null||imgdata==null)
+			return null;
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        nameValuePair.add(new BasicNameValuePair("did",did));
+        nameValuePair.add(new BasicNameValuePair("address",address));
+        nameValuePair.add(new BasicNameValuePair("jingdu",jingdu));
+        nameValuePair.add(new BasicNameValuePair("weidu",weidu));
+        nameValuePair.add(new BasicNameValuePair("batterypower",batterypower));
+        nameValuePair.add(new BasicNameValuePair("watertemper",watertemper));
+        nameValuePair.add(new BasicNameValuePair("cod",cod));
+        nameValuePair.add(new BasicNameValuePair("nitratevalue",nitratevalue));
+        nameValuePair.add(new BasicNameValuePair("ammoniavalue",ammoniavalue));
+        nameValuePair.add(new BasicNameValuePair("flowspeed",flowspeed));
+        nameValuePair.add(new BasicNameValuePair("waterdeep",waterdeep));
+        nameValuePair.add(new BasicNameValuePair("widther",widther));
+        nameValuePair.add(new BasicNameValuePair("uptime",uptime));
+        nameValuePair.add(new BasicNameValuePair("remark",remark));
+        nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
+        nameValuePair.add(new BasicNameValuePair("modelnums",modelnums));
+        nameValuePair.add(new BasicNameValuePair("modedatas",modedata));
+        nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
+        Log.i("==>", nameValuePair.toString());
+        return nameValuePair.toString();
+	}
+	public static Boolean reSendNet(String packet)
+	{
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(BASIC_URL);
+		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+		nameValuePair.add(new BasicNameValuePair(packet,null));
+		Log.i("==>", packet);
+        try {
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, HTTP.UTF_8));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            int httpCode = httpResponse.getStatusLine().getStatusCode();
+            if (httpCode == HttpURLConnection.HTTP_OK&&httpResponse!=null) {
+                HttpEntity entity = httpResponse.getEntity();
+                InputStream inputStream = entity.getContent();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                String s;
+                StringBuilder result = new StringBuilder();
+                while (((s = reader.readLine()) != null)) {
+                    result.append(s);
+                }
+                reader.close();
+                JSONObject jsonObject = new JSONObject(result.toString());
+                String status = jsonObject.getString("status");
+                String data = jsonObject.getString("data");
+                JSONObject jsonObject2 = new JSONObject(data);
+                String error = jsonObject2.getString("error");
+                Log.v("<=="," status " +status+" data "+data+" error "+error);
+            } else {
+                Log.e("CAP","Error Response" + httpResponse.getStatusLine().toString());
+            }
+        } catch (UnsupportedEncodingException e) {
+        } catch (ClientProtocolException e) {
+        } catch (IOException e) {
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        } 
+		finally {
+            if (httpClient != null) {
+                httpClient.getConnectionManager().shutdown();// 最后关掉链接。
+                httpClient = null;
+            }
+        }
+		return true;
+	}
 	public static String sendNet()
 	{
 		

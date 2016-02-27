@@ -134,7 +134,8 @@ public class MainOperationActivity extends Activity {
 	Button buttonshujucunchu;
 	Button buttontongliangjisuan;
 	Button buttonshujushangchuan;
-	
+	SharedPreferencesDatabase sharedPreferenceDatabase1;
+	Context g_ctx=null;
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
@@ -397,7 +398,7 @@ public class MainOperationActivity extends Activity {
 		editxiaodantongliang = (EditText) findViewById(R.id.editxiaodantongliang);
 		editandantongliang = (EditText) findViewById(R.id.editandantongliang);
 		
-		
+		g_ctx=(Context)this;
 		buttonceliang = (Button) findViewById(R.id.buttonshujuceliang);
 		buttonshujucunchu = (Button) findViewById(R.id.buttonshujucunchu);
 		buttontongliangjisuan = (Button) findViewById(R.id.buttontongliangjisuan);
@@ -425,8 +426,9 @@ public class MainOperationActivity extends Activity {
 		setButtontuichu();
 		setButtonshujushangchuan();
 		setButtonceliang();
-
+		setbuttonshujucunchu();
 		batteryLevel();
+		setbuttontongliangjisuan();
 		SysApplication.getInstance().addActivity(this);
 
 		zidongjiangeminute = 0;
@@ -1095,7 +1097,52 @@ public class MainOperationActivity extends Activity {
 					}
 				});
 	}
-	
+	public void auto_process() throws InterruptedException
+	{
+		send_485();
+		Thread.sleep(30000);
+		
+		//cod[0]=cur_cod;no3n[0]=cur_cod;nh4n[0]=cur_nh4n;
+		distance[0]=Float.parseFloat(opkuandu(null));
+		xiadi[0]=Float.parseFloat(opmoxing2(null));
+		cod[0]=Float.parseFloat(opCOD(null));
+		nh4n[0]=Float.parseFloat(opandan(null));
+		no3n[0]=Float.parseFloat(opxiaodan(null));
+		speed[0]=Float.parseFloat(opliusu(null));
+		deep[0]=Float.parseFloat(opshendu(null));
+		Log.i("tl-COD",String.format("%6.3f",cod[0]));
+		Log.i("tl-NO3-N",String.format("%6.3f",no3n[0]));
+		Log.i("tl-NH4-N",String.format("%6.3f",nh4n[0]));
+		Log.i("tl-Deep",String.format("%6.3f",deep[0]));
+		Log.i("tl-Speed",String.format("%6.3f",speed[0]));
+		Log.i("tl-Distance",String.format("%6.3f",distance[0]));
+		Log.i("tl-Power",String.format("%6.3f",power[0]));
+		
+		if(getmoxing()==0)
+		{					
+			count_tixing_tl(distance[0],xiadi[0],0,0);
+			count_tixing_tl(distance[0],xiadi[0],0,1);
+			count_tixing_tl(distance[0],xiadi[0],0,2);
+		}
+		else if(getmoxing()==1)
+		{
+			count_juxing_tl(0,0);
+			count_juxing_tl(0,1);
+			count_juxing_tl(0,2);
+		}
+		else
+		{
+			count_yuanxing_tl(0,0);
+			count_yuanxing_tl(0,1);
+			count_yuanxing_tl(0,2);
+		}
+		mode_string = set_model_param(
+			String.format("%6.6f",cod[0]),String.format("%6.6f",no3n[0]),String.format("%6.6f",nh4n[0]),
+			String.format("%6.6f",avg_cod[0]),String.format("%6.6f",avg_no3n[0]),String.format("%6.6f",avg_nh4n[0]),
+			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),String.valueOf(getmoxing()+1),
+			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),"1",mode_string);
+		upload();
+	}
 	public void upload()
 	{
 		distance[bak_cnt-1]=Float.parseFloat(opkuandu(null));
@@ -1106,7 +1153,7 @@ public class MainOperationActivity extends Activity {
 		speed[bak_cnt-1]=Float.parseFloat(opliusu(null));
 		deep[bak_cnt-1]=Float.parseFloat(opshendu(null));
 		temparture=opshuiwen(null);
-		watercap.set_did("1304");		
+		watercap.set_did(user);		
 		watercap.set_address(opdizhi(null));
 		watercap.set_jingdu("120.325259");
 		watercap.set_weidu("37.330890");
@@ -1143,14 +1190,33 @@ public class MainOperationActivity extends Activity {
 		
 			watercap.set_img(String.valueOf(listtupian.size() ), img_string);
 		}
-		watercap.set_model(String.valueOf(bak_cnt+1), mode_string);
+		watercap.set_model(String.valueOf(bak_cnt), mode_string);
 		new Thread(runnable).start();  
 	}
-	
+	public void reSend() throws JSONException
+	{
+		int count = sharedPreferenceDatabase1.GetshujuCount(g_ctx);
+		for(int i=0;i<count;i++)
+		{
+			String packet=sharedPreferenceDatabase1.Getshuju(g_ctx, i);
+			if(watercap.reSendNet(packet))
+				sharedPreferenceDatabase1.Deleteshuju(g_ctx, i);
+		}
+	}
 	Runnable runnable = new Runnable(){  
 	    @Override  
-	    public void run() {  
-	        watercap.sendNet();
+	    public void run() {
+	    	String packet=watercap.getPacket();
+	    	if(packet!=null)
+	        if(watercap.sendNet()!="ok")
+	        {
+	        	try {
+					sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
 	    }
 	};
 	private class ReadThread extends Thread {
