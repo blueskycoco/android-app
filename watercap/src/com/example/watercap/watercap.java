@@ -141,9 +141,9 @@ public class watercap {
 	}
 	public static String getPacket()
 	{
-		if(did==null||address==null||jingdu==null||weidu==null||batterypower==null||watertemper==null||cod==null||nitratevalue==null||ammoniavalue==null||flowspeed==null||
-				waterdeep==null||widther==null||uptime==null||remark==null||imgnums==null||modelnums==null||modedata==null||imgdata==null)
-			return null;
+		//if(did==null||address==null||jingdu==null||weidu==null||batterypower==null||watertemper==null||cod==null||nitratevalue==null||ammoniavalue==null||flowspeed==null||
+		//		waterdeep==null||widther==null||uptime==null||remark==null||modelnums==null||modedata==null)
+		//	return null;
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
         nameValuePair.add(new BasicNameValuePair("did",did));
         nameValuePair.add(new BasicNameValuePair("address",address));
@@ -159,10 +159,15 @@ public class watercap {
         nameValuePair.add(new BasicNameValuePair("widther",widther));
         nameValuePair.add(new BasicNameValuePair("uptime",uptime));
         nameValuePair.add(new BasicNameValuePair("remark",remark));
-        nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
         nameValuePair.add(new BasicNameValuePair("modelnums",modelnums));
         nameValuePair.add(new BasicNameValuePair("modedatas",modedata));
-        nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
+        if(imgdata!=null)
+        {
+            nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
+        	nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
+        }
+        else
+            nameValuePair.add(new BasicNameValuePair("imgnums","0"));
         Log.i("==>", nameValuePair.toString());
         return nameValuePair.toString();
 	}
@@ -216,9 +221,9 @@ public class watercap {
 	{
 		
 		HttpClient httpClient = new DefaultHttpClient();
-		if(did==null||address==null||jingdu==null||weidu==null||batterypower==null||watertemper==null||cod==null||nitratevalue==null||ammoniavalue==null||flowspeed==null||
-				waterdeep==null||widther==null||uptime==null||remark==null||imgnums==null||modelnums==null||modedata==null||imgdata==null)
-			return "wrong param";
+		//if(did==null||address==null||jingdu==null||weidu==null||batterypower==null||watertemper==null||cod==null||nitratevalue==null||ammoniavalue==null||flowspeed==null||
+		//		waterdeep==null||widther==null||uptime==null||remark==null||modelnums==null||modedata==null)
+		//	return "wrong param";
         HttpPost httpPost = new HttpPost(BASIC_URL);
         List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
         nameValuePair.add(new BasicNameValuePair("did",did));
@@ -235,10 +240,15 @@ public class watercap {
         nameValuePair.add(new BasicNameValuePair("widther",widther));
         nameValuePair.add(new BasicNameValuePair("uptime",uptime));
         nameValuePair.add(new BasicNameValuePair("remark",remark));
-        nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
         nameValuePair.add(new BasicNameValuePair("modelnums",modelnums));
         nameValuePair.add(new BasicNameValuePair("modedatas",modedata));
-        nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
+        if(imgdata!=null)
+        {
+            nameValuePair.add(new BasicNameValuePair("imgnums",imgnums));
+        	nameValuePair.add(new BasicNameValuePair("imgdatas",imgdata));
+        }
+        else
+            nameValuePair.add(new BasicNameValuePair("imgnums","0"));
         //JSONObject jsonObject = new JSONObject();
         //JSONObject jsonObject2 = new JSONObject();
         //jsonObject.put("uemail", userbean.getEmail());
@@ -280,6 +290,8 @@ public class watercap {
                 String error = jsonObject2.getString("error");
                 //String info = jsonObject.getString("info");
                 Log.v("<=="," status " +status+" data "+data+" error "+error);
+                if(status == "ERR")
+                	return "failed";
             } else {
                 Log.e("CAP","Error Response" + httpResponse.getStatusLine().toString());
             }

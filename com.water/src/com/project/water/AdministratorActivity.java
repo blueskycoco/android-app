@@ -41,6 +41,10 @@ public class AdministratorActivity extends Activity {
 	List<Map<String, String>> listceliangfangshi = new ArrayList<Map<String, String>>();
 	SharedPreferencesDatabase sharedPreferenceDatabase;
 
+	int modexuanze;
+	int zidongjiange;
+	Bundle bundle;
+	
 	Context context;
 	Spinner spinnermodexuanze;
 	Spinner spinnerceliangfangshi;
@@ -51,8 +55,10 @@ public class AdministratorActivity extends Activity {
 	Button buttonshanchujiange;
 	Button buttontianjiajiange;
 	EditText editcanshuname;
-	EditText editcanshu1;
-	EditText editcanshu2;
+	EditText editcanshua;
+	EditText editcanshub;
+	EditText editcanshuc;
+	EditText editcanshud;
 	Button buttonshanchumode;
 	Button buttontianjiamode;
 	Button buttonbaocun;
@@ -73,8 +79,10 @@ public class AdministratorActivity extends Activity {
 		buttonshanchujiange = (Button) findViewById(R.id.buttonshanchujiange);
 		buttontianjiajiange = (Button) findViewById(R.id.buttontianjiajiange);
 		editcanshuname = (EditText) findViewById(R.id.editcanshuname);
-		editcanshu1 = (EditText) findViewById(R.id.editcanshu1);
-		editcanshu2 = (EditText) findViewById(R.id.editcanshu2);
+		editcanshua = (EditText) findViewById(R.id.editcanshua);
+		editcanshub = (EditText) findViewById(R.id.editcanshub);
+		editcanshuc = (EditText) findViewById(R.id.editcanshuc);
+		editcanshud = (EditText) findViewById(R.id.editcanshud);
 		buttonshanchumode = (Button) findViewById(R.id.buttonshanchumode);
 		buttontianjiamode = (Button) findViewById(R.id.buttontianjiamode);
 		buttonbaocun = (Button) findViewById(R.id.buttonbaocun);
@@ -103,7 +111,18 @@ public class AdministratorActivity extends Activity {
 		setButtonbaocun();
 		setButtonfanhui();
 		SysApplication.getInstance().addActivity(this);
+		getbundledetail();
 	}
+	
+	private void getbundledetail()
+	{
+		bundle = this.getIntent().getExtras();
+		modexuanze = bundle.getInt("modexuanze");
+		zidongjiange = bundle.getInt("zidongjiange");
+		
+		spinnermodexuanze.setSelection(modexuanze);
+	}
+		
 	
 	public void backpressed() {
 		/*Intent intent = new Intent();
@@ -229,10 +248,14 @@ public class AdministratorActivity extends Activity {
 						map = listmodexuanze.get(pos);
 						editcanshuname.setText(map
 								.get(SharedPreferencesDatabase.modexuanze));
-						editcanshu1.setText(map
+						editcanshua.setText(map
 								.get(SharedPreferencesDatabase.modexuanzecanshu0));
-						editcanshu2.setText(map
+						editcanshub.setText(map
 								.get(SharedPreferencesDatabase.modexuanzecanshu1));
+						editcanshuc.setText(map
+								.get(SharedPreferencesDatabase.modexuanzecanshu2));
+						editcanshud.setText(map
+								.get(SharedPreferencesDatabase.modexuanzecanshu3));
 
 					}
 
@@ -304,8 +327,10 @@ public class AdministratorActivity extends Activity {
 				// TODO Auto-generated method stub
 
 				String canshuname = editcanshuname.getText().toString();
-				String canshu1 = editcanshu1.getText().toString();
-				String canshu2 = editcanshu2.getText().toString();
+				String canshua = editcanshua.getText().toString();
+				String canshub = editcanshub.getText().toString();
+				String canshuc = editcanshuc.getText().toString();
+				String canshud = editcanshud.getText().toString();
 
 				for (int i = 0; i < listmodexuanze.size(); i++) {
 					Map<String, String> map1 = new HashMap<String, String>();
@@ -320,8 +345,10 @@ public class AdministratorActivity extends Activity {
 				}
 				Map<String, String> map = new HashMap<String, String>();
 				map.put(SharedPreferencesDatabase.modexuanze, canshuname);
-				map.put(SharedPreferencesDatabase.modexuanzecanshu0, canshu1);
-				map.put(SharedPreferencesDatabase.modexuanzecanshu1, canshu2);
+				map.put(SharedPreferencesDatabase.modexuanzecanshu0, canshua);
+				map.put(SharedPreferencesDatabase.modexuanzecanshu1, canshub);
+				map.put(SharedPreferencesDatabase.modexuanzecanshu2, canshuc);
+				map.put(SharedPreferencesDatabase.modexuanzecanshu3, canshud);
 
 				listmodexuanze.add(map);
 				setspinnermodexuanze();

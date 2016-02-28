@@ -29,12 +29,18 @@ class SharedPreferencesDatabase {
 	public static final String hour = "hour";
 	public static final String modexuanzecanshu0 = "modexuanzecanshu0";
 	public static final String modexuanzecanshu1 = "modexuanzecanshu1";
+	public static final String modexuanzecanshu2 = "modexuanzecanshu2";
+	public static final String modexuanzecanshu3 = "modexuanzecanshu3";
 	public static final String setcheckboxmima = "setcheckboxmima";
 	public static final String remembermiama = "remembermiama";
 	public static final String remembermiamauser = "remembermiamauser";
 	public static final String remembermiamamima = "remembermiamamima";
 	public static final String deviceID = "deviceID";
 	public static final String deviceIDstr = "deviceIDstr";
+	public static final String CODLingdian = "CODLingdian";
+	public static final String CODLingdianstr = "CODLingdianstr";
+	public static final String xiaodanLingdian = "xiaodanLingdian";
+	public static final String xiaodanLingdianstr = "xiaodanLingdianstr";
 	// public static final String celiangjiangeshuzu = "celiangjiangeshuzu";
 
 	Context ctx = null;
@@ -69,6 +75,11 @@ class SharedPreferencesDatabase {
 			jsonuserArray.put(jsonusermima1);
 
 			jsonMainValue.put(usershuzu, jsonuserArray);
+			
+			JSONArray jsonremembercheckboxArray = new JSONArray();
+			
+			jsonMainValue
+					.put(setcheckboxmima, jsonremembercheckboxArray);
 
 			// 模式选择
 			JSONArray jsonmodexuanzeArray = new JSONArray();
@@ -76,30 +87,40 @@ class SharedPreferencesDatabase {
 			jsonmodexuanze0.put(modexuanze, "标准溶液");
 			jsonmodexuanze0.put(modexuanzecanshu0, "1.00");
 			jsonmodexuanze0.put(modexuanzecanshu1, "1.00");
+			jsonmodexuanze0.put(modexuanzecanshu2, "1.00");
+			jsonmodexuanze0.put(modexuanzecanshu3, "1.00");
 			jsonmodexuanzeArray.put(jsonmodexuanze0);
 
 			JSONObject jsonmodexuanze1 = new JSONObject();
 			jsonmodexuanze1.put(modexuanze, "工业排污口");
 			jsonmodexuanze1.put(modexuanzecanshu0, "2.00");
 			jsonmodexuanze1.put(modexuanzecanshu1, "2.00");
+			jsonmodexuanze1.put(modexuanzecanshu2, "1.00");
+			jsonmodexuanze1.put(modexuanzecanshu3, "1.00");
 			jsonmodexuanzeArray.put(jsonmodexuanze1);
 
 			JSONObject jsonmodexuanze2 = new JSONObject();
 			jsonmodexuanze2.put(modexuanze, "生活排污口");
 			jsonmodexuanze2.put(modexuanzecanshu0, "3.00");
 			jsonmodexuanze2.put(modexuanzecanshu1, "3.00");
+			jsonmodexuanze2.put(modexuanzecanshu2, "1.00");
+			jsonmodexuanze2.put(modexuanzecanshu3, "1.00");
 			jsonmodexuanzeArray.put(jsonmodexuanze2);
 
 			JSONObject jsonmodexuanze3 = new JSONObject();
 			jsonmodexuanze3.put(modexuanze, "地表水");
 			jsonmodexuanze3.put(modexuanzecanshu0, "4.00");
 			jsonmodexuanze3.put(modexuanzecanshu1, "4.00");
+			jsonmodexuanze3.put(modexuanzecanshu2, "1.00");
+			jsonmodexuanze3.put(modexuanzecanshu3, "1.00");
 			jsonmodexuanzeArray.put(jsonmodexuanze3);
 
 			JSONObject jsonmodexuanze4 = new JSONObject();
 			jsonmodexuanze4.put(modexuanze, "地下水");
 			jsonmodexuanze4.put(modexuanzecanshu0, "5.00");
 			jsonmodexuanze4.put(modexuanzecanshu1, "5.00");
+			jsonmodexuanze4.put(modexuanzecanshu2, "1.00");
+			jsonmodexuanze4.put(modexuanzecanshu3, "1.00");
 			jsonmodexuanzeArray.put(jsonmodexuanze4);
 
 			jsonMainValue.put(modexuanzeshuzu, jsonmodexuanzeArray);
@@ -127,6 +148,18 @@ class SharedPreferencesDatabase {
 			jsondeviceID.put(deviceIDstr, "000000");
 
 			jsonMainValue.put(deviceID, jsondeviceID);
+			
+			// CODLingdian
+						JSONObject jsonCODLingdian = new JSONObject();
+						jsonCODLingdian.put(CODLingdianstr, "0");
+
+						jsonMainValue.put(CODLingdian, jsonCODLingdian);
+						
+						// 设备ID
+						JSONObject jsonxiaodanLingdian = new JSONObject();
+						jsonxiaodanLingdian.put(xiaodanLingdianstr, "0");
+
+						jsonMainValue.put(xiaodanLingdian, jsonxiaodanLingdian);
 
 			editor.putString(JsonMain, jsonMainValue.toString());
 
@@ -181,6 +214,10 @@ class SharedPreferencesDatabase {
 					jsonmodexuanze0.getString(modexuanzecanshu0));
 			map.put(modexuanzecanshu1,
 					jsonmodexuanze0.getString(modexuanzecanshu1));
+			map.put(modexuanzecanshu2,
+					jsonmodexuanze0.getString(modexuanzecanshu2));
+			map.put(modexuanzecanshu3,
+					jsonmodexuanze0.getString(modexuanzecanshu3));
 			list.add(map);
 		}
 
@@ -221,6 +258,34 @@ class SharedPreferencesDatabase {
 		jsondeviceID = (JSONObject) jsonMainValue.get(deviceID);
 
 		return jsondeviceID.getString(deviceIDstr);
+
+	}
+	
+	public String GetCODLingdian(Context context) throws JSONException {
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+
+		jsondeviceID = (JSONObject) jsonMainValue.get(CODLingdian);
+
+		return jsondeviceID.getString(CODLingdianstr);
+
+	}
+	
+	public String GetxiaodanLingdian(Context context) throws JSONException {
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+
+		jsondeviceID = (JSONObject) jsonMainValue.get(xiaodanLingdian);
+
+		return jsondeviceID.getString(xiaodanLingdianstr);
 
 	}
 
@@ -292,6 +357,8 @@ class SharedPreferencesDatabase {
 			jsonmodexuanze0.put(modexuanze, map.get(modexuanze));
 			jsonmodexuanze0.put(modexuanzecanshu0, map.get(modexuanzecanshu0));
 			jsonmodexuanze0.put(modexuanzecanshu1, map.get(modexuanzecanshu1));
+			jsonmodexuanze0.put(modexuanzecanshu2, map.get(modexuanzecanshu2));
+			jsonmodexuanze0.put(modexuanzecanshu3, map.get(modexuanzecanshu3));
 			jsonmodexuanzeArray.put(jsonmodexuanze0);
 		}
 
@@ -328,60 +395,79 @@ class SharedPreferencesDatabase {
 		return rtn;
 	}
 	
-	public int GetshujuCount(Context context) throws JSONException {
+	public int GetshujuCount(Context context){
 		Boolean rtnvalue;
-		int rtn;
+		int rtn=0;
 		SharedPreferences sp = (SharedPreferences) context
 				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		String strJson = sp.getString(JsonMain, "");
-		JSONObject jsonMainValue = new JSONObject(strJson);
-		JSONArray jsonmodexuanzeArray = new JSONArray();
-		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+		JSONObject jsonMainValue=null;
+		try {
+			jsonMainValue = new JSONObject(strJson);
+			JSONArray jsonmodexuanzeArray = new JSONArray();
+			jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
 
-		rtn = jsonmodexuanzeArray.length();
+			rtn = jsonmodexuanzeArray.length();
 
-		rtnvalue = editor.commit();
+			rtnvalue = editor.commit();
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	public String Getshuju(Context context, int id) {
+		Boolean rtnvalue;
+		String rtn=null;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue=null;
+		try {
+			jsonMainValue = new JSONObject(strJson);
+			JSONArray jsonmodexuanzeArray = new JSONArray();
+			jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+
+			rtn = jsonmodexuanzeArray.getString(id);
+
+			jsonMainValue.put("shujushuzu", jsonmodexuanzeArray);
+
+			editor.putString(JsonMain, jsonMainValue.toString());
+
+			rtnvalue = editor.commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		return rtn;
 	}
 	
-	public String Getshuju(Context context, int id) throws JSONException {
-		Boolean rtnvalue;
-		String rtn;
-		SharedPreferences sp = (SharedPreferences) context
-				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
-		Editor editor = sp.edit();
-		String strJson = sp.getString(JsonMain, "");
-		JSONObject jsonMainValue = new JSONObject(strJson);
-		JSONArray jsonmodexuanzeArray = new JSONArray();
-		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
-
-		rtn = jsonmodexuanzeArray.getString(id);
-
-		jsonMainValue.put("shujushuzu", jsonmodexuanzeArray);
-
-		editor.putString(JsonMain, jsonMainValue.toString());
-
-		rtnvalue = editor.commit();
-
-		return rtn;
-	}
-	
-	public Boolean Deleteshuju(Context context, int id) throws JSONException {
-		Boolean rtnvalue;
+	public Boolean Deleteshuju(Context context, int id)  {
+		Boolean rtnvalue=false;
 
 		SharedPreferences sp = (SharedPreferences) context
 				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		String strJson = sp.getString(JsonMain, "");
-		JSONObject jsonMainValue = new JSONObject(strJson);
-		JSONArray jsonmodexuanzeArray = new JSONArray();
-		jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
+		JSONObject jsonMainValue=null;
+		try {
+			jsonMainValue = new JSONObject(strJson);
+			JSONArray jsonmodexuanzeArray = new JSONArray();
+			jsonmodexuanzeArray = (JSONArray) jsonMainValue.get("shujushuzu");
 
-		jsonmodexuanzeArray.remove(id);
+			jsonmodexuanzeArray.remove(id);
 
-		rtnvalue = editor.commit();
+			rtnvalue = editor.commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return rtnvalue;
 	}
@@ -427,6 +513,46 @@ class SharedPreferencesDatabase {
 		jsondeviceID.put(deviceIDstr, strdeviceID);
 
 		jsonMainValue.put(deviceID, jsondeviceID);
+
+		editor.putString(JsonMain, jsonMainValue.toString());
+
+		rtn = editor.commit();
+
+		return rtn;
+	}
+	
+	public Boolean SetCODLingdian(Context context, String strdeviceID)
+			throws JSONException {
+		Boolean rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+		jsondeviceID.put(CODLingdianstr, strdeviceID);
+
+		jsonMainValue.put(CODLingdian, jsondeviceID);
+
+		editor.putString(JsonMain, jsonMainValue.toString());
+
+		rtn = editor.commit();
+
+		return rtn;
+	}
+	
+	public Boolean SetxiaodanLingdian(Context context, String strdeviceID)
+			throws JSONException {
+		Boolean rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+		jsondeviceID.put(xiaodanLingdianstr, strdeviceID);
+
+		jsonMainValue.put(xiaodanLingdian, jsondeviceID);
 
 		editor.putString(JsonMain, jsonMainValue.toString());
 

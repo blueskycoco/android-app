@@ -238,6 +238,8 @@
                 android:id="@+id/editshangdi"
                 style="@style/EditText"
                 android:layout_width="100dp"
+                android:inputType="numberDecimal"
+            android:maxLength="10"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinnermoxing"
                 android:layout_toRightOf="@+id/textshangdi"
@@ -322,11 +324,13 @@
                     android:id="@+id/editCOD"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/textCOD"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -373,10 +377,12 @@
                     android:id="@+id/editliusu"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textliusu"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -416,11 +422,13 @@
                     android:id="@+id/editxiaodan"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/textxiaodan"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -468,10 +476,12 @@
                     android:id="@+id/editshendu"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textshendu"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -511,11 +521,13 @@
                     android:id="@+id/editandan"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/textandan"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -554,10 +566,12 @@
                     android:id="@+id/editkuandu"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/textkuandu"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -596,11 +610,13 @@
                     android:id="@+id/editshuiwen"
                     style="@style/EditText"
                     android:layout_width="120dp"
+                    android:inputType="numberDecimal"
+            android:maxLength="10"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/textshuiwen"
                     android:background="@android:drawable/edit_text"
-                    android:editable="false"
+                    android:editable="true"
                     android:paddingBottom="1dip"
                     android:singleLine="true" />
 
@@ -657,6 +673,7 @@
                 <TextView
                     android:id="@+id/textcishu"
                     style="@style/TextView"
+                    android:textSize="25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -678,6 +695,7 @@
                 <TextView
                     android:id="@+id/textcodtongliang"
                     style="@style/TextView"
+                    android:textSize="25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -699,6 +717,7 @@
                 <TextView
                     android:id="@+id/textxiaodantongliang"
                     style="@style/TextView"
+                    android:textSize="25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -720,6 +739,7 @@
                 <TextView
                     android:id="@+id/textandantongliang"
                     style="@style/TextView"
+                    android:textSize="25dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"

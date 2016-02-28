@@ -75,6 +75,22 @@ public class GPSProvider {
 		 
 		return location;
 	}
+	public String getlatitude()
+	{
+		mainlocation = manager.getLastKnownLocation(manager.GPS_PROVIDER);
+		String latitudedata = String.format("%.6f",
+				mainlocation.getLatitude());
+		return latitudedata;
+	}
+	
+	public String getlongtitude()
+	{
+		mainlocation = manager.getLastKnownLocation(manager.GPS_PROVIDER);
+		String longtitudedata = String.format("%.6f",
+				mainlocation.getLongitude());
+		return longtitudedata;
+	}
+	
 
 	// 停止gps监听
 	public void stopGPSListener() {
@@ -115,10 +131,10 @@ public class GPSProvider {
 			Editor editor = sp.edit();
 			editor.putString("location", latitude + " - " + longtitude);
 			editor.commit(); // 最后一次获取到的位置信息 存放到sharedpreference里面
-			Log.v("TAG", "时间：" + location.getTime());
-			Log.v("TAG", "经度：" + location.getLongitude());
-			Log.v("TAG", "纬度：" + location.getLatitude());
-			Log.v("TAG", "海拔：" + location.getAltitude());
+			//Log.v("TAG", "时间：" + location.getTime());
+			//Log.v("TAG", "经度：" + location.getLongitude());
+			//Log.v("TAG", "纬度：" + location.getLatitude());
+			//Log.v("TAG", "海拔：" + location.getAltitude());
 		}
 
 		/**

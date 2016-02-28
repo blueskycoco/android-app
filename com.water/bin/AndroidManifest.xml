@@ -26,20 +26,16 @@
         </activity>
         <activity
             android:name="com.project.water.CameraActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
-            <intent-filter>
-                <action android:name="com.example.minzong.cameraActivity" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.project.water.AdministratorActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan|stateUnchanged" >
-            <intent-filter>
-                <action android:name="com.example.minzong.AdministratorActivity" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.project.water.MainTongLiangActivity"
@@ -51,13 +47,11 @@
         </activity>
         <activity
             android:name="com.project.water.MainOperationActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustPan|stateUnchanged" >
-            <intent-filter>
-                <action android:name="com.example.minzong.MainOperationActivity" />
-            </intent-filter>
         </activity>
         <receiver android:name=".BootBroadCast" >  
             <intent-filter>  

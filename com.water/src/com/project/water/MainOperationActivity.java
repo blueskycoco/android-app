@@ -35,6 +35,8 @@ import android.os.Message;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
@@ -84,8 +86,10 @@ public class MainOperationActivity extends Activity {
 	ImageView signalstrength;
 	
 	String stringmodexuanze;
-	String modexuanzecanshu0;
-	String modexuanzecanshu1;
+	String modexuanzecanshua;
+	String modexuanzecanshub;
+	String modexuanzecanshuc;
+	String modexuanzecanshud;
 	int zidongjiangeminute;
 
 	List<Map<String, String>> listuser = new ArrayList<Map<String, String>>();
@@ -129,17 +133,22 @@ public class MainOperationActivity extends Activity {
 	
 	TextView textcishutime;
 	
+	String show;
+	
 	
 	Button buttonceliang;
 	Button buttonshujucunchu;
 	Button buttontongliangjisuan;
 	Button buttonshujushangchuan;
 	SharedPreferencesDatabase sharedPreferenceDatabase1;
+	Button buttonCODLingdian;
+	Button buttonxiaodanLingdian;
+	SharedPreferencesDatabase sharedPreferenceDatabase;
 	Context g_ctx=null;
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
-	byte[] response = new byte[28];
+	byte[] response = new byte[32];
 	static boolean header_got=false;
 	static int read_len=0,to_read=0;
 	byte[] cmd={0x24,0x32,(byte)0xff,0x23,0x0a};
@@ -155,8 +164,8 @@ public class MainOperationActivity extends Activity {
 	float no3n_zero =0 ;
 	float cod_a=0,cod_b=0;
 	float no3n_c=0,no3n_d=0;
-	float cur_cod=0,cur_no3n=0,cur_nh4n=0,cur_deep=0,cur_speed=0,cur_distance=0,cur_power=0;
-	float[] xiadi=new float[1024],cod=new float[1024],no3n=new float[1024],nh4n=new float[1024],deep=new float[1024],speed=new float[1024],distance=new float[1024],power=new float[1024];
+	float cur_cod=0,cur_no3n=0,cur_nh4n=0,cur_deep=0,cur_speed=0,cur_distance=0,cur_power=0,cur_shuiwen=0;
+	float[] shuiwen=new float[1024],xiadi=new float[1024],cod=new float[1024],no3n=new float[1024],nh4n=new float[1024],deep=new float[1024],speed=new float[1024],distance=new float[1024],power=new float[1024];
 	String set_model_param(
 			String cod,String nho3,String nhn4,
 			String avg_cod1,String avg_nho3,String avg_nhn4,
@@ -403,6 +412,9 @@ public class MainOperationActivity extends Activity {
 		buttonshujucunchu = (Button) findViewById(R.id.buttonshujucunchu);
 		buttontongliangjisuan = (Button) findViewById(R.id.buttontongliangjisuan);
 		buttonshujushangchuan = (Button) findViewById(R.id.buttonshujushangchuan);
+		buttonCODLingdian = (Button) findViewById(R.id.buttonCODLingdian);
+		buttonxiaodanLingdian = (Button) findViewById(R.id.buttonxiaodanLingdian);
+		sharedPreferenceDatabase = new SharedPreferencesDatabase();
 		for(int i=0;i<1024;i++)
 		{
 			cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
@@ -416,6 +428,9 @@ public class MainOperationActivity extends Activity {
 					.GetmodexuanzeArray((Context) this);
 			listceliangfangshi = sharedPreferenceDatabase
 					.GetjiangeArray((Context) this);
+			
+			cod_zero = Integer.parseInt(sharedPreferenceDatabase.GetCODLingdian((Context) this));
+			no3n_zero = Integer.parseInt(sharedPreferenceDatabase.GetxiaodanLingdian((Context) this));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -442,8 +457,48 @@ public class MainOperationActivity extends Activity {
 		setID();
 		activateLocation();
 		initsignalstrength();
+		
+		cod_a=Float.parseFloat(modexuanzecanshua);cod_b=Float.parseFloat(modexuanzecanshub);
+		no3n_c=Float.parseFloat(modexuanzecanshuc);no3n_d=Float.parseFloat(modexuanzecanshud);
 	}
 	
+	private void setinputchange()
+	{
+		editCOD.addTextChangedListener(new editCODEditChangedListener());
+	}
+	
+    class editCODEditChangedListener implements TextWatcher {  
+        private CharSequence temp;//监听前的文本  
+        private int editStart;//光标开始位置  
+        private int editEnd;//光标结束位置  
+        private final int charMaxNum = 10;  
+   
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {  
+ 
+        }  
+   
+        public void onTextChanged(CharSequence s, int start, int before, int count) {  
+  
+   
+        }  
+   
+        @Override  
+        public void afterTextChanged(Editable s) {  
+
+            /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */  
+            /*editStart = editCOD.getSelectionStart();  
+            editEnd = editCOD.getSelectionEnd();  
+            if (temp.length() > charMaxNum) {  
+                Toast.makeText(getApplicationContext(), "你输入的字数已经超过了限制！", Toast.LENGTH_LONG).show();  
+                s.delete(editStart - 1, editEnd);  
+                int tempSelection = editStart;  
+                mEditTextMsg.setText(s);  
+                mEditTextMsg.setSelection(tempSelection);  
+            }  */
+   
+        }  
+    };  
+    
 	private String opCOD(String input)
 	{
 		if(input!=null)
@@ -452,7 +507,12 @@ public class MainOperationActivity extends Activity {
 			return null;
 		}
 		else
-		return editCOD.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editCOD.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opliusu(String input)
@@ -462,8 +522,14 @@ public class MainOperationActivity extends Activity {
 			editliusu.setText(input);
 			return null;
 		}
+		
 		else
-		return editliusu.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editliusu.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opxiaodan(String input)
@@ -473,8 +539,14 @@ public class MainOperationActivity extends Activity {
 			editxiaodan.setText(input);
 			return null;
 		}
+
 		else
-		return editxiaodan.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editxiaodan.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opshendu(String input)
@@ -484,8 +556,14 @@ public class MainOperationActivity extends Activity {
 			editshendu.setText(input);
 			return null;
 		}
+
 		else
-		return editshendu.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editshendu.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opandan(String input)
@@ -495,8 +573,14 @@ public class MainOperationActivity extends Activity {
 			editandan.setText(input);
 			return null;
 		}
+
 		else
-		return editandan.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editandan.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opkuandu(String input)
@@ -506,8 +590,14 @@ public class MainOperationActivity extends Activity {
 			editkuandu.setText(input);
 			return null;
 		}
+
 		else
-		return editkuandu.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editkuandu.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opshuiwen(String input)
@@ -517,8 +607,14 @@ public class MainOperationActivity extends Activity {
 			editshuiwen.setText(input);
 			return null;
 		}
+
 		else
-		return editshuiwen.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editshuiwen.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opdizhi(String input)
@@ -528,8 +624,14 @@ public class MainOperationActivity extends Activity {
 			editdizhi.setText(input);
 			return null;
 		}
+
 		else
-		return editdizhi.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editdizhi.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opcishutime(String input)
@@ -539,8 +641,14 @@ public class MainOperationActivity extends Activity {
 			textcishutime.setText(input);
 			return null;
 		}
+
 		else
-		return textcishutime.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return textcishutime.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opCODtongliang(String input)
@@ -550,8 +658,14 @@ public class MainOperationActivity extends Activity {
 			editCODtongliang.setText(input);
 			return null;
 		}
+
 		else
-		return editCODtongliang.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editCODtongliang.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opxiaodantongliang(String input)
@@ -561,8 +675,14 @@ public class MainOperationActivity extends Activity {
 			editxiaodantongliang.setText(input);
 			return null;
 		}
+
 		else
-		return editxiaodantongliang.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editxiaodantongliang.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opandantongliang(String input)
@@ -572,19 +692,32 @@ public class MainOperationActivity extends Activity {
 			editandantongliang.setText(input);
 			return null;
 		}
+
 		else
-		return editandantongliang.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editandantongliang.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opmoxing1(String input)
 	{
+		//Log.i("moxing1", String.valueOf(Float.parseFloat(editmoxing1.getText().toString())));
 		if(input!=null)
 		{
 			editmoxing1.setText(input);
 			return null;
 		}
+
 		else
-		return editmoxing1.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editmoxing1.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opmoxing2(String input)
@@ -594,8 +727,14 @@ public class MainOperationActivity extends Activity {
 			editmoxing2.setText(input);
 			return null;
 		}
+
 		else
-		return editmoxing2.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editmoxing2.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private String opmoxing3(String input)
@@ -605,8 +744,14 @@ public class MainOperationActivity extends Activity {
 			editmoxing3.setText(input);
 			return null;
 		}
+
 		else
-		return editmoxing3.getText().toString();
+		{
+			if(editCOD.getText().toString().length()>0)
+				return editmoxing3.getText().toString();
+			else
+				return "1";
+		}
 	}
 	
 	private int getmoxing()
@@ -655,6 +800,8 @@ public class MainOperationActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				Toast.makeText(g_ctx, g_ctx.getString(R.string.shujuceliangtext),
+						 Toast.LENGTH_LONG).show();
 				//encodetupian();
 				send_485();
 				
@@ -669,7 +816,7 @@ public class MainOperationActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//encodetupian();
-				if(cod[0]!=0||no3n[0]!=0||nh4n[0]!=0||speed[0]!=0||deep[0]!=0||distance[0]!=0)
+				if(cur_cod!=0||cur_no3n!=0||cur_nh4n!=0||cur_speed!=0||cur_deep!=0||cur_distance!=0)
 				{
 					cod[cnt]=cur_cod;
 					no3n[cnt]=cur_no3n;
@@ -679,13 +826,30 @@ public class MainOperationActivity extends Activity {
 					distance[cnt]=cur_distance;
 					if(getmoxing()==0)
 					{
-						xiadi[cnt]=Float.parseFloat(opmoxing2(null));
+						if(opmoxing1(null)!=null)
+						{
+							Log.i("XIADI", opmoxing1(null));
+								xiadi[cnt]=Float.parseFloat(opmoxing1(null));
+						}
+						else
+							xiadi[cnt]=0;
+						Log.i("STORE xiadi", String.valueOf(xiadi[cnt]));
 					}
+					Log.i("STORE cod", String.valueOf(cod[cnt]));
+					Log.i("STORE no3n", String.valueOf(no3n[cnt]));
+					Log.i("STORE nh4n", String.valueOf(nh4n[cnt]));
+					Log.i("STORE speed", String.valueOf(speed[cnt]));
+					Log.i("STORE deep", String.valueOf(deep[cnt]));
+					Log.i("STORE distance", String.valueOf(distance[cnt]));
 					cnt++;
 					opcishutime(String.valueOf(cnt));
 				}
 				else
+				{
 					Log.i("ERROR","in store,need click cap first");
+					 Toast.makeText(g_ctx, "保存失败，请先点采集按键！",
+					 Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 	}
@@ -699,7 +863,10 @@ public class MainOperationActivity extends Activity {
 				if(Integer.valueOf(opcishutime(null))>0)
 				{
 					distance[cnt-1]=Float.parseFloat(opkuandu(null));
-					xiadi[cnt-1]=Float.parseFloat(opmoxing2(null));
+					if(opmoxing1(null)!=null)
+					xiadi[cnt-1]=Float.parseFloat(opmoxing1(null));
+					else
+						xiadi[cnt-1]=0;
 					cod[cnt-1]=Float.parseFloat(opCOD(null));
 					nh4n[cnt-1]=Float.parseFloat(opandan(null));
 					no3n[cnt-1]=Float.parseFloat(opxiaodan(null));
@@ -743,15 +910,20 @@ public class MainOperationActivity extends Activity {
 						cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
 					}
 					handler.post(updatetl);
-					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt]));
-					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt]));
-					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt]));
+					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt-1]));
+					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt-1]));
+					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt-1]));
 					bak_cnt=cnt;
 					cnt=0;
 					opcishutime("0");
 				}
+
 				else
-					Log.i("ERROR","need store data first");
+				{
+					Log.i("ERROR","in store,need click cap first");
+					 Toast.makeText(g_ctx, "通量计算失败，请先点采集存储按键！",
+					 Toast.LENGTH_LONG).show();
+				}
 			}
 		});
 	}
@@ -765,10 +937,50 @@ public class MainOperationActivity extends Activity {
 				if(avg_no3n[0]!=0 || avg_cod[0]!=0 || avg_nh4n[0]!=0)
 				{
 					upload();
-					SysApplication.getInstance().cameraactivity.deletetupian();
+					//SysApplication.getInstance().cameraactivity.deletetupian();
 				}
+
 				else
-					Log.i("ERROR", "in upload ,need call cap,store,calc first");
+				{
+					Log.i("ERROR","in store,need click cap first");
+					 Toast.makeText(g_ctx, "上传失败，请先点采集存储计算按键！",
+					 Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+	}
+	
+	public void setButtonCODLingdian() {
+		buttonCODLingdian.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+				try {
+					sharedPreferenceDatabase.SetCODLingdian(g_ctx, editCOD.getText().toString());
+					cod_zero = Float.parseFloat(editCOD.getText().toString());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void setButtonxiaodanLingdian() {
+		buttonxiaodanLingdian.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				try {
+					sharedPreferenceDatabase.SetCODLingdian(g_ctx, editxiaodan.getText().toString());
+					no3n_zero = Float.parseFloat(editxiaodan.getText().toString());
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -877,6 +1089,52 @@ public class MainOperationActivity extends Activity {
 
 		}
 	};
+	public void showtishi(String tmp)
+	{
+		Toast.makeText(g_ctx, tmp,
+				 Toast.LENGTH_LONG).show();
+	}
+	private final Runnable showmessagetask = new Runnable() {
+
+		public void run() {
+			// TODO Auto-generated method stub
+			((MainOperationActivity) g_ctx).showtishi(show);
+
+			}
+
+	};
+	
+	private final Runnable jiangetask = new Runnable() {
+
+		public void run() {
+			// TODO Auto-generated method stub
+			if (auto) { // change to refresh if it is auto mod
+				/*boolean connect = getconnect();
+				if (connect == false) {
+					textGSMdetails.setText(getResources().getString(
+							R.string.connecting));
+				} else {
+					textGSMdetails.setText(getResources().getString(
+							R.string.connected));
+				}*/
+
+				try {
+					auto_process();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				int interval = delay*60*zidongjiangeminute;
+				handler.postDelayed(this, interval);
+
+				/*
+				 * 这里写你的功能模块代码
+				 */
+
+			}
+
+		}
+	};
 
 	private boolean getconnect() {
 		// 得到网络连接信息
@@ -921,19 +1179,23 @@ public class MainOperationActivity extends Activity {
          
          if (signel <= 2 || signel == 99) {
         	 signalstrength.setBackground(getResources().getDrawable(
-						R.drawable.batt0));
+						R.drawable.xinhao1));
 			} else if (5 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
-						R.drawable.batt1));
+						R.drawable.xinhao2));
+				reSend();
 			} else if (8 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
-						R.drawable.batt2));
+						R.drawable.xinhao3));
+				reSend();
 			} else if (12 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
-						R.drawable.batt3));
+						R.drawable.xinhao4));
+				reSend();
 			} else  {
 				signalstrength.setBackground(getResources().getDrawable(
-						R.drawable.batt4));
+						R.drawable.xinhao5));
+				reSend();
 			}
 
 			
@@ -952,8 +1214,11 @@ public class MainOperationActivity extends Activity {
 		Map<String, String> map1 = new HashMap<String, String>();
 		map1 = listmodexuanze.get(modexuanze);
 		stringmodexuanze = map1.get(SharedPreferencesDatabase.modexuanze);
-		modexuanzecanshu0 = map1.get(SharedPreferencesDatabase.modexuanzecanshu0);
-		modexuanzecanshu1 = map1.get(SharedPreferencesDatabase.modexuanzecanshu1);
+		modexuanzecanshua = map1.get(SharedPreferencesDatabase.modexuanzecanshu0);
+		modexuanzecanshub = map1.get(SharedPreferencesDatabase.modexuanzecanshu1);
+		
+		modexuanzecanshuc = map1.get(SharedPreferencesDatabase.modexuanzecanshu2);
+		modexuanzecanshud = map1.get(SharedPreferencesDatabase.modexuanzecanshu3);
 		
 		//zidongjiange
 		Map<String, String> map2 = new HashMap<String, String>();
@@ -967,8 +1232,13 @@ public class MainOperationActivity extends Activity {
 		{
 			zidongjiangeminute = 60 * Integer.parseInt(jiange);
 		}
-		
+		autorun();
 		}
+	}
+	private void autorun()
+	{
+		int interval = delay*60*zidongjiangeminute;
+		handler.postDelayed(jiangetask, interval);
 	}
 	private void setID() {
 		
@@ -1068,25 +1338,29 @@ public class MainOperationActivity extends Activity {
 							View view, int pos, long id) {
 						if(pos==0)
 						{
-							textmoxing1.setText(shangdi);
-							textmoxing2.setText(xiadi);
+							textmoxing1.setText(xiadi);
+							textmoxing2.setText(shangdi);
 							textmoxing3.setText(shendu);
-							textmoxing3.setVisibility(View.VISIBLE);
-							editmoxing3.setVisibility(View.VISIBLE);
+							textmoxing1.setVisibility(View.VISIBLE);
+							editmoxing1.setVisibility(View.VISIBLE);
+							textmoxing2.setVisibility(View.INVISIBLE);
+							editmoxing2.setVisibility(View.INVISIBLE);
+							textmoxing3.setVisibility(View.INVISIBLE);
+							editmoxing3.setVisibility(View.INVISIBLE);
 						}
 						else if(pos==1)
 						{
 							textmoxing1.setText(changdu);
 							textmoxing2.setText(kuandu);
-							textmoxing3.setVisibility(View.INVISIBLE);
-							editmoxing3.setVisibility(View.INVISIBLE);
+							textmoxing1.setVisibility(View.INVISIBLE);
+							editmoxing1.setVisibility(View.INVISIBLE);
 						}
 						else if(pos==2)
 						{
 							textmoxing1.setText(zhijing);
 							textmoxing2.setText(shendu);
-							textmoxing3.setVisibility(View.INVISIBLE);
-							editmoxing3.setVisibility(View.INVISIBLE);
+							textmoxing1.setVisibility(View.INVISIBLE);
+							editmoxing1.setVisibility(View.INVISIBLE);
 						}
 
 					}
@@ -1104,12 +1378,16 @@ public class MainOperationActivity extends Activity {
 		
 		//cod[0]=cur_cod;no3n[0]=cur_cod;nh4n[0]=cur_nh4n;
 		distance[0]=Float.parseFloat(opkuandu(null));
-		xiadi[0]=Float.parseFloat(opmoxing2(null));
+		if(opmoxing1(null)!=null)
+		xiadi[0]=Float.parseFloat(opmoxing1(null));
+		else
+			xiadi[0]=0;
 		cod[0]=Float.parseFloat(opCOD(null));
 		nh4n[0]=Float.parseFloat(opandan(null));
 		no3n[0]=Float.parseFloat(opxiaodan(null));
 		speed[0]=Float.parseFloat(opliusu(null));
 		deep[0]=Float.parseFloat(opshendu(null));
+		shuiwen[0]=Float.parseFloat(opshuiwen(null));
 		Log.i("tl-COD",String.format("%6.3f",cod[0]));
 		Log.i("tl-NO3-N",String.format("%6.3f",no3n[0]));
 		Log.i("tl-NH4-N",String.format("%6.3f",nh4n[0]));
@@ -1117,6 +1395,7 @@ public class MainOperationActivity extends Activity {
 		Log.i("tl-Speed",String.format("%6.3f",speed[0]));
 		Log.i("tl-Distance",String.format("%6.3f",distance[0]));
 		Log.i("tl-Power",String.format("%6.3f",power[0]));
+		Log.i("tl-shuiwen",String.format("%6.3f",shuiwen[0]));
 		
 		if(getmoxing()==0)
 		{					
@@ -1146,17 +1425,25 @@ public class MainOperationActivity extends Activity {
 	public void upload()
 	{
 		distance[bak_cnt-1]=Float.parseFloat(opkuandu(null));
-		xiadi[bak_cnt-1]=Float.parseFloat(opmoxing2(null));
+		if(opmoxing1(null)!=null)
+		xiadi[bak_cnt-1]=Float.parseFloat(opmoxing1(null));
+		else
+			xiadi[bak_cnt-1]=0;
 		cod[bak_cnt-1]=Float.parseFloat(opCOD(null));
 		nh4n[bak_cnt-1]=Float.parseFloat(opandan(null));
 		no3n[bak_cnt-1]=Float.parseFloat(opxiaodan(null));
 		speed[bak_cnt-1]=Float.parseFloat(opliusu(null));
 		deep[bak_cnt-1]=Float.parseFloat(opshendu(null));
 		temparture=opshuiwen(null);
-		watercap.set_did(user);		
+		try {
+			watercap.set_did(sharedPreferenceDatabase1.GetdeviceID(g_ctx));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 		watercap.set_address(opdizhi(null));
-		watercap.set_jingdu("120.325259");
-		watercap.set_weidu("37.330890");
+		watercap.set_jingdu(gpsprovider.getlongtitude());
+		watercap.set_weidu(gpsprovider.getlatitude());
 		watercap.set_batterypower(String.format("%6.6f", power[bak_cnt-1]));
 		watercap.set_watertemper(temparture);
 		watercap.set_cod(String.format("%6.6f", cod[bak_cnt-1]));
@@ -1165,7 +1452,9 @@ public class MainOperationActivity extends Activity {
 		watercap.set_flowspeed(String.format("%6.6f", speed[bak_cnt-1]));
 		watercap.set_waterdeep(String.format("%6.6f", deep[bak_cnt-1]));
 		watercap.set_widther(String.format("%6.6f", distance[bak_cnt-1]));
-		watercap.set_uptime("1451976178");
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
+		String date = sDateFormat.format(new java.util.Date());
+		watercap.set_uptime(date);
 		watercap.set_remark("备注");
 		
 		JSONObject img_json = new JSONObject();
@@ -1191,16 +1480,24 @@ public class MainOperationActivity extends Activity {
 			watercap.set_img(String.valueOf(listtupian.size() ), img_string);
 		}
 		watercap.set_model(String.valueOf(bak_cnt), mode_string);
+		Log.i("UPLOAD", String.format("%6.6f", cod[bak_cnt-1]));
+		if(watercap.getPacket()!=null)
+			Log.i("UPLOAD", watercap.getPacket());
+		else
+			Log.i("UPLOAD","packet is null");
 		new Thread(runnable).start();  
 	}
-	public void reSend() throws JSONException
+	public void reSend()
 	{
-		int count = sharedPreferenceDatabase1.GetshujuCount(g_ctx);
-		for(int i=0;i<count;i++)
+		int count = 0;//sharedPreferenceDatabase1.GetshujuCount(g_ctx);
+		if(count!=0)
 		{
-			String packet=sharedPreferenceDatabase1.Getshuju(g_ctx, i);
-			if(watercap.reSendNet(packet))
-				sharedPreferenceDatabase1.Deleteshuju(g_ctx, i);
+			for(int i=0;i<count;i++)
+			{
+				String packet=sharedPreferenceDatabase1.Getshuju(g_ctx, i);
+				if(watercap.reSendNet(packet))
+					sharedPreferenceDatabase1.Deleteshuju(g_ctx, i);
+			}
 		}
 	}
 	Runnable runnable = new Runnable(){  
@@ -1208,15 +1505,28 @@ public class MainOperationActivity extends Activity {
 	    public void run() {
 	    	String packet=watercap.getPacket();
 	    	if(packet!=null)
-	        if(watercap.sendNet()!="ok")
-	        {
-	        	try {
-					sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	        }
+	    	{
+		        if(watercap.sendNet()!="ok")
+		        {
+		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
+		        	show="上传失败！";
+		        	handler.post(showmessagetask);
+		        	try {
+						sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        }
+		        else
+		        {
+		        	//((MainOperationActivity) g_ctx).showtishi("上传成功!");
+		        	show="上传成功!";
+		        	handler.post(showmessagetask);
+		        	if(SysApplication.getInstance().cameraactivity!=null)
+		        	SysApplication.getInstance().cameraactivity.deletetupian();
+		        }
+	    	}
 	    }
 	};
 	private class ReadThread extends Thread {
@@ -1267,20 +1577,33 @@ public class MainOperationActivity extends Activity {
 	    return Float.intBitsToFloat(l);                    
 	}
 	protected void onDataReceived(final byte[] buffer, final int size) {
+		
         runOnUiThread(new Runnable() {
                 public void run() {
                 		String ret=byte2HexStr(buffer,size);
 						Log.i("485",size + "==>"+ret);
 						if(header_got && to_read>0)
-						{	
+						{
 							int cur=read_len-to_read;
-							//Log.i("Response", String.valueOf(response.length));
+							Log.i("Response1 ", String.valueOf(cur)+"+"+response);
 							for(int j=0;j<to_read;j++)
-							response[j+cur]=(byte) (buffer[j] & 0xFF);
+							{
+								response[j+cur]=(byte) (buffer[j] & 0xFF);
+								//Log.i("DEBUG0", String.valueOf(response[j+cur]));
+							}
+							
+							if(to_read>size)
+							{
+								to_read=to_read-size;
+								return ;
+							}
+								
+							//for(int j=0;j<read_len;j++)
+							//	Log.i("DEBUG", String.valueOf(response[j]));
 							read_len=0;
 							to_read=0;
 							header_got=false;
-							Log.i("Response1", byte2HexStr(response,28));
+							Log.i("Response2", byte2HexStr(response,32));
 							Log.i("COD",String.format("%6.3f",byte2float(response,0)));
 							Log.i("NO3-N",String.format("%6.3f",byte2float(response,4)));
 							Log.i("NH4-N",String.format("%6.3f",byte2float(response,8)));
@@ -1288,13 +1611,15 @@ public class MainOperationActivity extends Activity {
 							Log.i("Speed",String.format("%6.3f",byte2float(response,16)));
 							Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
 							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
+							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
 							cur_cod=(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							cur_nh4n=byte2float(response,8);
+							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							cur_nh4n=0;//byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
 							cur_distance=byte2float(response,20);
 							cur_power=byte2float(response,24);
+							cur_shuiwen=byte2float(response,28);
 							Log.i("COD-J",String.format("%6.3f",cur_cod));
 							Log.i("NO3-N-J",String.format("%6.3f",cur_no3n));
 							handler.post(updatevalue);
@@ -1324,6 +1649,7 @@ public class MainOperationActivity extends Activity {
 									to_read=read_len-(size-index);
 									Log.i("to_read", String.valueOf(to_read));
 									Log.i("read_len", String.valueOf(read_len));
+									Log.i("Response0", byte2HexStr(response,32));
 								}
 								else
 								{
@@ -1332,7 +1658,7 @@ public class MainOperationActivity extends Activity {
 									read_len=0;
 									to_read=0;
 									header_got=false;
-									Log.i("Response2", byte2HexStr(response,28));
+									Log.i("Response3", byte2HexStr(response,32));
 								}
 							}
 						}
@@ -1376,12 +1702,14 @@ public class MainOperationActivity extends Activity {
 			opliusu(String.format("%6.6f",cur_speed));
 			opshendu(String.format("%6.6f",cur_deep));
 			opkuandu(String.format("%6.6f",cur_distance));
+			opshuiwen(String.format("%6.6f", cur_shuiwen));
 			Log.i("Cap-cod", String.format("%6.6f",cur_cod));
 			Log.i("Cap-no3n", String.format("%6.6f",cur_no3n));
 			Log.i("Cap-nh4n", String.format("%6.6f",cur_nh4n));
 			Log.i("Cap-speed", String.format("%6.6f",cur_speed));
 			Log.i("Cap-deep", String.format("%6.6f",cur_deep));
 			Log.i("Cap-distance", String.format("%6.6f",cur_distance));
+			Log.i("Cap-shuiwen", String.format("%6.6f",cur_shuiwen));
 		}
 	};
 	private final Runnable updatetl = new Runnable() {
@@ -1389,12 +1717,12 @@ public class MainOperationActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			//add dialog display "cap done"
-			opCODtongliang(String.format("%6.6f",avg_cod[cnt-1]));
-			opxiaodantongliang(String.format("%6.6f",avg_no3n[cnt-1]));
-			opandantongliang(String.format("%6.6f",avg_nh4n[cnt-1]));
-			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[cnt-1]));
-			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[cnt-1]));
-			Log.i("TL-cod", String.format("%6.6f",avg_cod[cnt-1]));
+			opCODtongliang(String.format("%6.6f",avg_cod[bak_cnt-1]));
+			opxiaodantongliang(String.format("%6.6f",avg_no3n[bak_cnt-1]));
+			opandantongliang(String.format("%6.6f",avg_nh4n[bak_cnt-1]));
+			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[bak_cnt-1]));
+			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[bak_cnt-1]));
+			Log.i("TL-cod", String.format("%6.6f",avg_cod[bak_cnt-1]));
 		}
 	};
 	

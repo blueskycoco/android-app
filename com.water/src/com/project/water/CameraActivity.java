@@ -481,19 +481,19 @@ public class CameraActivity extends Activity {
 	         
 	         if (signel <= 2 || signel == 99) {
 	        	 signalstrength.setBackground(getResources().getDrawable(
-							R.drawable.batt0));
+							R.drawable.xinhao1));
 				} else if (5 > signel) {
 					signalstrength.setBackground(getResources().getDrawable(
-							R.drawable.batt1));
+							R.drawable.xinhao2));
 				} else if (8 > signel) {
 					signalstrength.setBackground(getResources().getDrawable(
-							R.drawable.batt2));
+							R.drawable.xinhao3));
 				} else if (12 > signel) {
 					signalstrength.setBackground(getResources().getDrawable(
-							R.drawable.batt3));
+							R.drawable.xinhao4));
 				} else  {
 					signalstrength.setBackground(getResources().getDrawable(
-							R.drawable.batt4));
+							R.drawable.xinhao5));
 				}
 
 				

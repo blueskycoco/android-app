@@ -316,12 +316,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/editcanshu1"
+                android:layout_toLeftOf="@+id/editcanshua"
                 android:gravity="right"
                 android:text="@string/canshu" />
 
             <EditText
-                android:id="@+id/editcanshu1"
+                android:id="@+id/editcanshua"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/editcanshuc"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+            
+            <EditText
+                android:id="@+id/editcanshuc"
                 style="@style/EditText"
                 android:singleLine="true"
                 android:layout_width="200dp"
@@ -331,13 +341,24 @@
                 android:paddingBottom="1dip" />
 
             <EditText
-                android:id="@+id/editcanshu2"
+                android:id="@+id/editcanshub"
+                style="@style/EditText"
+                android:singleLine="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/editcanshud"
+                android:layout_below="@+id/editcanshua"
+                android:background="@android:drawable/edit_text"
+                android:paddingBottom="1dip" />
+            
+            <EditText
+                android:id="@+id/editcanshud"
                 style="@style/EditText"
                 android:singleLine="true"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/editcanshu1"
+                android:layout_below="@+id/editcanshuc"
                 android:background="@android:drawable/edit_text"
                 android:paddingBottom="1dip" />
         </RelativeLayout>

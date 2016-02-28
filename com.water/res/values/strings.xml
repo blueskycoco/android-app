@@ -89,9 +89,9 @@
     <string  name="activatelocation">请开启GPS！</string>
     
     <string  name="quyangcishu">取样次数</string>
-    <string  name="codtongliang">COD通量</string>
-    <string  name="xiaodantongliang">硝氮通量</string>
-    <string  name="andantongliang">氨氮通量</string>
+    <string  name="codtongliang">COD通量g/s</string>
+    <string  name="xiaodantongliang">硝氮通量g/s</string>
+    <string  name="andantongliang">氨氮通量g/s</string>
     
     
     <string  name="tixing">梯形</string>
@@ -102,6 +102,9 @@
     
     <string  name="shangdi">上底</string>
     <string  name="xiadi">下底</string>
+    
+    <string  name="shujuceliangtext">采集传感器数据的时间可能得需要30s-40s</string>
+    <string  name="danwei">g/s</string>
     
     
     
