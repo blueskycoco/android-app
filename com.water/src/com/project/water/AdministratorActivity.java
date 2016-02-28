@@ -359,7 +359,7 @@ public class AdministratorActivity extends Activity {
 
 	public boolean checkdeviceIDvalue() {
 		boolean rtn = false;
-		if (6 == deviceID.getText().toString().length()) {
+		if (6 >= deviceID.getText().toString().length()) {
 			rtn = true;
 		}
 		return rtn;

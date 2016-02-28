@@ -290,7 +290,7 @@ public class watercap {
                 String error = jsonObject2.getString("error");
                 //String info = jsonObject.getString("info");
                 Log.v("<=="," status " +status+" data "+data+" error "+error);
-                if(status == "ERR")
+                if(status.compareTo("ERR")==0)
                 	return "failed";
             } else {
                 Log.e("CAP","Error Response" + httpResponse.getStatusLine().toString());

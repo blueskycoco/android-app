@@ -450,6 +450,12 @@ public class MainOperationActivity extends Activity {
 		setspinnermoxing();
 		
 		getbundledetail();
+		try {
+			didvalue = sharedPreferenceDatabase.GetdeviceID(g_ctx);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		gpsprovider = GPSProvider.getInstance(MainOperationActivity.this);
 		Init();
@@ -1435,12 +1441,7 @@ public class MainOperationActivity extends Activity {
 		speed[bak_cnt-1]=Float.parseFloat(opliusu(null));
 		deep[bak_cnt-1]=Float.parseFloat(opshendu(null));
 		temparture=opshuiwen(null);
-		try {
-			watercap.set_did(sharedPreferenceDatabase1.GetdeviceID(g_ctx));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		watercap.set_did(didvalue);
 		watercap.set_address(opdizhi(null));
 		watercap.set_jingdu(gpsprovider.getlongtitude());
 		watercap.set_weidu(gpsprovider.getlatitude());
@@ -1500,13 +1501,14 @@ public class MainOperationActivity extends Activity {
 			}
 		}
 	}
+	
 	Runnable runnable = new Runnable(){  
 	    @Override  
 	    public void run() {
 	    	String packet=watercap.getPacket();
 	    	if(packet!=null)
 	    	{
-		        if(watercap.sendNet()!="ok")
+		        if(watercap.sendNet().compareTo("ok")!=0)
 		        {
 		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
 		        	show="上传失败！";
@@ -1710,6 +1712,8 @@ public class MainOperationActivity extends Activity {
 			Log.i("Cap-deep", String.format("%6.6f",cur_deep));
 			Log.i("Cap-distance", String.format("%6.6f",cur_distance));
 			Log.i("Cap-shuiwen", String.format("%6.6f",cur_shuiwen));
+			show="采集数据刷新完成！";
+        	handler.post(showmessagetask);
 		}
 	};
 	private final Runnable updatetl = new Runnable() {
@@ -1723,6 +1727,8 @@ public class MainOperationActivity extends Activity {
 			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[bak_cnt-1]));
 			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[bak_cnt-1]));
 			Log.i("TL-cod", String.format("%6.6f",avg_cod[bak_cnt-1]));
+			show="通量计算完成！";
+        	handler.post(showmessagetask);
 		}
 	};
 	
