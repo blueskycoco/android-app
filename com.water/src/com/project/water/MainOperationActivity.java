@@ -653,7 +653,7 @@ public class MainOperationActivity extends Activity {
 			if(editCOD.getText().toString().length()>0)
 				return textcishutime.getText().toString();
 			else
-				return "1";
+				return "0";
 		}
 	}
 	
@@ -926,7 +926,7 @@ public class MainOperationActivity extends Activity {
 
 				else
 				{
-					Log.i("ERROR","in store,need click cap first");
+					Log.i("ERROR","in calc,need click cap ,store first");
 					 Toast.makeText(g_ctx, "通量计算失败，请先点采集存储按键！",
 					 Toast.LENGTH_LONG).show();
 				}
@@ -948,7 +948,7 @@ public class MainOperationActivity extends Activity {
 
 				else
 				{
-					Log.i("ERROR","in store,need click cap first");
+					Log.i("ERROR","in upload,need click cap ,store,calc first");
 					 Toast.makeText(g_ctx, "上传失败，请先点采集存储计算按键！",
 					 Toast.LENGTH_LONG).show();
 				}
@@ -1593,7 +1593,7 @@ public class MainOperationActivity extends Activity {
 								response[j+cur]=(byte) (buffer[j] & 0xFF);
 								//Log.i("DEBUG0", String.valueOf(response[j+cur]));
 							}
-							
+							Log.i("CCC", String.valueOf(to_read)+" size "+String.valueOf(size));
 							if(to_read>size)
 							{
 								to_read=to_read-size;
