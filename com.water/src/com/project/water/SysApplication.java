@@ -30,6 +30,10 @@ public class SysApplication extends Application {
     public void addActivity(Activity activity) {   
         mList.add(activity);   
     }   
+ // delete Activity    
+    public void deleteActivity(Activity activity) {   
+        mList.remove(activity);   
+    }   
     //关闭每一个list内的activity  
     public void exit() {   
         try {   

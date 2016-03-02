@@ -25,6 +25,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -130,6 +131,8 @@ public class AdministratorActivity extends Activity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		startActivity(intent);*/
 		super.onBackPressed();
+		SysApplication.getInstance().deleteActivity(this);
+		this.finish();
 	}
 
 	public void setIMEI() {
@@ -279,6 +282,16 @@ public class AdministratorActivity extends Activity {
 
 		});
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			return true;
+			//backpressed();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 	public void setButtontianjiajiange() {
 		buttontianjiajiange.setOnClickListener(new OnClickListener() {
@@ -298,11 +311,46 @@ public class AdministratorActivity extends Activity {
 					map.put(SharedPreferencesDatabase.hour, "");
 					map.put(SharedPreferencesDatabase.minute, "1");
 				}
-				listceliangfangshi.add(map);
-				setspinnerceliangfangshi();
+				if(hasjiange(map)==true)
+				{
+					 Toast.makeText(context, "相同的自动测试时间间隔",
+					 Toast.LENGTH_SHORT).show();
+				}
+				else
+				{
+					listceliangfangshi.add(map);
+					setspinnerceliangfangshi();
+				}
 			}
 
 		});
+	}
+	public Boolean hasjiange(Map<String, String> mapnew)
+	{
+		String jiange = celiangfangshi.getText().toString();
+		for(int i=0;i<listceliangfangshi.size();i++)
+		{
+			Map<String, String> map = new HashMap<String, String>();
+			map = listceliangfangshi.get(i);
+			if(map.equals(mapnew))
+				return true;
+/*			String decimal = map.get(SharedPreferencesDatabase.decimal);
+			String hour = map.get(SharedPreferencesDatabase.hour);
+			String minute = map.get(SharedPreferencesDatabase.minute);
+			if(jiange.equals(decimal)){
+				if (spinnerceliangfangshiunit.getSelectedItemPosition() > 0) {
+					if(hour.equals("1"))
+						return true;
+
+				} else {
+					minute.equals("1")
+					return true;
+				}
+			}*/
+				
+				
+		}
+		return false;
 	}
 
 	public void setButtonshanchumode() {
@@ -338,8 +386,13 @@ public class AdministratorActivity extends Activity {
 					String modexunze = map1
 							.get(SharedPreferencesDatabase.modexuanze);
 					if (modexunze.equals(canshuname)) {
-						listmodexuanze.remove(i);
-						break;
+						map1.put(SharedPreferencesDatabase.modexuanzecanshu0, canshua);
+						map1.put(SharedPreferencesDatabase.modexuanzecanshu1, canshub);
+						map1.put(SharedPreferencesDatabase.modexuanzecanshu2, canshuc);
+						map1.put(SharedPreferencesDatabase.modexuanzecanshu3, canshud);
+						return;
+						/*listmodexuanze.remove(i);
+						break;*/
 					}
 
 				}

@@ -1020,7 +1020,8 @@ public class MainOperationActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			backpressed();
+			return true;
+			//backpressed();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -1071,6 +1072,8 @@ public class MainOperationActivity extends Activity {
 		intent.setClass(MainOperationActivity.this, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		startActivity(intent);
+		SysApplication.getInstance().deleteActivity(this);
+		this.finish();
 	}
 
 	public void getdeviceinfo() {
