@@ -354,12 +354,16 @@ public class MainOperationActivity extends Activity {
 			re+=nh4n[times]*wight[i];
 		}
 		r = (distance[times]*distance[times])/(8*deep[times])+deep[times]/2;
+		//Log.i("半径", "("+String.format("%6.3f", distance[times])+"*"+String.format("%6.3f", distance[times])+")/8*"+String.format("%6.3f",deep[times])+")"+"+"+String.format("%6.3f", deep[times])+"/2");
+		//Log.i("半径", String.format("%6.3f",r));
+		//Log.i("COD通量", String.format("%6.3f", re)+"*sin("+String.format("%6.3f", distance[times])+"/(2*"+String.format("%6.3f", r)+"))*"+String.format("%6.3f", r)+"*"+String.format("%6.3f", r));
+		//Log.i("COD通量", "-0.5*"+String.format("%6.3f", distance[times])+"*("+String.format("%6.3f", r)+"-"+String.format("%6.3f", deep[times])+"))");
 		if(type==0)
-			avg_cod[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+			avg_cod[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		else if(type==1)
-			avg_no3n[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+			avg_no3n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		else
-			avg_nh4n[times]=(float) (re*Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times]));
+			avg_nh4n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		if(type==0)
 		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
 		else if(type==1)
@@ -463,9 +467,11 @@ public class MainOperationActivity extends Activity {
 		setID();
 		activateLocation();
 		initsignalstrength();
-		
+		//opmoxing1("3");
 		cod_a=Float.parseFloat(modexuanzecanshua);cod_b=Float.parseFloat(modexuanzecanshub);
 		no3n_c=Float.parseFloat(modexuanzecanshuc);no3n_d=Float.parseFloat(modexuanzecanshud);
+		opmoxing1("3");
+		opdizhi("请输入地址！");
 	}
 	
 	private void setinputchange()
@@ -514,6 +520,7 @@ public class MainOperationActivity extends Activity {
 		}
 		else
 		{
+			Log.i("input", "cod is null");
 			if(editCOD.getText().toString().length()>0)
 				return editCOD.getText().toString();
 			else
@@ -531,6 +538,7 @@ public class MainOperationActivity extends Activity {
 		
 		else
 		{
+			Log.i("input", "liusu is null");
 			if(editCOD.getText().toString().length()>0)
 				return editliusu.getText().toString();
 			else
@@ -548,6 +556,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "xiaodan is null");
 			if(editCOD.getText().toString().length()>0)
 				return editxiaodan.getText().toString();
 			else
@@ -565,6 +574,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "shendu is null");
 			if(editCOD.getText().toString().length()>0)
 				return editshendu.getText().toString();
 			else
@@ -582,6 +592,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "andan is null");
 			if(editCOD.getText().toString().length()>0)
 				return editandan.getText().toString();
 			else
@@ -599,6 +610,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "kuandu is null");
 			if(editCOD.getText().toString().length()>0)
 				return editkuandu.getText().toString();
 			else
@@ -616,6 +628,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "shuiwen is null");
 			if(editCOD.getText().toString().length()>0)
 				return editshuiwen.getText().toString();
 			else
@@ -633,6 +646,7 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
+			Log.i("input", "dizhi is null");
 			if(editCOD.getText().toString().length()>0)
 				return editdizhi.getText().toString();
 			else
@@ -719,10 +733,11 @@ public class MainOperationActivity extends Activity {
 
 		else
 		{
-			if(editCOD.getText().toString().length()>0)
+			Log.i("USR", String.valueOf(editCOD.getText().toString().length())+"=>>"+editmoxing1.getText().toString());
+			if(editCOD.getText().toString().compareTo("")!=0)
 				return editmoxing1.getText().toString();
 			else
-				return "1";
+				return "3";
 		}
 	}
 	
@@ -1379,6 +1394,8 @@ public class MainOperationActivity extends Activity {
 	}
 	public void auto_process() throws InterruptedException
 	{
+		show="自动测量-采集中...";
+    	handler.post(showmessagetask);
 		send_485();
 		Thread.sleep(30000);
 		
@@ -1394,16 +1411,17 @@ public class MainOperationActivity extends Activity {
 		speed[0]=Float.parseFloat(opliusu(null));
 		deep[0]=Float.parseFloat(opshendu(null));
 		shuiwen[0]=Float.parseFloat(opshuiwen(null));
-		Log.i("tl-COD",String.format("%6.3f",cod[0]));
-		Log.i("tl-NO3-N",String.format("%6.3f",no3n[0]));
-		Log.i("tl-NH4-N",String.format("%6.3f",nh4n[0]));
-		Log.i("tl-Deep",String.format("%6.3f",deep[0]));
-		Log.i("tl-Speed",String.format("%6.3f",speed[0]));
-		Log.i("tl-Distance",String.format("%6.3f",distance[0]));
-		Log.i("tl-Power",String.format("%6.3f",power[0]));
-		Log.i("tl-shuiwen",String.format("%6.3f",shuiwen[0]));
-		
-		if(getmoxing()==0)
+		Log.i("auto tl-COD",String.format("%6.3f",cod[0]));
+		Log.i("auto tl-NO3-N",String.format("%6.3f",no3n[0]));
+		Log.i("auto tl-NH4-N",String.format("%6.3f",nh4n[0]));
+		Log.i("auto tl-Deep",String.format("%6.3f",deep[0]));
+		Log.i("auto tl-Speed",String.format("%6.3f",speed[0]));
+		Log.i("auto tl-Distance",String.format("%6.3f",distance[0]));
+		Log.i("auto tl-Power",String.format("%6.3f",power[0]));
+		Log.i("auto tl-shuiwen",String.format("%6.3f",shuiwen[0]));
+		show="自动测量-通量计算中...";
+    	handler.post(showmessagetask);
+    	if(getmoxing()==0)
 		{					
 			count_tixing_tl(distance[0],xiadi[0],0,0);
 			count_tixing_tl(distance[0],xiadi[0],0,1);
@@ -1425,8 +1443,14 @@ public class MainOperationActivity extends Activity {
 			String.format("%6.6f",cod[0]),String.format("%6.6f",no3n[0]),String.format("%6.6f",nh4n[0]),
 			String.format("%6.6f",avg_cod[0]),String.format("%6.6f",avg_no3n[0]),String.format("%6.6f",avg_nh4n[0]),
 			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),String.valueOf(getmoxing()+1),
-			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),"1",mode_string);
+			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),String.valueOf(1),mode_string);
+		Log.i("auto mode", mode_string);
+		bak_cnt=1;
+		handler.post(updatetl);
+		show="自动测量-上传中...";
+    	handler.post(showmessagetask);
 		upload();
+		Log.i("AUTO","auto process done.");
 	}
 	public void upload()
 	{
@@ -1508,6 +1532,7 @@ public class MainOperationActivity extends Activity {
 	    	String packet=watercap.getPacket();
 	    	if(packet!=null)
 	    	{
+	    		Log.i("SAVE", packet);
 		        if(watercap.sendNet().compareTo("ok")!=0)
 		        {
 		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
@@ -1614,9 +1639,9 @@ public class MainOperationActivity extends Activity {
 							Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
 							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
-							cur_cod=(byte2float(response,0)-cod_zero)*cod_a+cod_b;
+							cur_cod=0;//(byte2float(response,0)-cod_zero)*cod_a+cod_b;
 							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							cur_nh4n=0;//byte2float(response,8);
+							cur_nh4n=byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
 							cur_distance=byte2float(response,20);
@@ -1686,7 +1711,7 @@ public class MainOperationActivity extends Activity {
 			mReadThread = new ReadThread();
 			mReadThread.start();
 			//mOutputStream.write(cmd);
-			System.out.println("串口数据发送成功");
+			//System.out.println("串口数据发送成功");
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
