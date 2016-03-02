@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 class SharedPreferencesDatabase {
 	public static final String DATABASE = "Database";
@@ -150,17 +151,23 @@ class SharedPreferencesDatabase {
 			jsonMainValue.put(deviceID, jsondeviceID);
 			
 			// CODLingdian
-						JSONObject jsonCODLingdian = new JSONObject();
-						jsonCODLingdian.put(CODLingdianstr, "0");
+			JSONObject jsonCODLingdian = new JSONObject();
+			jsonCODLingdian.put(CODLingdianstr, "0");
 
-						jsonMainValue.put(CODLingdian, jsonCODLingdian);
-						
-						// 设备ID
-						JSONObject jsonxiaodanLingdian = new JSONObject();
-						jsonxiaodanLingdian.put(xiaodanLingdianstr, "0");
+			jsonMainValue.put(CODLingdian, jsonCODLingdian);
+			
+			// 设备ID
+			JSONObject jsonxiaodanLingdian = new JSONObject();
+			jsonxiaodanLingdian.put(xiaodanLingdianstr, "0");
 
-						jsonMainValue.put(xiaodanLingdian, jsonxiaodanLingdian);
+			jsonMainValue.put(xiaodanLingdian, jsonxiaodanLingdian);
+			
+			JSONArray jsonshujuArray = new JSONArray();
+			JSONObject jsonshuju = new JSONObject();
+			//jsonshuju.put("shujushuzustr", "0");
 
+			jsonshujuArray.put(jsonshuju);
+			jsonMainValue.put("shujushuzu", jsonshujuArray);			
 			editor.putString(JsonMain, jsonMainValue.toString());
 
 			editor.commit();
@@ -391,7 +398,7 @@ class SharedPreferencesDatabase {
 		editor.putString(JsonMain, jsonMainValue.toString());
 
 		rtn = editor.commit();
-
+		Log.i("Setshu", tmp);
 		return rtn;
 	}
 	
@@ -444,7 +451,7 @@ class SharedPreferencesDatabase {
 			e.printStackTrace();
 		}
 		
-
+		Log.i("Getshu", rtn);
 		return rtn;
 	}
 	
@@ -468,7 +475,7 @@ class SharedPreferencesDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		Log.i("Delshu", String.valueOf(id));
 		return rtnvalue;
 	}
 

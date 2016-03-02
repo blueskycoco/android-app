@@ -74,7 +74,7 @@ public class MainOperationActivity extends Activity {
 	GPSProvider gpsprovider;
 	private final Handler handler = new Handler();
 	Boolean auto = true;
-
+	Boolean auto_mode = false;
 	String user;
 	int modexuanze;
 	int zidongjiange;
@@ -433,8 +433,10 @@ public class MainOperationActivity extends Activity {
 			listceliangfangshi = sharedPreferenceDatabase
 					.GetjiangeArray((Context) this);
 			
-			cod_zero = Integer.parseInt(sharedPreferenceDatabase.GetCODLingdian((Context) this));
-			no3n_zero = Integer.parseInt(sharedPreferenceDatabase.GetxiaodanLingdian((Context) this));
+			cod_zero = Float.parseFloat(sharedPreferenceDatabase.GetCODLingdian((Context) this));
+			no3n_zero = Float.parseFloat(sharedPreferenceDatabase.GetxiaodanLingdian((Context) this));
+			Log.i("CREATE cod zero", String.valueOf(cod_zero));
+			Log.i("CREATE no3n zero", String.valueOf(no3n_zero));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -448,6 +450,8 @@ public class MainOperationActivity extends Activity {
 		setbuttonshujucunchu();
 		batteryLevel();
 		setbuttontongliangjisuan();
+		setButtonxiaodanLingdian();
+		setButtonCODLingdian();
 		SysApplication.getInstance().addActivity(this);
 
 		zidongjiangeminute = 0;
@@ -983,6 +987,8 @@ public class MainOperationActivity extends Activity {
 				try {
 					sharedPreferenceDatabase.SetCODLingdian(g_ctx, editCOD.getText().toString());
 					cod_zero = Float.parseFloat(editCOD.getText().toString());
+					editCOD.setText("0");
+					Log.i("ZERO Cod", String.valueOf(cod_zero));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -998,8 +1004,10 @@ public class MainOperationActivity extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				try {
-					sharedPreferenceDatabase.SetCODLingdian(g_ctx, editxiaodan.getText().toString());
+					sharedPreferenceDatabase.SetxiaodanLingdian(g_ctx, editxiaodan.getText().toString());
 					no3n_zero = Float.parseFloat(editxiaodan.getText().toString());
+					editxiaodan.setText("0");
+					Log.i("ZERO no3n", String.valueOf(no3n_zero));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -1209,19 +1217,19 @@ public class MainOperationActivity extends Activity {
 			} else if (5 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao2));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else if (8 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao3));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else if (12 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao4));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else  {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao5));
-				reSend();
+				new Thread(runnable_resend).start();
 			}
 
 			
@@ -1264,6 +1272,7 @@ public class MainOperationActivity extends Activity {
 	private void autorun()
 	{
 		int interval = delay*60*zidongjiangeminute;
+		auto_mode=true;
 		handler.postDelayed(jiangetask, interval);
 	}
 	private void setID() {
@@ -1487,9 +1496,10 @@ public class MainOperationActivity extends Activity {
 		watercap.set_flowspeed(String.format("%6.6f", speed[bak_cnt-1]));
 		watercap.set_waterdeep(String.format("%6.6f", deep[bak_cnt-1]));
 		watercap.set_widther(String.format("%6.6f", distance[bak_cnt-1]));
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
-		String date = sDateFormat.format(new java.util.Date());
-		watercap.set_uptime(date);
+		//SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
+		//String date = sDateFormat.format(new java.util.Date());
+		Date d=new Date(System.currentTimeMillis());		
+		watercap.set_uptime(String.valueOf(d.getTime()));
 		watercap.set_remark("备注");
 		
 		JSONObject img_json = new JSONObject();
@@ -1526,14 +1536,17 @@ public class MainOperationActivity extends Activity {
 	}
 	public void reSend()
 	{
-		int count = 0;//sharedPreferenceDatabase1.GetshujuCount(g_ctx);
+		int count = sharedPreferenceDatabase.GetshujuCount(g_ctx);
+		Log.i("RESEND", "count is"+String.valueOf(count));
 		if(count!=0)
 		{
 			for(int i=0;i<count;i++)
 			{
-				String packet=sharedPreferenceDatabase1.Getshuju(g_ctx, i);
+				String packet=sharedPreferenceDatabase.Getshuju(g_ctx, i);
+				Log.i("RESEND", "resend "+packet);
+				if(packet.compareTo("{}")!=0)
 				if(watercap.reSendNet(packet))
-					sharedPreferenceDatabase1.Deleteshuju(g_ctx, i);
+					sharedPreferenceDatabase.Deleteshuju(g_ctx, i);
 			}
 		}
 	}
@@ -1542,6 +1555,12 @@ public class MainOperationActivity extends Activity {
 	    public void run() {
 	    	send_485();
 	    }
+	    };
+    Runnable runnable_resend = new Runnable(){  
+		    @Override  
+		    public void run() {
+		    	reSend();
+		    }
 	    };
 	Runnable runnable = new Runnable(){  
 	    @Override  
@@ -1555,17 +1574,18 @@ public class MainOperationActivity extends Activity {
 		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
 		        	show="上传失败！";
 		        	handler.post(showmessagetask);
-		        	if(g_ctx==null)
-		        		Log.i("SHARE", "ctx is null");
-		        	if(sharedPreferenceDatabase1!=null)
-		        	try {
-						sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		        	if(sharedPreferenceDatabase!=null)
+		        	{
+		        		try {
+		        			Log.i("SAVE","to save "+packet);
+							sharedPreferenceDatabase.Setshuju(g_ctx,packet);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	}
 		        	else
-		        		Log.i("SHARE", "is null");
+		        		Log.i("SAVE", "is null");
 		        }
 		        else
 		        {
@@ -1661,9 +1681,11 @@ public class MainOperationActivity extends Activity {
 							Log.i("Distance",String.format("%6.3f",byte2float(response,20)));
 							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
+							Log.i("no3n zero", String.valueOf(no3n_zero));
+							Log.i("cod zero", String.valueOf(cod_zero));
 							cur_cod=0;//(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							cur_nh4n=0;//byte2float(response,8);
+							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							cur_nh4n=byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
 							cur_distance=byte2float(response,20);
@@ -1760,7 +1782,7 @@ public class MainOperationActivity extends Activity {
 			Log.i("Cap-shuiwen", String.format("%6.6f",cur_shuiwen));
 			show="采集数据刷新完成！";
         	handler.post(showmessagetask);
-			if(auto)
+			if(auto_mode)
 				try {
 					auto_process();
 				} catch (InterruptedException e) {
@@ -1782,7 +1804,7 @@ public class MainOperationActivity extends Activity {
 			Log.i("TL-cod", String.format("%6.6f",avg_cod[bak_cnt-1]));
 			show="通量计算完成！";
         	handler.post(showmessagetask);
-        	if(auto)
+        	if(auto_mode)
 					upload();
 		}
 	};

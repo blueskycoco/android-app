@@ -199,8 +199,11 @@ public class watercap {
                 JSONObject jsonObject2 = new JSONObject(data);
                 String error = jsonObject2.getString("error");
                 Log.v("<=="," status " +status+" data "+data+" error "+error);
+                if(status.compareTo("ERR")==0)
+                	return false;
             } else {
                 Log.e("CAP","Error Response" + httpResponse.getStatusLine().toString());
+                return false;
             }
         } catch (UnsupportedEncodingException e) {
         } catch (ClientProtocolException e) {
@@ -294,6 +297,7 @@ public class watercap {
                 	return "failed";
             } else {
                 Log.e("CAP","Error Response" + httpResponse.getStatusLine().toString());
+                return "false";
             }
         } catch (UnsupportedEncodingException e) {
         } catch (ClientProtocolException e) {
