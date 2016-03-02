@@ -1555,12 +1555,17 @@ public class MainOperationActivity extends Activity {
 		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
 		        	show="上传失败！";
 		        	handler.post(showmessagetask);
+		        	if(g_ctx==null)
+		        		Log.i("SHARE", "ctx is null");
+		        	if(sharedPreferenceDatabase1!=null)
 		        	try {
 						sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+		        	else
+		        		Log.i("SHARE", "is null");
 		        }
 		        else
 		        {
