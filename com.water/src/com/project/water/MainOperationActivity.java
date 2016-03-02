@@ -74,7 +74,7 @@ public class MainOperationActivity extends Activity {
 	GPSProvider gpsprovider;
 	private final Handler handler = new Handler();
 	Boolean auto = true;
-
+	Boolean auto_mode = false;
 	String user;
 	int modexuanze;
 	int zidongjiange;
@@ -845,6 +845,7 @@ public class MainOperationActivity extends Activity {
 					speed[cnt]=cur_speed;
 					deep[cnt]=cur_deep;
 					distance[cnt]=cur_distance;
+					power[cnt]=cur_power;
 					if(getmoxing()==0)
 					{
 						if(opmoxing1(null)!=null)
@@ -862,6 +863,7 @@ public class MainOperationActivity extends Activity {
 					Log.i("STORE speed", String.valueOf(speed[cnt]));
 					Log.i("STORE deep", String.valueOf(deep[cnt]));
 					Log.i("STORE distance", String.valueOf(distance[cnt]));
+					Log.i("STORE power", String.valueOf(power[cnt]));
 					cnt++;
 					opcishutime(String.valueOf(cnt));
 				}
@@ -1018,7 +1020,8 @@ public class MainOperationActivity extends Activity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			backpressed();
+			return true;
+			//backpressed();
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -1069,6 +1072,8 @@ public class MainOperationActivity extends Activity {
 		intent.setClass(MainOperationActivity.this, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		startActivity(intent);
+		SysApplication.getInstance().deleteActivity(this);
+		this.finish();
 	}
 
 	public void getdeviceinfo() {
@@ -1139,12 +1144,12 @@ public class MainOperationActivity extends Activity {
 							R.string.connected));
 				}*/
 
-				try {
-					auto_process();
-				} catch (InterruptedException e) {
+				//try {
+					send_485();
+				//} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				//	e.printStackTrace();
+				//}
 				int interval = delay*60*zidongjiangeminute;
 				handler.postDelayed(this, interval);
 
@@ -1259,6 +1264,7 @@ public class MainOperationActivity extends Activity {
 	private void autorun()
 	{
 		int interval = delay*60*zidongjiangeminute;
+		auto_mode=true;
 		handler.postDelayed(jiangetask, interval);
 	}
 	private void setID() {
@@ -1396,10 +1402,13 @@ public class MainOperationActivity extends Activity {
 	{
 		show="自动测量-采集中...";
     	handler.post(showmessagetask);
-		send_485();
-		Thread.sleep(30000);
-		
+		//send_485();
+    	//new Thread(send_485_thread).start();  
+		//Log.i("WAIT", "Begin to wait");
+		//Thread.sleep(50000);
+		//Log.i("WAIT", "End to wait");
 		//cod[0]=cur_cod;no3n[0]=cur_cod;nh4n[0]=cur_nh4n;
+    	power[0]=cur_power;
 		distance[0]=Float.parseFloat(opkuandu(null));
 		if(opmoxing1(null)!=null)
 		xiadi[0]=Float.parseFloat(opmoxing1(null));
@@ -1411,6 +1420,7 @@ public class MainOperationActivity extends Activity {
 		speed[0]=Float.parseFloat(opliusu(null));
 		deep[0]=Float.parseFloat(opshendu(null));
 		shuiwen[0]=Float.parseFloat(opshuiwen(null));
+		
 		Log.i("auto tl-COD",String.format("%6.3f",cod[0]));
 		Log.i("auto tl-NO3-N",String.format("%6.3f",no3n[0]));
 		Log.i("auto tl-NH4-N",String.format("%6.3f",nh4n[0]));
@@ -1421,6 +1431,7 @@ public class MainOperationActivity extends Activity {
 		Log.i("auto tl-shuiwen",String.format("%6.3f",shuiwen[0]));
 		show="自动测量-通量计算中...";
     	handler.post(showmessagetask);
+    	
     	if(getmoxing()==0)
 		{					
 			count_tixing_tl(distance[0],xiadi[0],0,0);
@@ -1449,7 +1460,7 @@ public class MainOperationActivity extends Activity {
 		handler.post(updatetl);
 		show="自动测量-上传中...";
     	handler.post(showmessagetask);
-		upload();
+		//upload();
 		Log.i("AUTO","auto process done.");
 	}
 	public void upload()
@@ -1510,22 +1521,29 @@ public class MainOperationActivity extends Activity {
 			Log.i("UPLOAD", watercap.getPacket());
 		else
 			Log.i("UPLOAD","packet is null");
+		mode_string=null;
+		img_string=null;
 		new Thread(runnable).start();  
 	}
 	public void reSend()
 	{
-		int count = 0;//sharedPreferenceDatabase1.GetshujuCount(g_ctx);
+		int count = sharedPreferenceDatabase.GetshujuCount(g_ctx);
 		if(count!=0)
 		{
 			for(int i=0;i<count;i++)
 			{
-				String packet=sharedPreferenceDatabase1.Getshuju(g_ctx, i);
+				String packet=sharedPreferenceDatabase.Getshuju(g_ctx, i);
 				if(watercap.reSendNet(packet))
-					sharedPreferenceDatabase1.Deleteshuju(g_ctx, i);
+					sharedPreferenceDatabase.Deleteshuju(g_ctx, i);
 			}
 		}
 	}
-	
+	Runnable send_485_thread = new Runnable(){  
+	    @Override  
+	    public void run() {
+	    	send_485();
+	    }
+	    };
 	Runnable runnable = new Runnable(){  
 	    @Override  
 	    public void run() {
@@ -1538,12 +1556,18 @@ public class MainOperationActivity extends Activity {
 		        	//((MainOperationActivity) g_ctx).showtishi("上传失败！");
 		        	show="上传失败！";
 		        	handler.post(showmessagetask);
-		        	try {
-						sharedPreferenceDatabase1.Setshuju(g_ctx,packet);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+		        	if(sharedPreferenceDatabase!=null)
+		        	{
+		        		try {
+		        	
+							sharedPreferenceDatabase.Setshuju(g_ctx,packet);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        	}
+		        	else
+		        		Log.i("SAVE", "is null");
 		        }
 		        else
 		        {
@@ -1640,8 +1664,8 @@ public class MainOperationActivity extends Activity {
 							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
 							cur_cod=0;//(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							cur_nh4n=byte2float(response,8);
+							cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							cur_nh4n=0;//byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
 							cur_distance=byte2float(response,20);
@@ -1650,7 +1674,6 @@ public class MainOperationActivity extends Activity {
 							Log.i("COD-J",String.format("%6.3f",cur_cod));
 							Log.i("NO3-N-J",String.format("%6.3f",cur_no3n));
 							handler.post(updatevalue);
-							
 						}
 						else
 						{
@@ -1739,6 +1762,13 @@ public class MainOperationActivity extends Activity {
 			Log.i("Cap-shuiwen", String.format("%6.6f",cur_shuiwen));
 			show="采集数据刷新完成！";
         	handler.post(showmessagetask);
+			if(auto_mode)
+				try {
+					auto_process();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	};
 	private final Runnable updatetl = new Runnable() {
@@ -1754,6 +1784,8 @@ public class MainOperationActivity extends Activity {
 			Log.i("TL-cod", String.format("%6.6f",avg_cod[bak_cnt-1]));
 			show="通量计算完成！";
         	handler.post(showmessagetask);
+        	if(auto_mode)
+					upload();
 		}
 	};
 	
