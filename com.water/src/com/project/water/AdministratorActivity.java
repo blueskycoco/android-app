@@ -362,6 +362,8 @@ public class AdministratorActivity extends Activity {
 				int i = spinnermodexuanze.getSelectedItemPosition();
 				listmodexuanze.remove(i);
 				setspinnermodexuanze();
+				//Toast.makeText(context, "删除成功！",
+					//	 Toast.LENGTH_LONG).show();
 			}
 
 		});
@@ -405,6 +407,8 @@ public class AdministratorActivity extends Activity {
 
 				listmodexuanze.add(map);
 				setspinnermodexuanze();
+				//Toast.makeText(context, "添加成功！",
+					//	 Toast.LENGTH_LONG).show();
 			}
 
 		});
@@ -433,6 +437,8 @@ public class AdministratorActivity extends Activity {
 								listmodexuanze);
 						sharedPreferenceDatabase.SetjiangeArray(context,
 								listceliangfangshi);
+						Toast.makeText(context, "设置保存成功！",
+								 Toast.LENGTH_LONG).show();
 					}
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block

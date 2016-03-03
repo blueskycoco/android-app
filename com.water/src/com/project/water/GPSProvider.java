@@ -77,17 +77,19 @@ public class GPSProvider {
 	}
 	public String getlatitude()
 	{
+		String latitudedata="0";
 		mainlocation = manager.getLastKnownLocation(manager.GPS_PROVIDER);
-		String latitudedata = String.format("%.6f",
-				mainlocation.getLatitude());
+		if(mainlocation!=null)
+			latitudedata = String.format("%.6f",mainlocation.getLatitude());
 		return latitudedata;
 	}
 	
 	public String getlongtitude()
 	{
+		String longtitudedata="0";
 		mainlocation = manager.getLastKnownLocation(manager.GPS_PROVIDER);
-		String longtitudedata = String.format("%.6f",
-				mainlocation.getLongitude());
+		if(mainlocation!=null)
+			longtitudedata = String.format("%.6f",mainlocation.getLongitude());
 		return longtitudedata;
 	}
 	

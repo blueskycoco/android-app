@@ -1209,19 +1209,19 @@ public class MainOperationActivity extends Activity {
 			} else if (5 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao2));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else if (8 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao3));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else if (12 > signel) {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao4));
-				reSend();
+				new Thread(runnable_resend).start();
 			} else  {
 				signalstrength.setBackground(getResources().getDrawable(
 						R.drawable.xinhao5));
-				reSend();
+				new Thread(runnable_resend).start();
 			}
 
 			
@@ -1488,9 +1488,10 @@ public class MainOperationActivity extends Activity {
 		watercap.set_flowspeed(String.format("%6.6f", speed[bak_cnt-1]));
 		watercap.set_waterdeep(String.format("%6.6f", deep[bak_cnt-1]));
 		watercap.set_widther(String.format("%6.6f", distance[bak_cnt-1]));
-		SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
-		String date = sDateFormat.format(new java.util.Date());
-		watercap.set_uptime(date);
+		//SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
+		//String date = sDateFormat.format(new java.util.Date());
+		Date d=new Date(System.currentTimeMillis());		
+		watercap.set_uptime(String.valueOf(d.getTime()));
 		watercap.set_remark("±¸×¢");
 		
 		JSONObject img_json = new JSONObject();
@@ -1528,11 +1529,14 @@ public class MainOperationActivity extends Activity {
 	public void reSend()
 	{
 		int count = sharedPreferenceDatabase.GetshujuCount(g_ctx);
+		Log.i("RESEND", "count is"+String.valueOf(count));
 		if(count!=0)
 		{
 			for(int i=0;i<count;i++)
 			{
 				String packet=sharedPreferenceDatabase.Getshuju(g_ctx, i);
+				Log.i("RESEND", "resend "+packet);
+				if(packet.compareTo("{}")!=0)
 				if(watercap.reSendNet(packet))
 					sharedPreferenceDatabase.Deleteshuju(g_ctx, i);
 			}
@@ -1543,6 +1547,12 @@ public class MainOperationActivity extends Activity {
 	    public void run() {
 	    	send_485();
 	    }
+	    };
+    Runnable runnable_resend = new Runnable(){  
+		    @Override  
+		    public void run() {
+		    	reSend();
+		    }
 	    };
 	Runnable runnable = new Runnable(){  
 	    @Override  
@@ -1559,7 +1569,7 @@ public class MainOperationActivity extends Activity {
 		        	if(sharedPreferenceDatabase!=null)
 		        	{
 		        		try {
-		        	
+		        			Log.i("SAVE","to save "+packet);
 							sharedPreferenceDatabase.Setshuju(g_ctx,packet);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -1664,8 +1674,8 @@ public class MainOperationActivity extends Activity {
 							Log.i("Power",String.format("%6.3f",byte2float(response,24)));
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
 							cur_cod=0;//(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							cur_nh4n=0;//byte2float(response,8);
+							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							cur_nh4n=byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
 							cur_distance=byte2float(response,20);
