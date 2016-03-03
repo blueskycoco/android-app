@@ -154,6 +154,7 @@ public class MainOperationActivity extends Activity {
 	byte[] cmd={0x24,0x32,(byte)0xff,0x23,0x0a};
 	int cnt=0,bak_cnt=0;
 	String mode_string=null;
+	String mode_string_bak=null;
 	String img_string=null;
 	String temparture=null;
 	float[] wight=new float[10];
@@ -190,10 +191,11 @@ public class MainOperationActivity extends Activity {
 		//e.printStackTrace();
 			Log.i("ERROR", "insert model_param failed");
 		}
+		//String tmp=mode_json.toString().substring(1, mode_json.toString().length()-1);
 		if(mode_string==null)
-			mode_string=mode_json.toString();
+			mode_string=mode_json.toString().substring(1, mode_json.toString().length()-1);
 		else
-			mode_string+=","+mode_json.toString();
+			mode_string+=","+mode_json.toString().substring(1, mode_json.toString().length()-1);
 		Log.i("mode_string",mode_string);
 		return mode_string;
 	}
@@ -211,9 +213,9 @@ public class MainOperationActivity extends Activity {
 			Log.i("ERROR", "insert img_param failed");
 		}
 		if(img_string==null)
-			img_string=img_json.toString();
+			img_string=img_json.toString().substring(1, img_json.toString().length()-1);
 		else
-			img_string+=","+img_json.toString();
+			img_string+=","+img_json.toString().substring(1, img_json.toString().length()-1);
 		//Log.i("img_string",img_string);
 		return img_string;
 	}
@@ -906,7 +908,8 @@ public class MainOperationActivity extends Activity {
 					Log.i("tl-Speed",String.format("%6.3f",speed[cnt-1]));
 					Log.i("tl-Distance",String.format("%6.3f",distance[cnt-1]));
 					Log.i("tl-Power",String.format("%6.3f",power[cnt-1]));
-					for(int i=0;i<cnt;i++)
+					bak_cnt=cnt;
+					for(int i=0;i<bak_cnt;i++)
 					{
 						if(getmoxing()==0)
 						{					
@@ -940,11 +943,11 @@ public class MainOperationActivity extends Activity {
 					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt-1]));
 					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt-1]));
 					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt-1]));
-					bak_cnt=cnt;
+					mode_string_bak=mode_string;
+					mode_string=null;
 					cnt=0;
 					opcishutime("0");
 				}
-
 				else
 				{
 					Log.i("ERROR","in calc,need click cap ,store first");
@@ -1499,7 +1502,7 @@ public class MainOperationActivity extends Activity {
 		//SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
 		//String date = sDateFormat.format(new java.util.Date());
 		Date d=new Date(System.currentTimeMillis());		
-		watercap.set_uptime(String.valueOf(d.getTime()));
+		watercap.set_uptime(String.valueOf(d.getTime()).substring(0, String.valueOf(d.getTime()).length()-3));
 		watercap.set_remark("±¸×¢");
 		
 		JSONObject img_json = new JSONObject();
@@ -1520,17 +1523,17 @@ public class MainOperationActivity extends Activity {
 				String jpg_str=null;
 				jpg_str=new String(bufferencodebase);
 				img_string = set_img_param(jpg_str,String.valueOf(i+1),img_string);
-		}
+			}
 		
 			watercap.set_img(String.valueOf(listtupian.size() ), img_string);
 		}
-		watercap.set_model(String.valueOf(bak_cnt), mode_string);
-		Log.i("UPLOAD", String.format("%6.6f", cod[bak_cnt-1]));
-		if(watercap.getPacket()!=null)
-			Log.i("UPLOAD", watercap.getPacket());
-		else
-			Log.i("UPLOAD","packet is null");
-		mode_string=null;
+		watercap.set_model(String.valueOf(bak_cnt), mode_string_bak);
+		//Log.i("UPLOAD", String.format("%6.6f", cod[bak_cnt-1]));
+		//if(watercap.getPacket()!=null)
+		//	Log.i("UPLOAD", watercap.getPacket());
+		//else
+		//	Log.i("UPLOAD","packet is null");
+		mode_string_bak=null;
 		img_string=null;
 		new Thread(runnable).start();  
 	}
@@ -1543,10 +1546,12 @@ public class MainOperationActivity extends Activity {
 			for(int i=0;i<count;i++)
 			{
 				String packet=sharedPreferenceDatabase.Getshuju(g_ctx, i);
-				Log.i("RESEND", "resend "+packet);
 				if(packet.compareTo("{}")!=0)
-				if(watercap.reSendNet(packet))
-					sharedPreferenceDatabase.Deleteshuju(g_ctx, i);
+				{
+					Log.i("RESEND", "resend "+String.valueOf(i));
+					if(watercap.reSendNet(packet))
+						sharedPreferenceDatabase.Deleteshuju(g_ctx, i);
+				}
 			}
 		}
 	}
@@ -1568,7 +1573,6 @@ public class MainOperationActivity extends Activity {
 	    	String packet=watercap.getPacket();
 	    	if(packet!=null)
 	    	{
-	    		Log.i("SAVE", packet);
 		        if(watercap.sendNet().compareTo("ok")!=0)
 		        {
 		        	//((MainOperationActivity) g_ctx).showtishi("ÉÏ´«Ê§°Ü£¡");
@@ -1577,7 +1581,7 @@ public class MainOperationActivity extends Activity {
 		        	if(sharedPreferenceDatabase!=null)
 		        	{
 		        		try {
-		        			Log.i("SAVE","to save "+packet);
+		        			Log.i("SAVE","to save ");
 							sharedPreferenceDatabase.Setshuju(g_ctx,packet);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -1683,8 +1687,14 @@ public class MainOperationActivity extends Activity {
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
 							Log.i("no3n zero", String.valueOf(no3n_zero));
 							Log.i("cod zero", String.valueOf(cod_zero));
-							cur_cod=0;//(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							cur_no3n=0;//(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							if(cod_zero>=0)
+								cur_cod=(byte2float(response,0)-cod_zero)*cod_a+cod_b;
+							else
+								cur_cod=(byte2float(response,0)+cod_zero)*cod_a+cod_b;
+							if(no3n_zero>=0)
+								cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
+							else
+								cur_no3n=(byte2float(response,4)+no3n_zero)*no3n_c+no3n_d;
 							cur_nh4n=byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);

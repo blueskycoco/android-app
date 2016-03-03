@@ -398,7 +398,7 @@ class SharedPreferencesDatabase {
 		editor.putString(JsonMain, jsonMainValue.toString());
 
 		rtn = editor.commit();
-		Log.i("Setshu", tmp);
+		//Log.i("Setshu", tmp);
 		return rtn;
 	}
 	
@@ -451,7 +451,7 @@ class SharedPreferencesDatabase {
 			e.printStackTrace();
 		}
 		
-		Log.i("Getshu", rtn);
+		//Log.i("Getshu", rtn);
 		return rtn;
 	}
 	
@@ -475,7 +475,7 @@ class SharedPreferencesDatabase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.i("Delshu", String.valueOf(id));
+		//Log.i("Delshu", String.valueOf(id));
 		return rtnvalue;
 	}
 

@@ -132,12 +132,13 @@ public class watercap {
 	public static void set_img(String num,String json)
 	{
 		imgnums=num;
-		imgdata=json;
+		if(json!=null)
+			imgdata="{"+json+"}";
 	}
 	public static void set_model(String num,String json)
 	{
 		modelnums=num;
-		modedata=json;
+		modedata="{"+json+"}";
 	}
 	public static String getPacket()
 	{
@@ -168,7 +169,7 @@ public class watercap {
         }
         else
             nameValuePair.add(new BasicNameValuePair("imgnums","0"));
-        Log.i("==>", nameValuePair.toString());
+        //Log.i("getPacket==>", nameValuePair.toString());
         return nameValuePair.toString();
 	}
 	public static Boolean reSendNet(String packet)
@@ -177,7 +178,7 @@ public class watercap {
 		HttpPost httpPost = new HttpPost(BASIC_URL);
 		List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
 		nameValuePair.add(new BasicNameValuePair(packet,null));
-		Log.i("==>", packet);
+		//Log.i("reSendNet==>", packet);
         try {
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, HTTP.UTF_8));
             HttpResponse httpResponse = httpClient.execute(httpPost);
