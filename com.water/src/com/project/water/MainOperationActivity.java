@@ -322,12 +322,23 @@ public class MainOperationActivity extends Activity {
 		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i];
+			{
+				re+=cod[times]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[times])+"="+String.valueOf(re));
+			}
 			else if(type==1)
-			re+=no3n[times]*wight[i];
+			{
+				re+=no3n[times]*wight[i];
+				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[times])+"="+String.valueOf(re));
+			}
 			else
-			re+=nh4n[times]*wight[i];
+			{
+				re+=nh4n[times]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[times])+"="+String.valueOf(re));
+			}
 		}
+		Log.i("CALC 面积", String.valueOf(deep[times]*(up+down)/(float)2.0));
+		Log.i("CALC 流速", String.valueOf(speed[times]));
 		if(type==0)
 			avg_cod[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		else if(type==1)
@@ -335,11 +346,11 @@ public class MainOperationActivity extends Activity {
 		else
 			avg_nh4n[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		if(type==0)
-		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[times]));
 		else if(type==1)
-		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[times]));
 		else
-		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[times]));
 	}
 	float count_yuanxing_tl(int times,int type)
 	{
@@ -351,13 +362,25 @@ public class MainOperationActivity extends Activity {
 		for(i=0;i<times+1;i++)
 		{
 			if(type==0)
-			re+=cod[times]*wight[i];
+			{
+				re+=cod[times]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[times])+"="+String.valueOf(re));
+			}
 			else if(type==1)
-			re+=no3n[times]*wight[i];
+			{
+				re+=no3n[times]*wight[i];
+				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[times])+"="+String.valueOf(re));
+			}
 			else
-			re+=nh4n[times]*wight[i];
+			{
+				re+=nh4n[times]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[times])+"="+String.valueOf(re));
+			}
 		}
 		r = (distance[times]*distance[times])/(8*deep[times])+deep[times]/2;
+		Log.i("CALC 半径", String.valueOf(r));
+		Log.i("CALC 面积", String.valueOf(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
+		Log.i("CALC 流速", String.valueOf(speed[times]));
 		//Log.i("半径", "("+String.format("%6.3f", distance[times])+"*"+String.format("%6.3f", distance[times])+")/8*"+String.format("%6.3f",deep[times])+")"+"+"+String.format("%6.3f", deep[times])+"/2");
 		//Log.i("半径", String.format("%6.3f",r));
 		//Log.i("COD通量", String.format("%6.3f", re)+"*sin("+String.format("%6.3f", distance[times])+"/(2*"+String.format("%6.3f", r)+"))*"+String.format("%6.3f", r)+"*"+String.format("%6.3f", r));
@@ -368,12 +391,13 @@ public class MainOperationActivity extends Activity {
 			avg_no3n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		else
 			avg_nh4n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
+		
 		if(type==0)
-		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[times]));
 		else if(type==1)
-		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[times]));
 		else
-		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[times]));
 		return r;
 	}
 	@Override
