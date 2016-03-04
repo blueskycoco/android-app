@@ -879,12 +879,12 @@ public class MainOperationActivity extends Activity {
 				//encodetupian();
 				if(cur_cod!=0||cur_no3n!=0||cur_nh4n!=0||cur_speed!=0||cur_deep!=0||cur_distance!=0)
 				{
-					cod[cnt]=cur_cod;
-					no3n[cnt]=cur_no3n;
-					nh4n[cnt]=cur_nh4n;
-					speed[cnt]=cur_speed;
-					deep[cnt]=cur_deep;
-					distance[cnt]=cur_distance;
+					cod[cnt]=Float.parseFloat(opCOD(null));
+					no3n[cnt]=Float.parseFloat(opxiaodan(null));
+					nh4n[cnt]=Float.parseFloat(opandan(null));
+					speed[cnt]=Float.parseFloat(opliusu(null));
+					deep[cnt]=Float.parseFloat(opshendu(null));
+					distance[cnt]=Float.parseFloat(opkuandu(null));
 					power[cnt]=cur_power;
 					if(getmoxing()==0)
 					{
