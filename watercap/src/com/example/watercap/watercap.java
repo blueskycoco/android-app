@@ -138,6 +138,7 @@ public class watercap {
 	public static void set_model(String num,String json)
 	{
 		modelnums=num;
+		if(json!=null)
 		modedata="{"+json+"}";
 	}
 	public static String getPacket()

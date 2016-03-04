@@ -163,6 +163,9 @@ public class MainOperationActivity extends Activity {
 	float[] avg_cod=new float[1024];
 	float[] avg_no3n=new float[1024];
 	float[] avg_nh4n=new float[1024];
+	float cod_wight=0;
+	float no3n_wight=0;
+	float nh4n_wight=0;
 	float cod_zero = 0;
 	float no3n_zero =0 ;
 	float cod_a=0,cod_b=0;
@@ -295,18 +298,37 @@ public class MainOperationActivity extends Activity {
 		for(int i=0;i<times+1;i++)
 		{
 			if(type==0)
+			{
 				re+=avg_cod[i];
+				cod_wight+=cod[i];
+			}
 			else if(type==1)
+			{
 				re+=avg_no3n[i];
+				no3n_wight+=no3n[i];
+			}
 			else
+			{
 				re+=avg_nh4n[i];
+				nh4n_wight+=nh4n[i];
+			}
 		}
+		
 		if(type==0)
+		{
 			avg_cod[times]=re/(times+1);
+			cod_wight=cod_wight/(times+1);
+		}
 		else if(type==1)
+		{
 			avg_no3n[times]=re/(times+1);
+			no3n_wight=no3n_wight/(times+1);
+		}
 		else
+		{
 			avg_nh4n[times]=re/(times+1);
+			nh4n_wight=nh4n_wight/(times+1);
+		}
 		if(type==0)
 		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
 		else if(type==1)
@@ -323,18 +345,18 @@ public class MainOperationActivity extends Activity {
 		{
 			if(type==0)
 			{
-				re+=cod[times]*wight[i];
-				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[times])+"="+String.valueOf(re));
+				re+=cod[i]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[i])+"="+String.valueOf(re));
 			}
 			else if(type==1)
 			{
-				re+=no3n[times]*wight[i];
-				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[times])+"="+String.valueOf(re));
+				re+=no3n[i]*wight[i];
+				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[i])+"="+String.valueOf(re));
 			}
 			else
 			{
-				re+=nh4n[times]*wight[i];
-				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[times])+"="+String.valueOf(re));
+				re+=nh4n[i]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[i])+"="+String.valueOf(re));
 			}
 		}
 		Log.i("CALC 面积", String.valueOf(deep[times]*(up+down)/(float)2.0));
@@ -363,18 +385,18 @@ public class MainOperationActivity extends Activity {
 		{
 			if(type==0)
 			{
-				re+=cod[times]*wight[i];
-				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[times])+"="+String.valueOf(re));
+				re+=cod[i]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(cod[i])+"="+String.valueOf(re));
 			}
 			else if(type==1)
 			{
-				re+=no3n[times]*wight[i];
-				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[times])+"="+String.valueOf(re));
+				re+=no3n[i]*wight[i];
+				Log.i("CALC 平均NO3n", String.valueOf(wight[i])+"*"+String.valueOf(no3n[i])+"="+String.valueOf(re));
 			}
 			else
 			{
-				re+=nh4n[times]*wight[i];
-				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[times])+"="+String.valueOf(re));
+				re+=nh4n[i]*wight[i];
+				Log.i("CALC 平均COD", String.valueOf(wight[i])+"*"+String.valueOf(nh4n[i])+"="+String.valueOf(re));
 			}
 		}
 		r = (distance[times]*distance[times])/(8*deep[times])+deep[times]/2;
@@ -968,7 +990,8 @@ public class MainOperationActivity extends Activity {
 					Log.i("tl-Distance",String.format("%6.3f",distance[cnt-1]));
 					Log.i("tl-Power",String.format("%6.3f",power[cnt-1]));
 					bak_cnt=cnt;
-					for(int i=0;i<bak_cnt;i++)
+					int i=cnt-1;
+					//for(int i=0;i<bak_cnt;i++)
 					{
 						if(getmoxing()==0)
 						{					
@@ -995,9 +1018,10 @@ public class MainOperationActivity extends Activity {
 							String.format("%6.6f",cod[i]),String.format("%6.6f",no3n[i]),String.format("%6.6f",nh4n[i]),
 							String.format("%6.6f",avg_cod[i]),String.format("%6.6f",avg_no3n[i]),String.format("%6.6f",avg_nh4n[i]),
 							String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),type,
-							String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(i+1),mode_string);
+							String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(bak_cnt+1),mode_string);
+						watercap.set_model(String.valueOf(++bak_cnt), mode_string);
 					}
-					for(int i=0;i<1024;i++)
+					for(i=0;i<1024;i++)
 					{
 						cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
 					}
@@ -1005,7 +1029,6 @@ public class MainOperationActivity extends Activity {
 					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt-1]));
 					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt-1]));
 					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt-1]));
-					mode_string_bak=mode_string;
 					mode_string=null;
 					cnt=0;
 					opcishutime("0");
@@ -1531,8 +1554,10 @@ public class MainOperationActivity extends Activity {
 			String.format("%6.6f",cod[0]),String.format("%6.6f",no3n[0]),String.format("%6.6f",nh4n[0]),
 			String.format("%6.6f",avg_cod[0]),String.format("%6.6f",avg_no3n[0]),String.format("%6.6f",avg_nh4n[0]),
 			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),type,
-			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),String.valueOf(1),mode_string);
-		Log.i("auto mode", mode_string);
+			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),"1",null);
+		watercap.set_model("1", mode_string);
+		Log.i("auto {}mode", mode_string);
+		mode_string=null;
 		bak_cnt=1;
 		handler.post(updatetl);
 		show="自动测量-上传中...";
@@ -1593,13 +1618,11 @@ public class MainOperationActivity extends Activity {
 		
 			watercap.set_img(String.valueOf(listtupian.size() ), img_string);
 		}
-		watercap.set_model(String.valueOf(bak_cnt), mode_string_bak);
 		//Log.i("UPLOAD", String.format("%6.6f", cod[bak_cnt-1]));
 		//if(watercap.getPacket()!=null)
 		//	Log.i("UPLOAD", watercap.getPacket());
 		//else
 		//	Log.i("UPLOAD","packet is null");
-		mode_string_bak=null;
 		img_string=null;
 		new Thread(runnable).start();  
 	}
