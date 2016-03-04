@@ -925,6 +925,7 @@ public class MainOperationActivity extends Activity {
 				//encodetupian();
 				if(Integer.valueOf(opcishutime(null))>0)
 				{
+					String type="1";
 					distance[cnt-1]=Float.parseFloat(opkuandu(null));
 					if(opmoxing1(null)!=null)
 					xiadi[cnt-1]=Float.parseFloat(opmoxing1(null));
@@ -950,23 +951,26 @@ public class MainOperationActivity extends Activity {
 							count_tixing_tl(distance[i],xiadi[i],i,0);
 							count_tixing_tl(distance[i],xiadi[i],i,1);
 							count_tixing_tl(distance[i],xiadi[i],i,2);
+							type = "2";
 						}
 						else if(getmoxing()==1)
 						{
 							count_juxing_tl(i,0);
 							count_juxing_tl(i,1);
 							count_juxing_tl(i,2);
+							type = "1";
 						}
 						else
 						{
 							count_yuanxing_tl(i,0);
 							count_yuanxing_tl(i,1);
 							count_yuanxing_tl(i,2);
+							type = "3";
 						}
 						mode_string = set_model_param(
 							String.format("%6.6f",cod[i]),String.format("%6.6f",no3n[i]),String.format("%6.6f",nh4n[i]),
 							String.format("%6.6f",avg_cod[i]),String.format("%6.6f",avg_no3n[i]),String.format("%6.6f",avg_nh4n[i]),
-							String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),String.valueOf(getmoxing()+1),
+							String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),type,
 							String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(i+1),mode_string);
 					}
 					for(int i=0;i<1024;i++)
@@ -1447,6 +1451,7 @@ public class MainOperationActivity extends Activity {
 	{
 		show="自动测量-采集中...";
     	handler.post(showmessagetask);
+    	String type="1";
 		//send_485();
     	//new Thread(send_485_thread).start();  
 		//Log.i("WAIT", "Begin to wait");
@@ -1482,23 +1487,26 @@ public class MainOperationActivity extends Activity {
 			count_tixing_tl(distance[0],xiadi[0],0,0);
 			count_tixing_tl(distance[0],xiadi[0],0,1);
 			count_tixing_tl(distance[0],xiadi[0],0,2);
+			type = "2";
 		}
 		else if(getmoxing()==1)
 		{
 			count_juxing_tl(0,0);
 			count_juxing_tl(0,1);
 			count_juxing_tl(0,2);
+			type = "1";
 		}
 		else
 		{
 			count_yuanxing_tl(0,0);
 			count_yuanxing_tl(0,1);
 			count_yuanxing_tl(0,2);
+			type = "3";
 		}
 		mode_string = set_model_param(
 			String.format("%6.6f",cod[0]),String.format("%6.6f",no3n[0]),String.format("%6.6f",nh4n[0]),
 			String.format("%6.6f",avg_cod[0]),String.format("%6.6f",avg_no3n[0]),String.format("%6.6f",avg_nh4n[0]),
-			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),String.valueOf(getmoxing()+1),
+			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),type,
 			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),String.valueOf(1),mode_string);
 		Log.i("auto mode", mode_string);
 		bak_cnt=1;

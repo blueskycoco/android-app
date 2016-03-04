@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+
+import com.example.watercap.watercap;
 
 import android.app.Activity;
 import android.app.Instrumentation.ActivityResult;
@@ -54,6 +57,7 @@ public class CameraActivity extends Activity {
 	Button buttonpai;
 	Button buttonfanhui;
 	Button buttontuichu;
+	Button buttonguanji;
 	Spinner spinnertupian;
 	
 	TextView textdianchi;
@@ -70,7 +74,7 @@ public class CameraActivity extends Activity {
 	MyPhoneStateListener    MyListener;
 	
 	ImageView signalstrength;
-	
+	Context g_ctx=null;
 	List listtupian;
 	private ImageView showImage;
 	private Uri imageUri; // Í¼Æ¬Â·¾¶
@@ -78,7 +82,7 @@ public class CameraActivity extends Activity {
 	private String filename; // Í¼Æ¬Ãû³Æ
 	File outputImage;
 	File outputImagetmp;
-
+	SharedPreferencesDatabase sharedPreferenceDatabase;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_paizhao);
@@ -87,6 +91,7 @@ public class CameraActivity extends Activity {
 		buttonshanchutupian = (Button) findViewById(R.id.buttonshanchutupian);
 		buttonfanhui = (Button) findViewById(R.id.buttonfanhui);
 		buttontuichu = (Button) findViewById(R.id.buttontuichu);
+		buttonguanji = (Button) findViewById(R.id.buttonguanji);
 		spinnertupian = (Spinner) findViewById(R.id.spinnertupian);
 		
 		imageviewdianchi = (ImageView) findViewById(R.id.imageviewdianchi);
@@ -104,9 +109,10 @@ public class CameraActivity extends Activity {
 		setbuttonpai();
 		setButtonfanhui();
 		setbuttontuichu();
-		
+		setbuttonguanji();
 		getbundledetail();
-		
+		g_ctx=(Context)this;
+		sharedPreferenceDatabase = new SharedPreferencesDatabase();
 		batteryLevel();
 		SysApplication.getInstance().addActivity(this); 
 		gpsprovider = GPSProvider.getInstance(CameraActivity.this);
@@ -310,6 +316,26 @@ public class CameraActivity extends Activity {
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
 					SysApplication.getInstance().exit();
+				}
+
+			});
+		}
+	    public void setbuttonguanji() {
+	    	buttonguanji.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Log.i("Power Off", "to close system");
+					if(watercap.getPacket()!=null)
+						try {
+							sharedPreferenceDatabase.Setshuju(g_ctx,watercap.getPacket());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					Toast.makeText(g_ctx, "Çë¹Ø±ÕµçÔ´",
+							 Toast.LENGTH_LONG).show();
 				}
 
 			});
