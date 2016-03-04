@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class MainOperationActivity extends Activity {
 	Spinner spinnermoxing;
 	Button buttonpaizhao;
 	Button buttontuichu;
+	Button buttonguanji;
 
 	TextView textdianchi;
 	ImageView imageviewdianchi;
@@ -383,7 +385,8 @@ public class MainOperationActivity extends Activity {
 		spinnermoxing = (Spinner) findViewById(R.id.spinnermoxing);
 		buttonpaizhao = (Button) findViewById(R.id.buttonpaizhao);
 		buttontuichu = (Button) findViewById(R.id.buttontuichu);
-
+		buttonguanji = (Button) findViewById(R.id.buttonguanji);
+		
 		imageviewdianchi = (ImageView) findViewById(R.id.imageviewdianchi);
 		//textdianchi = (TextView) findViewById(R.id.textdianchi);
 		textGPSLocate = (TextView) findViewById(R.id.textGPSLocate);
@@ -447,6 +450,7 @@ public class MainOperationActivity extends Activity {
 		setButtonPaizhao();
 		setButtontongliang();
 		setButtontuichu();
+		setButtonguanji();
 		setButtonshujushangchuan();
 		setButtonceliang();
 		setbuttonshujucunchu();
@@ -819,7 +823,37 @@ public class MainOperationActivity extends Activity {
 			}
 		});
 	}
-	
+	public void setButtonguanji() {
+		buttonguanji.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+
+				Log.i("Power Off", "to close system");
+				if(watercap.getPacket()!=null)
+					try {
+						sharedPreferenceDatabase.Setshuju(g_ctx,watercap.getPacket());
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				Toast.makeText(g_ctx, "Çë¹Ø±ÕµçÔ´",
+						 Toast.LENGTH_LONG).show();
+				/*try {
+					String cmd= new String("reboot -p");
+					Process exeEcho = Runtime.getRuntime().exec("su");
+		            exeEcho.getOutputStream().write(cmd.getBytes());
+		            exeEcho.getOutputStream().flush();
+					//Process proc = Runtime.getRuntime().exec(new String[]{"su","-c","reboot -p"});
+		            //exeEcho.waitFor();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+			}
+		});
+	}
 	
 	
 	public void setButtonceliang() {
@@ -1687,14 +1721,14 @@ public class MainOperationActivity extends Activity {
 							Log.i("Shuiwen",String.format("%6.3f",byte2float(response,28)));
 							Log.i("no3n zero", String.valueOf(no3n_zero));
 							Log.i("cod zero", String.valueOf(cod_zero));
-							if(cod_zero>=0)
+							//if(cod_zero>=0)
 								cur_cod=(byte2float(response,0)-cod_zero)*cod_a+cod_b;
-							else
-								cur_cod=(byte2float(response,0)+cod_zero)*cod_a+cod_b;
-							if(no3n_zero>=0)
+							//else
+							//	cur_cod=(byte2float(response,0)+cod_zero)*cod_a+cod_b;
+							//if(no3n_zero>=0)
 								cur_no3n=(byte2float(response,4)-no3n_zero)*no3n_c+no3n_d;
-							else
-								cur_no3n=(byte2float(response,4)+no3n_zero)*no3n_c+no3n_d;
+							//else
+							//	cur_no3n=(byte2float(response,4)+no3n_zero)*no3n_c+no3n_d;
 							cur_nh4n=byte2float(response,8);
 							cur_deep=byte2float(response,12);
 							cur_speed=byte2float(response,16);
