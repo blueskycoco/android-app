@@ -288,46 +288,29 @@ public class MainOperationActivity extends Activity {
 	void count_juxing_tl(int times,int type)
 	{
 		float re=0;
-		if(type==0)
-		avg_cod[times]=cod[times]*speed[times]*deep[times]*distance[times];
-		else if(type==1)
-		avg_no3n[times]=no3n[times]*speed[times]*deep[times]*distance[times];
-		else
-		avg_nh4n[times]=nh4n[times]*speed[times]*deep[times]*distance[times];
 		for(int i=0;i<times+1;i++)
 		{
 			if(type==0)
 			{
-				re+=avg_cod[i];
-				cod_wight+=cod[i];
+				re+=cod[i];
 			}
 			else if(type==1)
 			{
-				re+=avg_no3n[i];
-				no3n_wight+=no3n[i];
+				re+=no3n[i];
 			}
 			else
 			{
-				re+=avg_nh4n[i];
-				nh4n_wight+=nh4n[i];
+				re+=nh4n[i];
 			}
 		}
-		
+		re=re/(times+1);
 		if(type==0)
-		{
-			avg_cod[tl_cnt]=re/(times+1);
-			cod_wight=cod_wight/(times+1);
-		}
+			avg_cod[tl_cnt]=re*speed[times]*deep[times]*distance[times];
 		else if(type==1)
-		{
-			avg_no3n[tl_cnt]=re/(times+1);
-			no3n_wight=no3n_wight/(times+1);
-		}
+			avg_no3n[tl_cnt]=re*speed[times]*deep[times]*distance[times];
 		else
-		{
-			avg_nh4n[tl_cnt]=re/(times+1);
-			nh4n_wight=nh4n_wight/(times+1);
-		}
+			avg_nh4n[tl_cnt]=re*speed[times]*deep[times]*distance[times];
+		
 		if(type==0)
 		Log.i("avg_cod",String.format("%6.3f",avg_cod[tl_cnt]));
 		else if(type==1)
