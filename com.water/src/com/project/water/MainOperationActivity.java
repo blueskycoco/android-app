@@ -154,7 +154,7 @@ public class MainOperationActivity extends Activity {
 	static boolean header_got=false;
 	static int read_len=0,to_read=0;
 	byte[] cmd={0x24,0x32,(byte)0xff,0x23,0x0a};
-	int cnt=0,bak_cnt=0;
+	int cap_cnt=0,tl_cnt=0;
 	String mode_string=null;
 	String mode_string_bak=null;
 	String img_string=null;
@@ -170,10 +170,9 @@ public class MainOperationActivity extends Activity {
 	float no3n_zero =0 ;
 	float cod_a=0,cod_b=0;
 	float no3n_c=0,no3n_d=0;
-	float cur_cod=0,cur_no3n=0,cur_nh4n=0,cur_deep=0,cur_speed=0,cur_distance=0,cur_power=0,cur_shuiwen=0;
+	float cur_cod=0,cur_no3n=0,cur_nh4n=0,cur_deep=0,cur_speed=0,cur_distance=0,cur_power=0,cur_shuiwen=0,cur_xiadi=3;
 	float[] shuiwen=new float[1024],xiadi=new float[1024],cod=new float[1024],no3n=new float[1024],nh4n=new float[1024],deep=new float[1024],speed=new float[1024],distance=new float[1024],power=new float[1024];
 	String set_model_param(
-			String cod,String nho3,String nhn4,
 			String avg_cod1,String avg_nho3,String avg_nhn4,
 			String speed,String deep,String modeltype,
 			String waterwidth,String downarea,String cnt,String mode_string
@@ -251,15 +250,15 @@ public class MainOperationActivity extends Activity {
 				break;
 			case 8:
 				wight[0]=(float) 0.055;wight[1]=(float) 0.145;wight[2]=(float) 0.15;wight[3]=(float) 0.15;wight[4]=(float)0.15;wight[5]=(float)0.15;wight[6]=(float)0.145;
-				wight[7]=(float)0x055;
+				wight[7]=(float)0.055;
 				break;
 			case 9:
 				wight[0]=(float) 0.09;wight[1]=(float) 0.11;wight[2]=(float) 0.12;wight[3]=(float) 0.12;wight[4]=(float)0.12;wight[5]=(float)0.12;wight[6]=(float)0.12;				
 				wight[7]=(float)0.11;wight[8]=(float)0.09;
 				break;
 			case 10:
-				wight[0]=(float) 0.07;wight[1]=(float) 0.10;wight[2]=(float) 0.11;wight[3]=(float) 0.11;wight[4]=(float)0.11;wight[5]=(float)0.11;wight[6]=(float)0.11;				
-				wight[7]=(float)0.11;wight[8]=(float)0.01;wight[9]=(float)0.07;
+				wight[0]=(float) 0.07;wight[1]=(float) 0.1;wight[2]=(float) 0.11;wight[3]=(float) 0.11;wight[4]=(float)0.11;wight[5]=(float)0.11;wight[6]=(float)0.11;				
+				wight[7]=(float)0.11;wight[8]=(float)0.1;wight[9]=(float)0.07;
 				break;
 		}
 	}
@@ -316,25 +315,25 @@ public class MainOperationActivity extends Activity {
 		
 		if(type==0)
 		{
-			avg_cod[times]=re/(times+1);
+			avg_cod[tl_cnt]=re/(times+1);
 			cod_wight=cod_wight/(times+1);
 		}
 		else if(type==1)
 		{
-			avg_no3n[times]=re/(times+1);
+			avg_no3n[tl_cnt]=re/(times+1);
 			no3n_wight=no3n_wight/(times+1);
 		}
 		else
 		{
-			avg_nh4n[times]=re/(times+1);
+			avg_nh4n[tl_cnt]=re/(times+1);
 			nh4n_wight=nh4n_wight/(times+1);
 		}
 		if(type==0)
-		Log.i("avg_cod",String.format("%6.3f",avg_cod[times]));
+		Log.i("avg_cod",String.format("%6.3f",avg_cod[tl_cnt]));
 		else if(type==1)
-		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[times]));
+		Log.i("avg_no3n",String.format("%6.3f",avg_no3n[tl_cnt]));
 		else
-		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[times]));
+		Log.i("avg_nh4n",String.format("%6.3f",avg_nh4n[tl_cnt]));
 	}
 	void count_tixing_tl(float up,float down,int times,int type)
 	{
@@ -362,17 +361,17 @@ public class MainOperationActivity extends Activity {
 		Log.i("CALC 面积", String.valueOf(deep[times]*(up+down)/(float)2.0));
 		Log.i("CALC 流速", String.valueOf(speed[times]));
 		if(type==0)
-			avg_cod[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+			avg_cod[tl_cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		else if(type==1)
-			avg_no3n[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+			avg_no3n[tl_cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		else
-			avg_nh4n[times]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
+			avg_nh4n[tl_cnt]=(re*speed[times]*deep[times]*(up+down))/(float)2.0;
 		if(type==0)
-		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[times]));
+		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[tl_cnt]));
 		else if(type==1)
-		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[times]));
+		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[tl_cnt]));
 		else
-		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[times]));
+		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[tl_cnt]));
 	}
 	float count_yuanxing_tl(int times,int type)
 	{
@@ -408,18 +407,18 @@ public class MainOperationActivity extends Activity {
 		//Log.i("COD通量", String.format("%6.3f", re)+"*sin("+String.format("%6.3f", distance[times])+"/(2*"+String.format("%6.3f", r)+"))*"+String.format("%6.3f", r)+"*"+String.format("%6.3f", r));
 		//Log.i("COD通量", "-0.5*"+String.format("%6.3f", distance[times])+"*("+String.format("%6.3f", r)+"-"+String.format("%6.3f", deep[times])+"))");
 		if(type==0)
-			avg_cod[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
+			avg_cod[tl_cnt]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		else if(type==1)
-			avg_no3n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
+			avg_no3n[tl_cnt]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		else
-			avg_nh4n[times]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
+			avg_nh4n[tl_cnt]=(float) (re*speed[times]*(Math.asin(distance[times]/(2*r))*r*r-0.5f*distance[times]*(r-deep[times])));
 		
 		if(type==0)
-		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[times]));
+		Log.i("CALC COD通量",String.format("%6.3f",avg_cod[tl_cnt]));
 		else if(type==1)
-		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[times]));
+		Log.i("CALC NO3n通量",String.format("%6.3f",avg_no3n[tl_cnt]));
 		else
-		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[times]));
+		Log.i("CALC NH4n通量",String.format("%6.3f",avg_nh4n[tl_cnt]));
 		return r;
 	}
 	@Override
@@ -925,33 +924,33 @@ public class MainOperationActivity extends Activity {
 				//encodetupian();
 				if(cur_cod!=0||cur_no3n!=0||cur_nh4n!=0||cur_speed!=0||cur_deep!=0||cur_distance!=0)
 				{
-					cod[cnt]=Float.parseFloat(opCOD(null));
-					no3n[cnt]=Float.parseFloat(opxiaodan(null));
-					nh4n[cnt]=Float.parseFloat(opandan(null));
-					speed[cnt]=Float.parseFloat(opliusu(null));
-					deep[cnt]=Float.parseFloat(opshendu(null));
-					distance[cnt]=Float.parseFloat(opkuandu(null));
-					power[cnt]=cur_power;
+					cod[cap_cnt]=Float.parseFloat(opCOD(null));
+					no3n[cap_cnt]=Float.parseFloat(opxiaodan(null));
+					nh4n[cap_cnt]=Float.parseFloat(opandan(null));
+					speed[cap_cnt]=Float.parseFloat(opliusu(null));
+					deep[cap_cnt]=Float.parseFloat(opshendu(null));
+					distance[cap_cnt]=Float.parseFloat(opkuandu(null));
+					power[cap_cnt]=cur_power;
 					if(getmoxing()==0)
 					{
 						if(opmoxing1(null)!=null)
 						{
 							Log.i("XIADI", opmoxing1(null));
-								xiadi[cnt]=Float.parseFloat(opmoxing1(null));
+								xiadi[cap_cnt]=Float.parseFloat(opmoxing1(null));
 						}
 						else
-							xiadi[cnt]=0;
-						Log.i("STORE xiadi", String.valueOf(xiadi[cnt]));
+							xiadi[cap_cnt]=0;
+						Log.i("STORE xiadi", String.valueOf(xiadi[cap_cnt]));
 					}
-					Log.i("STORE cod", String.valueOf(cod[cnt]));
-					Log.i("STORE no3n", String.valueOf(no3n[cnt]));
-					Log.i("STORE nh4n", String.valueOf(nh4n[cnt]));
-					Log.i("STORE speed", String.valueOf(speed[cnt]));
-					Log.i("STORE deep", String.valueOf(deep[cnt]));
-					Log.i("STORE distance", String.valueOf(distance[cnt]));
-					Log.i("STORE power", String.valueOf(power[cnt]));
-					cnt++;
-					opcishutime(String.valueOf(cnt));
+					Log.i("STORE cod", String.valueOf(cod[cap_cnt]));
+					Log.i("STORE no3n", String.valueOf(no3n[cap_cnt]));
+					Log.i("STORE nh4n", String.valueOf(nh4n[cap_cnt]));
+					Log.i("STORE speed", String.valueOf(speed[cap_cnt]));
+					Log.i("STORE deep", String.valueOf(deep[cap_cnt]));
+					Log.i("STORE distance", String.valueOf(distance[cap_cnt]));
+					Log.i("STORE power", String.valueOf(power[cap_cnt]));
+					cap_cnt++;
+					opcishutime(String.valueOf(cap_cnt));
 				}
 				else
 				{
@@ -972,66 +971,62 @@ public class MainOperationActivity extends Activity {
 				if(Integer.valueOf(opcishutime(null))>0)
 				{
 					String type="1";
-					distance[cnt-1]=Float.parseFloat(opkuandu(null));
+					distance[cap_cnt-1]=Float.parseFloat(opkuandu(null));
 					if(opmoxing1(null)!=null)
-					xiadi[cnt-1]=Float.parseFloat(opmoxing1(null));
+					xiadi[cap_cnt-1]=Float.parseFloat(opmoxing1(null));
 					else
-						xiadi[cnt-1]=0;
-					cod[cnt-1]=Float.parseFloat(opCOD(null));
-					nh4n[cnt-1]=Float.parseFloat(opandan(null));
-					no3n[cnt-1]=Float.parseFloat(opxiaodan(null));
-					speed[cnt-1]=Float.parseFloat(opliusu(null));
-					deep[cnt-1]=Float.parseFloat(opshendu(null));
-					Log.i("tl-COD",String.format("%6.3f",cod[cnt-1]));
-					Log.i("tl-NO3-N",String.format("%6.3f",no3n[cnt-1]));
-					Log.i("tl-NH4-N",String.format("%6.3f",nh4n[cnt-1]));
-					Log.i("tl-Deep",String.format("%6.3f",deep[cnt-1]));
-					Log.i("tl-Speed",String.format("%6.3f",speed[cnt-1]));
-					Log.i("tl-Distance",String.format("%6.3f",distance[cnt-1]));
-					Log.i("tl-Power",String.format("%6.3f",power[cnt-1]));
-					bak_cnt=cnt;
-					int i=cnt-1;
-					//for(int i=0;i<bak_cnt;i++)
-					{
-						if(getmoxing()==0)
-						{					
-							count_tixing_tl(distance[i],xiadi[i],i,0);
-							count_tixing_tl(distance[i],xiadi[i],i,1);
-							count_tixing_tl(distance[i],xiadi[i],i,2);
-							type = "2";
-						}
-						else if(getmoxing()==1)
-						{
-							count_juxing_tl(i,0);
-							count_juxing_tl(i,1);
-							count_juxing_tl(i,2);
-							type = "1";
-						}
-						else
-						{
-							count_yuanxing_tl(i,0);
-							count_yuanxing_tl(i,1);
-							count_yuanxing_tl(i,2);
-							type = "3";
-						}
-						mode_string = set_model_param(
-							String.format("%6.6f",cod[i]),String.format("%6.6f",no3n[i]),String.format("%6.6f",nh4n[i]),
-							String.format("%6.6f",avg_cod[i]),String.format("%6.6f",avg_no3n[i]),String.format("%6.6f",avg_nh4n[i]),
-							String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),type,
-							String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(bak_cnt+1),mode_string);
-						watercap.set_model(String.valueOf(++bak_cnt), mode_string);
+						xiadi[cap_cnt-1]=0;
+					cod[cap_cnt-1]=Float.parseFloat(opCOD(null));
+					nh4n[cap_cnt-1]=Float.parseFloat(opandan(null));
+					no3n[cap_cnt-1]=Float.parseFloat(opxiaodan(null));
+					speed[cap_cnt-1]=Float.parseFloat(opliusu(null));
+					deep[cap_cnt-1]=Float.parseFloat(opshendu(null));
+					Log.i("tl-COD",String.format("%6.3f",cod[cap_cnt-1]));
+					Log.i("tl-NO3-N",String.format("%6.3f",no3n[cap_cnt-1]));
+					Log.i("tl-NH4-N",String.format("%6.3f",nh4n[cap_cnt-1]));
+					Log.i("tl-Deep",String.format("%6.3f",deep[cap_cnt-1]));
+					Log.i("tl-Speed",String.format("%6.3f",speed[cap_cnt-1]));
+					Log.i("tl-Distance",String.format("%6.3f",distance[cap_cnt-1]));
+					Log.i("tl-Power",String.format("%6.3f",power[cap_cnt-1]));
+					int i=cap_cnt-1;
+					if(getmoxing()==0)
+					{					
+						count_tixing_tl(distance[i],xiadi[i],i,0);
+						count_tixing_tl(distance[i],xiadi[i],i,1);
+						count_tixing_tl(distance[i],xiadi[i],i,2);
+						type = "2";
 					}
+					else if(getmoxing()==1)
+					{
+						count_juxing_tl(i,0);
+						count_juxing_tl(i,1);
+						count_juxing_tl(i,2);
+						type = "1";
+					}
+					else
+					{
+						count_yuanxing_tl(i,0);
+						count_yuanxing_tl(i,1);
+						count_yuanxing_tl(i,2);
+						type = "3";
+					}
+					mode_string = set_model_param(
+						String.format("%6.6f",avg_cod[tl_cnt]),String.format("%6.6f",avg_no3n[tl_cnt]),String.format("%6.6f",avg_nh4n[tl_cnt]),
+						String.format("%6.6f",speed[i]),String.format("%6.6f",deep[i]),type,
+						String.format("%6.6f",distance[i]),String.format("%6.6f",xiadi[i]),String.valueOf(tl_cnt+1),mode_string);
+					watercap.set_model(String.valueOf(tl_cnt+1), mode_string);
 					for(i=0;i<1024;i++)
 					{
 						cod[i]=0;no3n[i]=0;nh4n[i]=0;speed[i]=0;deep[i]=0;distance[i]=0;
 					}
 					handler.post(updatetl);
-					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[cnt-1]));
-					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[cnt-1]));
-					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[cnt-1]));
+					Log.i("tl-avg-COD",String.format("%6.3f",avg_cod[tl_cnt]));
+					Log.i("tl-avg-NO3-N",String.format("%6.3f",avg_no3n[tl_cnt]));
+					Log.i("tl-avg-NH4-N",String.format("%6.3f",avg_nh4n[tl_cnt]));
 					mode_string=null;
-					cnt=0;
+					cap_cnt=0;
 					opcishutime("0");
+					tl_cnt++;
 				}
 				else
 				{
@@ -1049,12 +1044,11 @@ public class MainOperationActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				//encodetupian();
-				if(avg_no3n[0]!=0 || avg_cod[0]!=0 || avg_nh4n[0]!=0)
+				if(tl_cnt!=0)
 				{
 					upload();
 					//SysApplication.getInstance().cameraactivity.deletetupian();
 				}
-
 				else
 				{
 					Log.i("ERROR","in upload,need click cap ,store,calc first");
@@ -1551,14 +1545,14 @@ public class MainOperationActivity extends Activity {
 			type = "3";
 		}
 		mode_string = set_model_param(
-			String.format("%6.6f",cod[0]),String.format("%6.6f",no3n[0]),String.format("%6.6f",nh4n[0]),
 			String.format("%6.6f",avg_cod[0]),String.format("%6.6f",avg_no3n[0]),String.format("%6.6f",avg_nh4n[0]),
 			String.format("%6.6f",speed[0]),String.format("%6.6f",deep[0]),type,
 			String.format("%6.6f",distance[0]),String.format("%6.6f",xiadi[0]),"1",null);
 		watercap.set_model("1", mode_string);
 		Log.i("auto {}mode", mode_string);
 		mode_string=null;
-		bak_cnt=1;
+		cap_cnt=1;
+		tl_cnt=1;
 		handler.post(updatetl);
 		show="自动测量-上传中...";
     	handler.post(showmessagetask);
@@ -1567,29 +1561,29 @@ public class MainOperationActivity extends Activity {
 	}
 	public void upload()
 	{
-		distance[bak_cnt-1]=Float.parseFloat(opkuandu(null));
+		cur_distance=Float.parseFloat(opkuandu(null));
 		if(opmoxing1(null)!=null)
-		xiadi[bak_cnt-1]=Float.parseFloat(opmoxing1(null));
+			cur_xiadi=Float.parseFloat(opmoxing1(null));
 		else
-			xiadi[bak_cnt-1]=0;
-		cod[bak_cnt-1]=Float.parseFloat(opCOD(null));
-		nh4n[bak_cnt-1]=Float.parseFloat(opandan(null));
-		no3n[bak_cnt-1]=Float.parseFloat(opxiaodan(null));
-		speed[bak_cnt-1]=Float.parseFloat(opliusu(null));
-		deep[bak_cnt-1]=Float.parseFloat(opshendu(null));
+			cur_xiadi=0;
+		cur_cod=Float.parseFloat(opCOD(null));
+		cur_nh4n=Float.parseFloat(opandan(null));
+		cur_no3n=Float.parseFloat(opxiaodan(null));
+		cur_speed=Float.parseFloat(opliusu(null));
+		cur_deep=Float.parseFloat(opshendu(null));
 		temparture=opshuiwen(null);
 		watercap.set_did(didvalue);
 		watercap.set_address(opdizhi(null));
 		watercap.set_jingdu(gpsprovider.getlongtitude());
 		watercap.set_weidu(gpsprovider.getlatitude());
-		watercap.set_batterypower(String.format("%6.6f", power[bak_cnt-1]));
+		watercap.set_batterypower(String.format("%6.6f", cur_power));
 		watercap.set_watertemper(temparture);
-		watercap.set_cod(String.format("%6.6f", cod[bak_cnt-1]));
-		watercap.set_nitratevalue(String.format("%6.6f", no3n[bak_cnt-1]));
-		watercap.set_ammoniavalue(String.format("%6.6f", nh4n[bak_cnt-1]));
-		watercap.set_flowspeed(String.format("%6.6f", speed[bak_cnt-1]));
-		watercap.set_waterdeep(String.format("%6.6f", deep[bak_cnt-1]));
-		watercap.set_widther(String.format("%6.6f", distance[bak_cnt-1]));
+		watercap.set_cod(String.format("%6.6f", cur_cod));
+		watercap.set_nitratevalue(String.format("%6.6f", cur_no3n));
+		watercap.set_ammoniavalue(String.format("%6.6f", cur_nh4n));
+		watercap.set_flowspeed(String.format("%6.6f", cur_speed));
+		watercap.set_waterdeep(String.format("%6.6f", cur_deep));
+		watercap.set_widther(String.format("%6.6f", cur_distance));
 		//SimpleDateFormat sDateFormat = new SimpleDateFormat("yy:mm:dd hh:mm:ss");
 		//String date = sDateFormat.format(new java.util.Date());
 		Date d=new Date(System.currentTimeMillis());		
@@ -1623,6 +1617,7 @@ public class MainOperationActivity extends Activity {
 		//	Log.i("UPLOAD", watercap.getPacket());
 		//else
 		//	Log.i("UPLOAD","packet is null");
+		tl_cnt=0;
 		img_string=null;
 		new Thread(runnable).start();  
 	}
@@ -1895,12 +1890,12 @@ public class MainOperationActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			//add dialog display "cap done"
-			opCODtongliang(String.format("%6.6f",avg_cod[bak_cnt-1]));
-			opxiaodantongliang(String.format("%6.6f",avg_no3n[bak_cnt-1]));
-			opandantongliang(String.format("%6.6f",avg_nh4n[bak_cnt-1]));
-			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[bak_cnt-1]));
-			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[bak_cnt-1]));
-			Log.i("TL-cod", String.format("%6.6f",avg_cod[bak_cnt-1]));
+			opCODtongliang(String.format("%6.6f",avg_cod[tl_cnt-1]));
+			opxiaodantongliang(String.format("%6.6f",avg_no3n[tl_cnt-1]));
+			opandantongliang(String.format("%6.6f",avg_nh4n[tl_cnt-1]));
+			Log.i("TL-nh4n", String.format("%6.6f",avg_nh4n[tl_cnt-1]));
+			Log.i("TL-no3n", String.format("%6.6f",avg_no3n[tl_cnt-1]));
+			Log.i("TL-cod", String.format("%6.6f",avg_cod[tl_cnt-1]));
 			show="通量计算完成！";
         	handler.post(showmessagetask);
         	if(auto_mode)
