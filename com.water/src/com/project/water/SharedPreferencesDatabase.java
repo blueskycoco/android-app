@@ -21,6 +21,7 @@ class SharedPreferencesDatabase {
 	public static final String JsonMain = "JsonMain";
 	public static final String usershuzu = "usershuzu";
 	public static final String mima = "mima";
+	public static final String addr = "addr";
 	public static final String user = "user";
 	public static final String modexuanzeshuzu = "modexuanzeshuzu";
 	public static final String modexuanze = "modexuanze";
@@ -147,9 +148,10 @@ class SharedPreferencesDatabase {
 			// 设备ID
 			JSONObject jsondeviceID = new JSONObject();
 			jsondeviceID.put(deviceIDstr, "000000");
-
 			jsonMainValue.put(deviceID, jsondeviceID);
-			
+			JSONObject jsonaddr = new JSONObject();
+			jsondeviceID.put(addr, "请输入地址!");
+			jsonMainValue.put(addr, jsondeviceID);
 			// CODLingdian
 			JSONObject jsonCODLingdian = new JSONObject();
 			jsonCODLingdian.put(CODLingdianstr, "0");
@@ -267,7 +269,19 @@ class SharedPreferencesDatabase {
 		return jsondeviceID.getString(deviceIDstr);
 
 	}
-	
+	public String Getaddr(Context context) throws JSONException {
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+
+		jsondeviceID = (JSONObject) jsonMainValue.get(addr);
+
+		return jsondeviceID.getString(addr);
+
+	}
 	public String GetCODLingdian(Context context) throws JSONException {
 		SharedPreferences sp = (SharedPreferences) context
 				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
@@ -527,7 +541,25 @@ class SharedPreferencesDatabase {
 
 		return rtn;
 	}
-	
+	public Boolean Setaddr(Context context, String address)
+			throws JSONException {
+		Boolean rtn;
+		SharedPreferences sp = (SharedPreferences) context
+				.getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		String strJson = sp.getString(JsonMain, "");
+		JSONObject jsonMainValue = new JSONObject(strJson);
+		JSONObject jsondeviceID = new JSONObject();
+		jsondeviceID.put(addr, address);
+
+		jsonMainValue.put(addr, jsondeviceID);
+
+		editor.putString(JsonMain, jsonMainValue.toString());
+
+		rtn = editor.commit();
+
+		return rtn;
+	}
 	public Boolean SetCODLingdian(Context context, String strdeviceID)
 			throws JSONException {
 		Boolean rtn;

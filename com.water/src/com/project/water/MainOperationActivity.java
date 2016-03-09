@@ -509,7 +509,12 @@ public class MainOperationActivity extends Activity {
 		cod_a=Float.parseFloat(modexuanzecanshua);cod_b=Float.parseFloat(modexuanzecanshub);
 		no3n_c=Float.parseFloat(modexuanzecanshuc);no3n_d=Float.parseFloat(modexuanzecanshud);
 		opmoxing1("3");
-		opdizhi("«Î ‰»Îµÿ÷∑£°");
+		try {
+			opdizhi(sharedPreferenceDatabase.Getaddr(g_ctx));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void setinputchange()
@@ -914,6 +919,13 @@ public class MainOperationActivity extends Activity {
 					deep[cap_cnt]=Float.parseFloat(opshendu(null));
 					distance[cap_cnt]=Float.parseFloat(opkuandu(null));
 					power[cap_cnt]=cur_power;
+					if(opdizhi(null)!=null)
+						try {
+							sharedPreferenceDatabase.Setaddr(g_ctx, opdizhi(null));
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					if(getmoxing()==0)
 					{
 						if(opmoxing1(null)!=null)
