@@ -345,7 +345,8 @@ public class CameraActivity extends Activity {
 			// TODO Auto-generated method stub
 	    	if(keyCode==KeyEvent.KEYCODE_BACK)
 	    	{
-	    		backpressed();
+	    		return false;
+	    		//backpressed();
 	    	}
 			return super.onKeyDown(keyCode, event);
 		}
