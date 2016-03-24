@@ -1104,7 +1104,8 @@ public class MainOperationActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		if (keyCode == KeyEvent.KEYCODE_BACK||
+    			keyCode==KeyEvent.KEYCODE_HOME) {
 			return false;
 			//backpressed();
 		}
