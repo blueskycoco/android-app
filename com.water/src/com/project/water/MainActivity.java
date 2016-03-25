@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -307,8 +308,13 @@ remembermima.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 	}
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
+		Log.i("onKeyDown", "MainActivity BACK"+String.valueOf(KeyEvent.KEYCODE_BACK));
+		Log.i("onKeyDown", "MainActivity HOME"+String.valueOf(KeyEvent.KEYCODE_HOME));
+		Log.i("onKeyDown", "MainActivity MENU"+String.valueOf(KeyEvent.KEYCODE_MENU));
+		Log.i("onKeyDown", "MainActivity "+String.valueOf(keyCode));
     	if(keyCode==KeyEvent.KEYCODE_BACK||
-    			keyCode==KeyEvent.KEYCODE_HOME)
+    			keyCode==KeyEvent.KEYCODE_HOME||
+    			keyCode==KeyEvent.KEYCODE_MENU)
     	{
     		return false;
     		//backpressed();

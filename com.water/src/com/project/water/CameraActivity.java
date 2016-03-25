@@ -343,8 +343,13 @@ public class CameraActivity extends Activity {
 	    @Override
 		public boolean onKeyDown(int keyCode, KeyEvent event) {
 			// TODO Auto-generated method stub
+	    	Log.i("onKeyDown", "CameraActivity BACK"+String.valueOf(KeyEvent.KEYCODE_BACK));
+			Log.i("onKeyDown", "CameraActivity HOME"+String.valueOf(KeyEvent.KEYCODE_HOME));
+			Log.i("onKeyDown", "CameraActivity MENU"+String.valueOf(KeyEvent.KEYCODE_MENU));
+			Log.i("onKeyDown", "CameraActivity "+String.valueOf(keyCode));
 	    	if(keyCode==KeyEvent.KEYCODE_BACK||
-	    			keyCode==KeyEvent.KEYCODE_HOME)
+	    			keyCode==KeyEvent.KEYCODE_HOME||
+	    			keyCode==KeyEvent.KEYCODE_MENU)
 	    	{
 	    		return false;
 	    		//backpressed();

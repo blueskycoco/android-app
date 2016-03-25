@@ -1100,12 +1100,29 @@ public class MainOperationActivity extends Activity {
 	public void setButtontongliang() {
 
 	}
+	@Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        int action = event.getAction();
+        boolean isDown = action == 0;
 
+    	Log.i("onKeyDown", "MainOPActivity 111"+String.valueOf(keyCode));
+        if (keyCode == KeyEvent.KEYCODE_MENU || keyCode == KeyEvent.KEYCODE_HOME) {
+            return isDown ? this.onKeyDown(keyCode, event) : this.onKeyUp(keyCode, event);
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
+		Log.i("onKeyDown", "MainOPActivity BACK"+String.valueOf(KeyEvent.KEYCODE_BACK));
+		Log.i("onKeyDown", "MainOPActivity HOME"+String.valueOf(KeyEvent.KEYCODE_HOME));
+		Log.i("onKeyDown", "MainOPActivity MENU"+String.valueOf(KeyEvent.KEYCODE_MENU));
+		Log.i("onKeyDown", "MainOPActivity "+String.valueOf(keyCode));
 		if (keyCode == KeyEvent.KEYCODE_BACK||
-    			keyCode==KeyEvent.KEYCODE_HOME) {
+    			keyCode==KeyEvent.KEYCODE_HOME||
+    			keyCode==KeyEvent.KEYCODE_MENU) {
 			return false;
 			//backpressed();
 		}
