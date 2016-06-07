@@ -1317,9 +1317,12 @@ public class MainOperationActivity extends Activity {
 	private void getbundledetail()
 	{
 		bundle = this.getIntent().getExtras();
-		user = (String) bundle.get("user");
-		modexuanze = bundle.getInt("modexuanze");
-		zidongjiange = bundle.getInt("zidongjiange");
+		//user = (String) bundle.get("user");
+		//modexuanze = bundle.getInt("modexuanze");
+		//zidongjiange = bundle.getInt("zidongjiange");
+		user = SysApplication.getInstance().user;
+		modexuanze = SysApplication.getInstance().modexuanze;
+		zidongjiange = SysApplication.getInstance().zidongjiange;
 		
 		//mode
 		Map<String, String> map1 = new HashMap<String, String>();

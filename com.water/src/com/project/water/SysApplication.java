@@ -10,6 +10,10 @@ import android.app.Application;
  * 
  */  
 public class SysApplication extends Application {  
+				public String user = null;
+				public String mima = null;
+				public int modexuanze = 0;
+					public int zidongjiange = 0;
 	public List listtupian;
     //运用list来保存们每一个activity是关键  
     private List<Activity> mList = new LinkedList<Activity>();  

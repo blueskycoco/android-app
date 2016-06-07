@@ -155,6 +155,10 @@ public class MainActivity extends Activity {
 					bundle.putInt("modexuanze", modexuanze);
 					bundle.putInt("zidongjiange", zidongjiange);
 					intent.putExtras(bundle);
+					SysApplication.getInstance().user = user;
+					SysApplication.getInstance().mima = mima;
+					SysApplication.getInstance().modexuanze = modexuanze;
+					SysApplication.getInstance().zidongjiange = zidongjiange;
 					// 传数据结束
 					startActivity(intent);
 				}
