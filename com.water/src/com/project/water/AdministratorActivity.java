@@ -292,7 +292,13 @@ public class AdministratorActivity extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		Log.i("onKeyDown", "AdminActivity BACK"+String.valueOf(KeyEvent.KEYCODE_BACK));
+		Log.i("onKeyDown", "AdminActivity HOME"+String.valueOf(KeyEvent.KEYCODE_HOME));
+		Log.i("onKeyDown", "AdminActivity MENU"+String.valueOf(KeyEvent.KEYCODE_MENU));
+		Log.i("onKeyDown", "AdminActivity "+String.valueOf(keyCode));
+		if (keyCode == KeyEvent.KEYCODE_BACK||
+    			keyCode==KeyEvent.KEYCODE_HOME||
+    			keyCode==KeyEvent.KEYCODE_MENU) {
 			return false;
 			//backpressed();
 		}
